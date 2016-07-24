@@ -1,0 +1,43 @@
+.article-list {
+    position: relative;
+    padding-left: 0;
+
+    .article-list-item {
+        position: relative;
+        padding-top: 30px;
+        padding-bottom: 15px;
+        list-style: none;
+        border-bottom: 1px solid $mk-gray-lighter;
+    }
+
+    .article-list-name {
+        font-weight: 400;
+        margin: 0 0 8px;
+        font-size: 20px;
+        line-height: 1.2;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    .article-list-description {
+        max-width: 550px;
+        margin-top: 8px;
+        margin-bottom: 0;
+        font-size: 14px;
+        color: $mk-gray;
+    }
+
+    .article-list-meta {
+        display: block;
+        margin-top: 8px;
+        margin-bottom: 0;
+        font-size: 13px;
+        color: $mk-gray;
+
+        span {
+            margin-right: 0.6em;
+        }
+    }
+}

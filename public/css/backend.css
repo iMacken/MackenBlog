@@ -1,0 +1,19 @@
+.navbar {
+	border-radius:0;
+}
+.table-top{
+    margin-top: 20px;
+}
+.btn_form{
+   float: right;
+    margin-right: 5px;
+}
+#site-footer {
+    position: fix;
+    bottom:0;
+    margin-top: 40px;
+    padding: 20px 0;
+    font-size: 1em;
+    line-height: 1.5;
+    border-top: 1px solid #eee;
+}

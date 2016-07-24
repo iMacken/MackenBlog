@@ -1,0 +1,96 @@
+.mobile-visible {
+    display: none
+}
+
+.jumbotron {
+    padding-top: 28px;
+    padding-bottom: 28px;
+    background-color: $mk-blue;
+
+    .jumbotron-title,.jumbotron-desc,.jumbotron-meta {
+        color:$mk-white;
+    }
+    .jumbotron-title {
+        font-size:2em;
+    }
+    .jumbotron-desc{
+        font-size:1.2em;
+    }
+    .jumbotron-meta{
+        font-size:1em;
+        a {
+            color:$mk-white;
+            &:hover {
+                color:$mk-red;
+            }
+        }
+    }
+}
+
+.home-jumbotron .jumbotron-title {
+    font-size:2.8em;
+}
+
+@media (max-width:60em) {
+    
+}
+
+@media (max-width:50em) {
+    .mobile-block {
+        display: block;
+        float: none
+    }
+    .mobile-hidden {
+        display: none
+    }
+    .mobile-visible {
+        display: inline-block
+    }
+    .markdown-body {
+        h1 {font-size: 2em !important}
+        h2 {font-size: 1.5em !important}
+        h3 {font-size: 1.3em !important}
+        h4 {font-size: 1.2em !important}
+        h5 {font-size: 1em !important}
+    }
+
+    .jumbotron {
+        .jumbotron-title {
+            font-size:1.8em !important;
+        }
+        .jumbotron-desc {
+            font-size:1.2em !important;
+        }
+        .jumbotron-meta{
+            font-size:0.9em !important;
+        }
+    }
+
+    .home-jumbotron .jumbotron-title {
+        font-size:2.4em !important;
+    }
+    
+}
+
+@media (max-width:35em) {
+    .jumbotron {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .jumbotron {
+        .jumbotron-title {
+            font-size:1.6em !important;
+        }
+        .jumbotron-desc {
+            font-size:1em !important;
+        }
+    }
+
+    .home-jumbotron .jumbotron-title {
+        font-size:2.1em !important;
+    }
+}
+
+@media (max-width:20em) {
+    
+}
