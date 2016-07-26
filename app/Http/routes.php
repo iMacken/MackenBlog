@@ -10,7 +10,6 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
 Route::get('/', 'ArticleController@index');
 
 Route::get('category/{category}', 'CategoryController@show');
