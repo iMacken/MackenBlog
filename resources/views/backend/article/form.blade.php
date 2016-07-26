@@ -1,6 +1,6 @@
 
-<link rel="stylesheet" href="{{ asset('bower_components/editor.md/css/editormd.min.css')}}" />
-<link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css')}}" />
+<link rel="stylesheet" href="{{ asset('plugins/editor.md/css/editormd.min.css')}}" />
+<link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css')}}" />
 
 <div class="form-group">
 	{!!  Form::label('title', '标题') !!}
@@ -47,8 +47,8 @@
 	{!!  Form::submit($submitBtnTxt, ['class' => 'btn btn-success form-control']) !!}
 </div>
 
-<script type="text/javascript" src="{{ asset('bower_components/editor.md/editormd.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('plugins/editor.md/editormd.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('plugins/select2/js/select2.min.js') }}"></script>
 <script>
 	$('#tag_list').select2({
 		placeholder: '选择一个标签',
@@ -91,7 +91,7 @@
             imageUploadToken : '{{ csrf_token() }}',
             imageUploadURL : "{{ url(config('editor.uploadUrl')) }}",
             height  : 420,
-            path : "{{ asset('bower_components/editor.md/lib') }}/" // Autoload modules mode, codemirror, marked... dependents libs path
+            path : "{{ asset('plugins/editor.md/lib') }}/" // Autoload modules mode, codemirror, marked... dependents libs path
         });
     });
 </script>
