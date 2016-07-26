@@ -11,7 +11,7 @@
 
     @yield('styles')
     
-    <script src="{{ asset('bower_components/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -37,36 +37,9 @@
     </div>
 </footer>
 
-<script src="{{ asset('js/all.js') }}"></script>
-
 @yield('scripts')
 
-<script>
-    jQuery(document).ready(function($) {
-        
-        //geopattern
-        $('.geopattern').each(function(){
-            $(this).geopattern($(this).data('pattern-id'));
-        });
-
-        $('.navbar-form').submit(function (event) {
-            event.preventDefault();
-            var keyword = $('#search-keyword').val();
-            if ($.trim(keyword) == '') {
-                return false;
-            }
-
-            var host = $('.navbar-form').attr('action');
-            window.location.href = host + '/' + keyword;
-        });
-
-        $('.share-bar').share();
-
-        $('#to-top').click(function(){
-            $('html, body').animate({scrollTop:0}, 'slow');
-        });
-    });
-</script>
+<script src="{{ asset('js/all.js') }}"></script>
 
 </body>
 </html>

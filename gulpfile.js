@@ -16,13 +16,19 @@ elixir(function(mix) {
     mix.sass('app.scss');
 
     mix.styles([
-    	'../public/css/app.css',
-    	'prismjs/themes/prism-coy.css'
-    	], null, 'node_modules');
+    	'plugins/bootstrap/themes/bootstrap-paper.min.css',
+    	'plugins/font-awesome/css/font-awesome.min.css',
+    	'plugins/social-share.js/css/share.min.css',
+    	'plugins/primer-markdown/build/build.css',
+    	'plugins/prism/prism.css',
+    	'css/app.css',
+    	], null, 'public');
 
     mix.scripts([
-    	'bootstrap-sass/assets/javascripts/bootstrap.min.js',
-    	'social-share.js/dist/js/jquery.share.min.js',
-    	'prismjs/prism.js'
-    	], null, 'node_modules');
+    	'plugins/bootstrap/js/bootstrap.min.js',
+    	'plugins/social-share.js/js/jquery.share.min.js',
+    	'plugins/geopattern/js/geopattern.min.js',
+    	'plugins/prism/prism.js',
+    	'plugins/scripts.js'
+    	], null, 'public');
 });

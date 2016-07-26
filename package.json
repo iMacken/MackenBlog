@@ -16,14 +16,5 @@
     "gulp": "^3.9.1",
     "laravel-elixir": "^5.0.0"
   },
-  "dependencies": {
-    "bootstrap-sass": "^3.3.6",
-    "bootstrap-sweetalert": "^1.0.0",
-    "bootswatch": "^3.3.6",
-    "font-awesome": "^4.6.3",
-    "primer-markdown": "^3.2.0",
-    "prismjs": "^1.5.1",
-    "social-share.js": "^1.0.15",
-    "sweetalert": "^1.1.3"
-  }
+  "dependencies": {}
 }

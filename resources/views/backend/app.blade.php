@@ -8,9 +8,8 @@
 
 	<link href="{{ asset('css/bootstrap-paper.min.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/backend.css') }}">
-	<link href="{{ asset('bower_components/bootstrap-sweetalert/dist/sweetalert.css') }}" rel="stylesheet">
-
-    <script src="{{ asset('bower_components/jquery/jquery.min.js') }}"></script>
+	<link href="{{ asset('plugins/bootstrap-sweetalert/dist/sweetalert.css') }}" rel="stylesheet">
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/backend.js') }}"></script>
 	
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -44,7 +43,7 @@
 	</footer>
 
 	<!-- Scripts -->
-	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="{{ asset('bower_components/bootstrap-sweetalert/dist/sweetalert.min.js') }}"></script>
+	<script src="{{ asset('plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('plugins/bootstrap-sweetalert/dist/sweetalert.min.js') }}"></script>
 </body>
 </html>
