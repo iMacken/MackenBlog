@@ -17,7 +17,7 @@ elixir(function(mix) {
 
     mix.styles([
     	'../public/css/app.css',
-    	'prismjs/themes/prism-coy.css'
+    	'prismjs/themes/prism.css'
     	], null, 'node_modules');
 
     mix.scripts([
