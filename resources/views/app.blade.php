@@ -33,7 +33,7 @@
             © {{ date('Y') }}
             <span >macken.me</span>
         </div>
-        <a class="pull-right mobile-hidden" href="javascript:window.scrollTo(0,0)" ><span class="fa fa-arrow-circle-up fa-3x"></span></a>
+        <a id="to-top" class="pull-right mobile-hidden" href="javascript:void(0)" ><span class="fa fa-arrow-circle-up fa-3x"></span></a>
     </div>
 </footer>
 
@@ -61,6 +61,10 @@
         });
 
         $('.share-bar').share();
+
+        $('#to-top').click(function(){
+            $('html, body').animate({scrollTop:0}, 'slow');
+        });
     });
 </script>
 
