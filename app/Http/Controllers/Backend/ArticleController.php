@@ -27,6 +27,7 @@ class ArticleController extends Controller
     public function indexAll()
     {
         Article::createIndex($shards = null, $replicas = null);
+        Article::addAllToIndex();
     }
 
     /**
