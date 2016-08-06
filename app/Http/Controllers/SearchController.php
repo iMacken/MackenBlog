@@ -17,7 +17,15 @@ class SearchController extends Controller
         if (empty($keyword)) {
             return redirect()->route('article.index');
         }
-        $articles = Article::getArticleListByKeyword($keyword);
+
+        #search articles from elasticsearch index
+        $articles = Article::searchIndex($keyword);
+
+        #if failed, directly search with mysql
+        if (!$articles) {
+            $articles = Article::getArticleListByKeyword($keyword);
+        }
+
         $page = new BootstrapThreePresenter($articles);
 
         $jumbotron = [];

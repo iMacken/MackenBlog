@@ -21,6 +21,15 @@ class ArticleController extends Controller
     }
 
     /**
+     * index all articles with elasticsearch
+     * @return [type] [description]
+     */
+    public function indexAll()
+    {
+        Article::createIndex($shards = null, $replicas = null);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response
@@ -59,6 +68,9 @@ class ArticleController extends Controller
             $createData = $request->all();
             $createData['pic'] = $pic;
             $article = Auth::user()->articles()->create($createData);
+
+            #add the new article into elasticsearch index
+            $article && $article->addToIndex();
 
             if ($request->has('tag_list')) {
                 $this->syncTags($article, $request->input('tag_list'));
@@ -125,7 +137,11 @@ class ArticleController extends Controller
 
             if ($article->update($updateData))
             {
+                #update the article in elasticsearch index
+                $article->updateIndex();
+
                 $this->syncTags($article, $request->input('tag_list'));
+
                 Notification::success('更新成功');
 
                 if (Request::hasFile('pic') && file_exists($oldPic)) {
@@ -154,6 +170,10 @@ class ArticleController extends Controller
         if (ArticleStatus::deleteArticleStatus($id)) {
 
             if (Article::destroy($id)) {
+
+                #remove the article from the elasticsearch index
+                $article->removeFromIndex();
+
                 Notification::success('删除成功');
                 $this->deleteArticleImages($article);
             } else {

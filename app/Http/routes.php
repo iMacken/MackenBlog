@@ -27,6 +27,7 @@ Route::controllers([
 
 Route::group(['prefix'=>'backend', 'namespace'=>'Backend', 'middleware'=>'auth'],function(){
     Route::any('/','HomeController@index');
+    Route::get('article/createIndex', 'ArticleController@indexAll');
     Route::resource('home', 'HomeController');
     Route::resource('category','CategoryController');
     Route::resource('article','ArticleController');
