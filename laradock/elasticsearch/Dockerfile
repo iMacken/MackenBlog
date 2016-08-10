@@ -1,30 +1,14 @@
-# ElasticSearch Dockerfile
-#
-# https://github.com/dockerfile/elasticsearch
-#
- 
-# Pull base image.
-FROM java:8
- 
-# Install ElasticSearch.
-RUN \
-  cd /tmp && \
-  wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.1.tar.gz && \
-  tar xvzf elasticsearch-1.2.1.tar.gz && \
-  rm -f elasticsearch-1.2.1.tar.gz && \
-  mv /tmp/elasticsearch-1.2.1 /elasticsearch
+FROM elasticsearch:2.3.4
 
-# Define mountable directories.
-VOLUME ["/data"]
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends --force-yes maven openjdk-8-jdk && \
+    rm -rf /var/lib/apt/lists/*
 
-# Define working directory.
-WORKDIR /data
+ADD https://github.com/medcl/elasticsearch-analysis-ik/archive/v1.9.4.tar.gz /tmp/elasticsearch-analysis-ik.tar.gz
 
-# Define default command.
-CMD ["/elasticsearch/bin/elasticsearch"]
-
-# Expose ports.
-#   - 9200: HTTP
-#   - 9300: transport
-EXPOSE 9200
-EXPOSE 9300
+RUN tar -xvf /tmp/elasticsearch-analysis-ik.tar.gz -C /tmp && \
+    cd /tmp/elasticsearch-analysis-ik-1.9.4 && \
+    mvn package && \
+    unzip target/releases/elasticsearch-analysis-ik-1.9.4.zip -d /usr/share/elasticsearch/plugins/ik && \
+    cd / && \
+    rm -rf /tmp/elasticsearch-analysis-ik*
