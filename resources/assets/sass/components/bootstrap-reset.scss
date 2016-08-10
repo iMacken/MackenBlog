@@ -103,7 +103,7 @@ a {
         color: $mk-blue;
     }
     .list-group-item {
-        border: 1px solid $mk-gray-light;
+        border: 1px solid $mk-gray-lighter;
         border-radius: 3em;
         height: 2.4em;
         line-height: 2.4em;
@@ -128,6 +128,20 @@ a {
     border-top: 1px solid $mk-gray-lighter;
     .fa-arrow-circle-up {
         color: $mk-red;
+    }
+    .fa-github {
+        position: absolute;
+        top: 35px;
+        left: 50%;
+        height: 34px;
+        width: 34px;
+        margin-left: -17px;
+        font-size: 34px;
+        color: $mk-gray-light;
+
+        &:hover {
+            color: $mk-gray;
+        }
     }
 }
 

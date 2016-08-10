@@ -13,6 +13,17 @@ class Article extends Model
 {
     use ElasticquentTrait;
 
+    protected $mappingProperties = array(
+       'title' => array(
+            'type' => 'string',
+            'analyzer' => 'ik_max_word'
+        ),
+       'content' => array(
+            'type' => 'string',
+            'analyzer' => 'ik_max_word'
+        )
+    );
+
     protected $fillable = [
         'category_id',
         'user_id',

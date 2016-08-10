@@ -33,6 +33,9 @@
             © {{ date('Y') }}
             <span >macken.me</span>
         </div>
+        <a href="https://github.com/RystLee/MackenBlog" target="_blank" aria-label="view source code">
+            <span class="fa fa-github" title="GitHub"></span>
+        </a>
         <a id="to-top" class="pull-right mobile-hidden" href="javascript:void(0)" ><span class="fa fa-arrow-circle-up fa-3x"></span></a>
     </div>
 </footer>
