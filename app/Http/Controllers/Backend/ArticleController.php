@@ -26,6 +26,9 @@ class ArticleController extends Controller
      */
     public function indexAll()
     {
+        if (Article::typeExists()) {
+            Article::deleteIndex();
+        }
         Article::createIndex($shards = null, $replicas = null);
         Article::addAllToIndex();
     }
