@@ -16,7 +16,7 @@
         @endif
 
         <div class="panel-body">
-            {!! Form::open(['route' => 'backend.link.store', 'method' => 'PATCH']) !!}
+            {!! Form::open(['route' => 'backend.link.store', 'method' => 'POST']) !!}
 
             @include('backend.link.form', ['submitBtnTxt'=>'完成'])
 
