@@ -24,17 +24,13 @@ class Registrar implements RegistrarContract {
 	/**
 	 * Create a new user instance after a valid registration.
 	 *
-	 * @param  object  $request
+	 * @param  object  $Request
 	 * @return User
 	 */
-	public function create(Request $request)
+	public function create(array $data)
 	{
-		return User::create([
-			'name' => $request->input('name'),
-			'email' => $request->input('email'),
-			'password' => bcrypt($request->input('password')),
-            'photo'=>upload_file('photo', $request),
-		]);
+		$data['password'] = bcrypt($data['password']);
+		return User::create($data);
 	}
 
 }
