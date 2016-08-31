@@ -12,7 +12,7 @@ class SettingSeeder extends Seeder{
             ],
             [
                 'name'=>'website_record',
-                'value'=>'国安 00009'
+                'value'=>'0000001'
             ],
             [
                 'name'=>'allow_access',
