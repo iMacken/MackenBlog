@@ -44,7 +44,7 @@
         <br>
         <p>本文链接: <a href="{{ route('article.show',array('id'=>$article->slug ? $article->slug : $article->id)) }}">{{ route('article.show',array('id'=>$article->slug ? $article->slug : $article->id)) }}</a></p>
         <p class="well">
-            <b>声明</b>
+            <b class="text-danger">声明</b>
             <br>
             <br>
             在转载或修改本文后发布的文章中注明原文来源信息的前提下，允许进行转载该篇文章或经修改后发布且不用告知本文作者。
