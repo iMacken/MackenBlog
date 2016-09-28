@@ -17,18 +17,18 @@ class SettingController extends Controller
     }
 
 
-    public function getIndex()
+    public function index()
     {
 
         return view('backend.setting.index', ['setting' => Setting::all()]);
     }
 
-    public function getCreate()
+    public function create()
     {
         return view('backend.setting.create');
     }
 
-    public function postCreate(SettingRequest $result)
+    public function store(SettingRequest $result)
     {
 
         try {
@@ -42,7 +42,7 @@ class SettingController extends Controller
 
     }
 
-    public function getDelete($id)
+    public function destroy($id)
     {
         if (Setting::destroy($id)) {
             Notification::success('删除成功');

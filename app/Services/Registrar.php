@@ -2,9 +2,8 @@
 
 use App\Models\User;
 use Validator;
-use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 
-class Registrar implements RegistrarContract {
+class Registrar {
 
 	/**
 	 * Get a validator for an incoming registration request.

@@ -37,7 +37,7 @@
 	    <div class="container">
 	        <div class="copyright pull-left mobile-block">
 	            © {{ date('Y') }}
-	            <span >rystlee.com</span>
+	            <span>macken.me</span>
 	        </div>
 	    </div>
 	</footer>

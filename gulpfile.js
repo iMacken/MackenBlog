@@ -1,4 +1,6 @@
-var elixir = require('laravel-elixir');
+const elixir = require('laravel-elixir');
+
+require('laravel-elixir-vue');
 
 /*
  |--------------------------------------------------------------------------
@@ -31,4 +33,6 @@ elixir(function(mix) {
     	'plugins/prism/prism.js',
     	'plugins/scripts.js'
     	], null, 'public');
+
+	mix.webpack('app.js');
 });

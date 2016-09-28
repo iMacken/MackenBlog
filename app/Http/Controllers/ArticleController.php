@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Pagination\BootstrapThreePresenter;
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Controllers\Controller;
 
 use App\Models\ArticleStatus;
@@ -21,13 +21,12 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::getLatestArticleList(8);
-        $page = new BootstrapThreePresenter($articles);
 
         $jumbotron = [];
         $jumbotron['title'] = '麦肯先生';
         $jumbotron['desc'] = 'Simplicity is the essence of happiness.';
 
-        return view('pages.list', compact('articles', 'page', 'jumbotron'));
+        return view('pages.list', compact('articles', 'jumbotron'));
     }
 
 

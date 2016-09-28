@@ -91,7 +91,7 @@ class TagController extends Controller
         try {
 
             if (Tag::where('id', $id)->update(['name'=>$result->input('name')])) {
-                dd(1);
+
                 Notification::success('更新成功');
 
                 return redirect()->route('backend.tag.index');
