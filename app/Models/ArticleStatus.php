@@ -21,15 +21,18 @@ class ArticleStatus extends Model {
     }
 
     public static function initArticleStatus($articleId){
-        if(self::insert(array('article_id'=>$articleId))){
+        if (self::insert(array('article_id'=>$articleId))){
             return true;
-        }else{
-            return false;
         }
+        return false;
     }
 
     public static function deleteArticleStatus($article_id){
-        return self::where('article_id','=',$article_id)->first()->delete();
+        $articleStatus = self::where('article_id','=',$article_id)->first();
+        if (is_null($articleStatus)) {
+            return true;
+        }
+        return $articleStatus->delete();
     }
 
 

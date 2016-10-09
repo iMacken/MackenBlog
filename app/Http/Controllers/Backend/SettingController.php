@@ -23,37 +23,7 @@ class SettingController extends Controller
         return view('backend.setting.index', ['setting' => Setting::all()]);
     }
 
-    public function create()
-    {
-        return view('backend.setting.create');
-    }
-
-    public function store(SettingRequest $result)
-    {
-
-        try {
-            if (Setting::create($result->all())) {
-                Notification::success('添加成功,请修改语言包文件');
-                return redirect('backend/setting/index');
-            }
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();
-        }
-
-    }
-
-    public function destroy($id)
-    {
-        if (Setting::destroy($id)) {
-            Notification::success('删除成功');
-        } else {
-            Notification::success('删除失败');
-        }
-
-        return redirect()->back();
-    }
-
-    public function postStore()
+    public function save()
     {
         $setting = Request::get('setting');
         if (!empty($setting)) {

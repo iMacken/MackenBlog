@@ -24,7 +24,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category =  Category::getCategoryDataModel();
+        $category = Category::getCategoryDataModel();
         return view('backend.category.index', compact('category'));
     }
 
@@ -50,7 +50,7 @@ class CategoryController extends Controller
 
             if (Category::create($request->all())) {
                 Notification::success('添加成功');
-                return redirect()->route('backend.category.index');
+                return redirect()->route('category.index');
             }
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();

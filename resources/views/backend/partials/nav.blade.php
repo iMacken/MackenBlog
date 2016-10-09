@@ -12,21 +12,21 @@
 			@if (Auth::check())
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="{{ route('user.index') }}">用户管理</a></li>
+					<li><a href="{{ route('backend.user.index') }}">用户管理</a></li>
 					<li>
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">内容管理<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li>
-					            <a href="{{ route('category.index') }}">分类管理</a>
+					            <a href="{{ route('backend.category.index') }}">分类管理</a>
 					        </li>
 					        <li>
-					            <a href="{{ route('article.index') }}">文章管理</a>
+					            <a href="{{ route('backend.article.index') }}">文章管理</a>
 					        </li>
 					        <li>
-					            <a href="{{ route('tag.index') }}">标签管理</a>
+					            <a href="{{ route('backend.tag.index') }}">标签管理</a>
 					        </li>
 				            <li>
-				                <a href="{{ route('link.index') }}">友链管理</a>
+				                <a href="{{ route('backend.link.index') }}">友链管理</a>
 				            </li>
 						</ul>
 					</li>
@@ -36,7 +36,7 @@
 				                <a href="{{ action('Backend\SettingController@index') }}">基本设置</a>
 				            </li>
 				            <li>
-				                <a href="{{ route('navigation.index') }}">导航设置</a>
+				                <a href="{{ route('backend.navigation.index') }}">导航设置</a>
 				            </li>
 						</ul>
 					</li>
