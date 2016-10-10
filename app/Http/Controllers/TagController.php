@@ -14,7 +14,6 @@ class TagController extends Controller
         $tag = Tag::getTagModel($id);
         $tagName = $tag->name;
         $articles = $tag->articles()->where('category_id', '<>', 0)->paginate(8);
-        $page = new BootstrapThreePresenter($articles);
 
         $jumbotron = [];
         $jumbotron['title'] = '标签：' . $tagName;
