@@ -26,7 +26,6 @@ class CategoryController extends Controller
         }
 
         $articles = $category->articles()->latest()->paginate(8);
-        $page = new BootstrapThreePresenter($articles);
 
         $jumbotron = [];
         $jumbotron['title'] = '分类：'.$category->name;
