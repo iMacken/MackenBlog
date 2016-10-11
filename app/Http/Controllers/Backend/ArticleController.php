@@ -53,7 +53,7 @@ class ArticleController extends Controller
     {
         $categoryTree = Category::getCategoryTree();
         $categoryTree[0] = '单页';
-        $tags = Tag::lists('name', 'id');
+        $tags = Tag::pluck('name', 'id');
         return view('backend.article.create', compact('categoryTree', 'tags'));
     }
 
@@ -113,7 +113,7 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        $tags = Tag::lists('name', 'id');
+        $tags = Tag::pluck('name', 'id');
         $categoryTree = Category::getCategoryTree();
         $categoryTree[0] = '单页';
         return view('backend.article.edit', compact('article', 'categoryTree', 'tags'));

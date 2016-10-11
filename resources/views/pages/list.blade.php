@@ -40,7 +40,7 @@
     </ol>
     <div class="pagination text-align">
         <nav>
-            {!! $page->render() !!}
+            {!! $articles->links() !!}
         </nav>
     </div>
 @endsection

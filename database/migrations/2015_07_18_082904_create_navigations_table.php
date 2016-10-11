@@ -15,7 +15,6 @@ class CreateNavigationsTable extends Migration {
 
 		Schema::create('navigations',function(Blueprint $table){
 			$table->increments('id');
-			$table->integer('parent_id');
 			$table->integer('sort');
 			$table->string('name');
 			$table->string('url');

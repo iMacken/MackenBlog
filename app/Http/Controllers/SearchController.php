@@ -26,8 +26,6 @@ class SearchController extends Controller
             $articles = Article::getArticleListByKeyword($keyword);
         }
 
-        $page = new BootstrapThreePresenter($articles);
-
         $jumbotron = [];
         $jumbotron['title'] = '关键词：' . $keyword;
         $jumbotron['desc'] = '';

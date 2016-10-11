@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Models\Link;
-use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Requests\LinkRequest;

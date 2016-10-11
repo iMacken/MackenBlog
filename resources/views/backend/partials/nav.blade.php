@@ -33,7 +33,7 @@
 					<li><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">系统设置<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li>
-				                <a href="{{ action('Backend\SettingController@getIndex') }}">基本设置</a>
+				                <a href="{{ action('Backend\SettingController@index') }}">基本设置</a>
 				            </li>
 				            <li>
 				                <a href="{{ route('backend.navigation.index') }}">导航设置</a>

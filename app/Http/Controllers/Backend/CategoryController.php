@@ -4,11 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use Illuminate\Http\Request;
-
 use App\Models\Category;
-
 use App\Http\Requests\CategoryRequest;
 
 use Input, Redirect, Notification;
@@ -28,7 +24,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category =  Category::getCategoryDataModel();
+        $category = Category::getCategoryDataModel();
         return view('backend.category.index', compact('category'));
     }
 
@@ -54,7 +50,7 @@ class CategoryController extends Controller
 
             if (Category::create($request->all())) {
                 Notification::success('添加成功');
-                return redirect()->route('backend.category.index');
+                return redirect()->route('category.index');
             }
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();
