@@ -7,3 +7,4 @@ Homestead.json
 .env
 /Envoy.blade.php
 .idea
+.DS_Store
