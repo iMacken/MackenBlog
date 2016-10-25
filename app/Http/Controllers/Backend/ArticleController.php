@@ -74,7 +74,9 @@ class ArticleController extends Controller
             $article = Auth::user()->articles()->create($createData);
 
             #add the new article into elasticsearch index
-            $article && $article->addToIndex();
+            if (config('elasticquent.elasticsearch')) {
+                $article && $article->addToIndex();
+            }
 
             if ($request->has('tag_list')) {
                 $this->syncTags($article, $request->input('tag_list'));
@@ -88,7 +90,7 @@ class ArticleController extends Controller
             }
 
             return $article;
-            
+
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
         }
@@ -142,7 +144,9 @@ class ArticleController extends Controller
             if ($article->update($updateData))
             {
                 #update the article in elasticsearch index
-                $article->updateIndex();
+                if (config('elasticquent.elasticsearch')) {
+                    $article->updateIndex();
+                }
 
                 $this->syncTags($article, $request->input('tag_list'));
 
@@ -170,7 +174,7 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         $article = Article::find($id);
-        
+
         if (ArticleStatus::deleteArticleStatus($id)) {
 
             if (Article::destroy($id)) {
@@ -224,7 +228,7 @@ class ArticleController extends Controller
      * @param  array   $tags    [description]
      * @return [type]           [description]
      */
-    private function syncTags(Article $article, array $tags) 
+    private function syncTags(Article $article, array $tags)
     {
         #extract the input into separate numeric and string arrays
         $currentTags = array_filter($tags, 'is_numeric'); # ["1", "3", "5"]

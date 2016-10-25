@@ -29,4 +29,15 @@ return array(
 
     'default_index' => 'macken',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Whether To Use Elasticsearch For Search
+    |--------------------------------------------------------------------------
+    |
+    | Elasticsearch Service is off by default
+    |
+    */
+
+    'elasticsearch' => ENV('ELASTICSEARCH', false),
+
 );

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Models;
 
@@ -195,6 +195,7 @@ class Article extends Model
     {
         return self::select(['id','title','slug','content','created_at','category_id'])
                 ->where('title', 'like', "%$keyword%")
+                ->orWhere('content', 'like', "%$keyword%")
                 ->where('category_id', '<>', 0)
                 ->orderBy('id', 'desc')
                 ->paginate(8);
@@ -212,7 +213,7 @@ class Article extends Model
                 'filter' => ['range' => ['category_id' => ['gt' => 0]]],
                 'query'  => [
                     ['multi_match'=>[
-                        'query' => $keyword, 
+                        'query' => $keyword,
                         'fields'=>['title', 'content']]
                     ],
                 ],

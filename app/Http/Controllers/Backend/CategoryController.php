@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers\Backend;
 
@@ -14,7 +14,7 @@ class CategoryController extends Controller
 
     public function __construct()
     {
-        
+
     }
 
     /**
@@ -50,7 +50,7 @@ class CategoryController extends Controller
 
             if (Category::create($request->all())) {
                 Notification::success('添加成功');
-                return redirect()->route('category.index');
+                return redirect()->route('backend.category.index');
             }
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();

@@ -19,10 +19,9 @@ class SearchController extends Controller
         }
 
         #search articles from elasticsearch index
-        $articles = Article::searchIndex($keyword);
-
-        #if failed, directly search with mysql
-        if (!$articles) {
+        if (config('elasticquent.elasticsearch')) {
+            $articles = Article::searchIndex($keyword);
+        } else {#or directly search with mysql
             $articles = Article::getArticleListByKeyword($keyword);
         }
 
