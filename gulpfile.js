@@ -23,6 +23,7 @@ elixir(function(mix) {
     	'plugins/social-share.js/css/share.min.css',
     	'plugins/primer-markdown/build/build.css',
     	'plugins/prism/prism.css',
+        'plugins/nprogress/nprogress.css',
     	'css/app.css',
     	], null, 'public');
 
@@ -31,6 +32,8 @@ elixir(function(mix) {
     	'plugins/social-share.js/js/jquery.share.min.js',
     	'plugins/geopattern/js/geopattern.min.js',
     	'plugins/prism/prism.js',
+        'plugins/pjax/jquery.pjax.js',
+        'plugins/nprogress/nprogress.js',
     	'plugins/scripts.js'
     	], null, 'public');
 

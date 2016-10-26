@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    
+
     @yield('header')
 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/all.css') }}">
 
     @yield('styles')
-    
+
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
