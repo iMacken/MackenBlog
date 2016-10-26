@@ -52,13 +52,12 @@ class ArticleController extends Controller
     public function archive($year, $month)
     {
         $articles = Article::getArchivedArticleList($year, $month, 8);
-        $page = new BootstrapThreePresenter($articles);
 
         $jumbotron = [];
         $jumbotron['title'] = '归档：'.$year.'年 '.$month.'月';
         $jumbotron['desc'] = '陈列在时光里的记忆，拂去轻尘，依旧如新。';
 
-        return view('pages.list', compact('articles', 'page', 'jumbotron'));
+        return view('pages.list', compact('articles', 'jumbotron'));
     }
 
 }
