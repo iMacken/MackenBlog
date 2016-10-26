@@ -1471,8 +1471,5 @@ jQuery(document).ready(function($) {
     $(document).on('pjax:end', function() {
         NProgress.done();
     });
-    $(document).on('submit', '.navbar-form', function(event) {
-      $.pjax.submit(event, 'body')
-    })
 });
 //# sourceMappingURL=all.js.map
