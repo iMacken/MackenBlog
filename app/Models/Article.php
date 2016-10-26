@@ -129,7 +129,6 @@ class Article extends Model
     {
         return self::select(\DB::raw("DATE_FORMAT(`created_at`, '%Y %m') as `archive`, count(*) as `count`"))
                 ->where('category_id', '<>', 0)
-                ->orderBy('id', 'desc')
                 ->groupBy('archive')
                 ->limit($limit)
                 ->get();

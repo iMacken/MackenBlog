@@ -27,7 +27,7 @@ jQuery(document).ready(function($) {
     //PJAX
     // does current browser support PJAX
     if ($.support.pjax) {
-        $.pjax.defaults.timeout = 3000; // time in milliseconds
+        $.pjax.defaults.timeout = 2000; // time in milliseconds
     }
     $(document).pjax('a', 'body');
     $(document).on('pjax:start', function() {
