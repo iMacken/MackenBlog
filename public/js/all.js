@@ -1442,7 +1442,7 @@ $.support.pjax ? enable() : disable()
             var self = this;
 
             $(document).pjax('a:not(a[target="_blank"])', 'body', {
-                timeout: 1600,
+                timeout: 2000,
                 maxCacheLength: 500
             });
             $(document).on('pjax:start', function() {
@@ -1485,6 +1485,9 @@ $.support.pjax ? enable() : disable()
             $('#to-top').click(function(){
                 $('html, body').animate({scrollTop:0}, 'slow');
             });
+
+            //hightlight code
+            Prism.highlightAll();
         }
     }
 
