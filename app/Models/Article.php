@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Auth, Request, Cache;
+use Auth, Request, Cache, DB;
 use Carbon\Carbon;
 use App\Models\Tag;
 use Elasticquent\ElasticquentTrait;
@@ -114,7 +114,7 @@ class Article extends Model
     public static function getArchivedArticleList($year, $month, $limit = 8)
     {
         return self::select(['id','title','slug','content','created_at','category_id'])
-                ->where(\DB::raw("DATE_FORMAT(`created_at`, '%Y %c')"), '=', "$year $month")
+                ->where(DB::raw("DATE_FORMAT(`created_at`, '%Y %c')"), '=', "$year $month")
                 ->where('category_id', '<>', 0)
                 ->latest()
                 ->paginate($limit);
@@ -127,9 +127,10 @@ class Article extends Model
      */
     public static function getArchiveList($limit = 12)
     {
-        return self::select(\DB::raw("DATE_FORMAT(`created_at`, '%Y %m') as `archive`, count(*) as `count`"))
+        return self::select(DB::raw("DATE_FORMAT(`created_at`, '%Y %m') as `archive`, count(*) as `count`"))
                 ->where('category_id', '<>', 0)
                 ->groupBy('archive')
+                ->orderBy('archive', 'desc')
                 ->limit($limit)
                 ->get();
     }

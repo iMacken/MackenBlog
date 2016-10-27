@@ -19,15 +19,13 @@
             @endforeach
         @endif
     </ul>
-    <ul class="nav navbar-nav navbar-right">
-         <form class="navbar-form navbar-right" role="search" action="{{url('search')}}">
-            {{ csrf_field() }}
-            <div class="form-group">
-                <input type="text" id="search-keyword" name="keyword" value="{{ $keyword or '' }}" class="form-control" placeholder="输入关键字 回车搜索">
-            </div>
-            <button type="submit" class="btn btn-default fa fa-search"></button>
-        </form>
-    </ul>
+    <form class="navbar-form nav navbar-nav navbar-right" role="search" action="{{url('search')}}">
+        {{ csrf_field() }}
+        <div class="form-group">
+            <input type="text" id="search-keyword" name="keyword" value="{{ $keyword or '' }}" class="form-control" placeholder="输入关键字 回车搜索">
+        </div>
+        <button type="submit" class="btn btn-default fa fa-search"></button>
+    </form>
   </div>
 </div>
 </nav>
