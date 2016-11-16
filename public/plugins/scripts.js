@@ -6,17 +6,27 @@
         init: function() {
             var self = this;
 
-            $(document).pjax('a:not(a[target="_blank"])', 'body', {
-                timeout: 2000,
-                maxCacheLength: 500
-            });
-            $(document).on('pjax:start', function() {
-                NProgress.start();
-            });
-            $(document).on('pjax:end', function() {
-                NProgress.done();
-                self.blogBootUp();
-            });
+            if ($.support.pjax) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+                $.pjax.defaults.timeout = 2200
+
+                $(document).pjax('a:not(a[target="_blank"])', 'body');
+
+                $(document).on('submit', 'form[data-pjax]', function(event) {
+                    $.pjax.submit(event, 'body')
+                });
+                $(document).on('pjax:start', function() {
+                    NProgress.start();
+                });
+                $(document).on('pjax:end', function() {
+                    NProgress.done();
+                    self.blogBootUp();
+                });
+            }
 
             self.blogBootUp();
         },

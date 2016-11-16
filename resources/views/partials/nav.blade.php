@@ -19,7 +19,7 @@
             @endforeach
         @endif
     </ul>
-    <form class="navbar-form nav navbar-nav navbar-right" role="search" action="{{url('search')}}">
+    <form data-pjax class="navbar-form nav navbar-nav navbar-right" role="search" action="{{url('search')}}">
         {{ csrf_field() }}
         <div class="form-group">
             <input type="text" id="search-keyword" name="keyword" value="{{ $keyword or '' }}" class="form-control" placeholder="输入关键字 回车搜索">
