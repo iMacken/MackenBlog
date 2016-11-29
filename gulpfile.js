@@ -15,7 +15,7 @@ require('laravel-elixir-vue');
 
 elixir(function(mix) {
 
-    mix.sass('app.scss');
+    mix.sass('app.scss')
 
     mix.styles([
     	'plugins/bootstrap/themes/bootstrap-paper.min.css',
@@ -25,7 +25,7 @@ elixir(function(mix) {
     	'plugins/prism/prism.css',
         'plugins/nprogress/nprogress.css',
     	'css/app.css',
-    	], null, 'public');
+    	], null, 'public')
 
     mix.scripts([
     	'plugins/bootstrap/js/bootstrap.min.js',
@@ -35,7 +35,7 @@ elixir(function(mix) {
         'plugins/pjax/jquery.pjax.js',
         'plugins/nprogress/nprogress.js',
     	'plugins/scripts.js'
-    	], null, 'public');
+    	], null, 'public')
 
-	mix.webpack('app.js');
+	mix.webpack('app.js')
 });

@@ -4,31 +4,33 @@
 
         //use pjax to load blog
         init: function() {
-            var self = this;
 
-            if ($.support.pjax) {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                    }
-                });
-                $.pjax.defaults.timeout = 2200
+            var self = this
 
-                $(document).pjax('a:not(a[target="_blank"])', 'body');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            })
 
-                $(document).on('submit', 'form[data-pjax]', function(event) {
-                    $.pjax.submit(event, 'body')
-                });
-                $(document).on('pjax:start', function() {
-                    NProgress.start();
-                });
-                $(document).on('pjax:end', function() {
-                    NProgress.done();
-                    self.blogBootUp();
-                });
-            }
+            $.pjax.defaults.timeout = 2200
 
-            self.blogBootUp();
+            $(document).pjax('a:not(a[target="_blank"])', 'body')
+
+            $(document).on('submit', 'form[data-pjax]', function(event) {
+                $.pjax.submit(event, 'body')
+            })
+
+            $(document).on('pjax:start', function() {
+                NProgress.start()
+            })
+
+            $(document).on('pjax:end', function() {
+                NProgress.done()
+                self.blogBootUp()
+            })
+
+            self.blogBootUp()
         },
 
         /*
@@ -38,39 +40,39 @@
         blogBootUp: function() {
             //geopattern
             $('.geopattern').each(function(){
-                $(this).geopattern($(this).data('pattern-id'));
-            });
+                $(this).geopattern($(this).data('pattern-id'))
+            })
 
             //search
             $('.navbar-form').submit(function (event) {
-                event.preventDefault();
-                var keyword = $('#search-keyword').val();
+                event.preventDefault()
+                var keyword = $('#search-keyword').val()
                 if ($.trim(keyword) == '') {
-                    return false;
+                    return false
                 }
 
-                var host = $('.navbar-form').attr('action');
-                window.location.href = host + '/' + keyword;
-            });
+                var host = $('.navbar-form').attr('action')
+                window.location.href = host + '/' + keyword
+            })
 
             //share bar
-            $('.share-bar').share();
+            $('.share-bar').share()
 
             //back to top
             $('#to-top').click(function(){
-                $('html, body').animate({scrollTop:0}, 'slow');
-            });
+                $('html, body').animate({scrollTop:0}, 'slow')
+            })
 
             //hightlight code
-            Prism.highlightAll();
+            Prism.highlightAll()
         }
     }
 
-    window.MackenBlog = MackenBlog;
+    window.MackenBlog = MackenBlog
 
-})(jQuery);
+})(jQuery)
 
 $(document).ready(function()
 {
-    MackenBlog.init();
-});
+    MackenBlog.init()
+})
