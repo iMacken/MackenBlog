@@ -15,10 +15,10 @@
 
             $.pjax.defaults.timeout = 2200
 
-            $(document).pjax('a:not(a[target="_blank"])', 'body')
+            $(document).pjax('[data-pjax] a, a[data-pjax]', '#pjax-container')
 
             $(document).on('submit', 'form[data-pjax]', function(event) {
-                $.pjax.submit(event, 'body')
+                $.pjax.submit(event, '#pjax-container')
             })
 
             $(document).on('pjax:start', function() {
