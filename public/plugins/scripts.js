@@ -17,9 +17,9 @@
 
             $(document).pjax('[data-pjax] a, a[data-pjax]', '#pjax-container')
 
-            $(document).on('submit', 'form[data-pjax]', function(event) {
-                $.pjax.submit(event, '#pjax-container')
-            })
+            // $(document).on('submit', 'form[data-pjax]', function(event) {
+            //     $.pjax.submit(event, '#pjax-container')
+            // })
 
             $(document).on('pjax:start', function() {
                 NProgress.start()
