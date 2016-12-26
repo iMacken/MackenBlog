@@ -21,7 +21,7 @@
     <![endif]-->
 </head>
 
-<body id="pjax-container">
+<body id="pjax-container" data-pjax>
 
 @include('partials.nav')
 
