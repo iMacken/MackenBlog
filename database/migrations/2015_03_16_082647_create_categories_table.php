@@ -12,18 +12,12 @@ class CreateCategoriesTable extends Migration {
 	 */
 	public function up()
 	{
-		//
-        Schema::create('categories',function(Blueprint $table){
-
-            $table->increments('id');
-            $table->string('name')->unique();
-            $table->string('slug')->unique();
-            $table->integer('parent_id')->default(0);
-            $table->string('seo_title');
-            $table->string('seo_key');
-            $table->string('seo_desc');
-            $table->timestamps();
-        });
+      Schema::create('categories',function(Blueprint $table) {
+          $table->increments('id');
+          $table->string('name')->unique();
+          $table->string('slug')->unique();
+          $table->timestamps();
+      });
 	}
 
 	/**

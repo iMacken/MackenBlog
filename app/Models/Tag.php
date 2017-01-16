@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Models;
 
@@ -16,14 +16,14 @@ class Tag extends Model
     public $timestamps = true;
 
     static $tags;
-    
+
     /**
      * get the articles associated with the given tag
      * @return [type] [description]
      */
     public function articles()
     {
-        return $this->belongsToMany('App\Models\Article');
+        return $this->morphedByMany(Article::class, 'taggable');
     }
 
     /**
@@ -38,7 +38,7 @@ class Tag extends Model
         } else {
             return self::where('name', '=', $id)->first();
         }
-        
+
     }
 
     /**

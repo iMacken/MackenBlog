@@ -27,20 +27,17 @@ class Article extends Model
     protected $fillable = [
         'category_id',
         'user_id',
+        'last_user_id',
         'title',
+        'subtitle',
         'slug',
         'content',
-        'pic'
+        'image',
+        'description',
+        'is_draft',
+        'is_original',
+        'published_at',
     ];
-
-    /**
-     * get the status of the current article
-     * @return [type] [description]
-     */
-    public function status()
-    {
-        return $this->hasOne('App\Models\ArticleStatus', 'article_id');
-    }
 
     /**
      * get the user of the current article
@@ -48,7 +45,7 @@ class Article extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\Models\User', 'user_id', 'id');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -57,7 +54,7 @@ class Article extends Model
      */
     public function category()
     {
-        return $this->belongsTo('App\Models\Category', 'category_id', 'id');
+        return $this->belongsTo(Category::class);
     }
 
     /**
@@ -66,7 +63,7 @@ class Article extends Model
      */
     public function tags()
     {
-        return $this->belongsToMany('App\Models\Tag')->withTimestamps();
+        return $this->morphToMany(Tag::class, 'taggable')->withTimestamps();
     }
 
     /**
