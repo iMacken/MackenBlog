@@ -1,55 +1,46 @@
-@extends('backend.app')
+@extends('article.base')
 
-@section('content')
-
-    {!! Notification::showAll() !!}
-        <div class="panel panel-default">
-            
-            <div class="panel-heading">文章管理</div>
-
-            <div class="panel-body">
-                <a class="btn btn-success" href="{{ URL::route('backend.article.create')}}">创建文章</a>
-
-                <table class="table table-hover table-top">
-                    <tr>
-                        <th>#</th>
-                        <th>标题</th>
-                        <th>所属分类</th>
-                        <th>作者</th>
-                        <th>浏览次数</th>
-                        <th>创建时间</th>
-                        <th class="text-right">操作</th>
-                    </tr>
-
-                    @foreach($articles as $k => $v)
-                    <tr>
-                        <th>{{ $v->id }}</th>
-                        <td>{{ $v->title }}</td>
-                        <td>{!! $v->category ? $v->category->name : '单页' !!}</td>
-                        <td>{{ $v->user->name }}</td>
-                        <td>{{ $v->status['views'] }}</td>
-                        <td>{{ $v->created_at }}</td>
-                        <td class="text-right">
-                            <a href="{{ route('backend.article.edit', ['id'=>$v->id]) }}" class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                修改
-                            </a>
-                            &nbsp;
-                            <a href="javascript:void(0)" data-target="{{ url("backend/article/{$v->id}") }}" class="btn btn-danger btn-sm op-delete">
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                删除
-                            </a>
-                        </td>
-                    </tr>
-                    @endforeach
-                </table>
-
-            </div>
-            {!! $articles->render() !!}
-        </div>
-
-        @include('backend.partials.delete')
-
+@section('header')
+    <title>{{ $jumbotron['title'] }}{{ $jumbotron['title'] === '麦肯先生' ? '' : ' - '.setting_config('title','') }}</title>
+    <meta name="keywords" content=",{{ setting_config('seo_key') }}" />
+    <meta name="description" content=",{{ setting_config('seo_desc') }}">
 @endsection
 
+@section('jumbotron-title')
+    {{ $jumbotron['title'] }}
+@endsection
 
+@section('jumbotron-desc')
+    {{ $jumbotron['desc'] }}
+@endsection
+
+@section('left')
+    <ol class="article-list">
+        @if(!empty($articles))
+            @foreach($articles as $article)
+                <li class="article-list-item">
+                    <h3 class="article-list-name">
+                        <a href="{{ route('article.show',array('id'=>$article->slug ? $article->slug : $article->id)) }}" title="{{ $article->title }}">
+                            {{ $article->title }}
+                        </a>
+                    </h3>
+                    <p class="article-list-description">
+                        {{ str_cut(convert_markdown($article->content),80) }}
+                    </p>
+                    <p class="article-list-meta">
+                        <span class="fa fa-calendar"></span>{{ $article->published_at->diffForHumans() }} &nbsp;&nbsp;<span class="fa fa-folder-o"></span><a href="/category/{{ $article->category->slug }}">{{ $article->category->name }}</a>
+                        &nbsp;&nbsp;<span class="fa fa-tags"></span>
+                        @foreach($article->tags as $tag)
+                            <a href="/tag/{{ $tag->name }}">{{ $tag->name }}</a>&nbsp;
+                        @endforeach
+                    </p>
+                </li>
+            @endforeach
+        @endif
+    </ol>
+    <div class="pagination text-align">
+        <nav>
+            {!! $articles->links() !!}
+        </nav>
+    </div>
+@endsection

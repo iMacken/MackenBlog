@@ -27,8 +27,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 $factory->define(App\Category::class, function (Faker\Generator $faker) {
     return [
         'name'      => $faker->name,
-        'parent_id' => 0,
-        'path'      => $faker->url
+        'slug'      => str_slug($faker->name),
     ];
 });
 
@@ -36,6 +35,7 @@ $factory->define(App\Article::class, function (Faker\Generator $faker) {
     $userId = \App\User::pluck('id')->random();
     $categoryId = \App\Category::pluck('id')->random();
     $title = $faker->sentence(mt_rand(3,10));
+
     return [
         'user_id'      => $userId,
         'category_id'  => $categoryId,
@@ -57,19 +57,11 @@ $factory->define(App\Tag::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Article::class, function (Faker\Generator $faker) {
-    $tagId = \App\Tag::pluck('id')->random();
-    $ArticleId = \App\Article::pluck('id')->random();
-    return [
-        'tag_id'      => $tagId,
-        'article_id'  => $articleId,
-    ];
-});
-
 $factory->define(App\Link::class, function (Faker\Generator $faker) {
     return [
         'name'  => $faker->name,
-        'link'  => $faker->url,
+        'url'  => $faker->url,
+        'sort' => $faker->numberBetween(1, 100),
         'image' => $faker->imageUrl()
     ];
 });

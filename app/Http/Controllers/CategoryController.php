@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Article;
-use App\Models\Category;
+use App\Article;
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\BootstrapThreePresenter;
 

@@ -1,161 +1,267 @@
 <?php
 
-namespace App;
+namespace App\Repositories;
 
+use App\Article;
 use App\Scopes\DraftScope;
-use App\Services\Markdowner;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Article extends Model
+class ArticleRepository
 {
-    use SoftDeletes;
-
     use Repository;
 
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['published_at', 'created_at', 'deleted_at'];
+    protected $model;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'user_id',
-        'last_user_id',
-        'category_id',
-        'title',
-        'subtitle',
-        'slug',
-        'page_image',
-        'content',
-        'meta_description',
-        'is_draft',
-        'is_original',
-        'published_at',
-    ];
+    protected $visitor;
 
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    public static function boot()
+    public function __construct(Article $article, VisitorRepository $visitor)
     {
-        parent::boot();
+        $this->model = $article;
 
-        static::addGlobalScope(new DraftScope());
+        $this->visitor = $visitor;
     }
 
     /**
-     * Get the user for the blog article.
+     * Get the page of articles without draft scope.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @param  integer $number
+     * @param  string  $sort
+     * @param  string  $sortColumn
+     * @return collection
      */
-    public function user()
+    public function page($number = 10, $sort = 'desc', $sortColumn = 'created_at')
     {
-        return $this->belongsTo(User::class);
+        $this->model = $this->checkAuthScope();
+
+        return $this->model->orderBy($sortColumn, $sort)->paginate($number);
     }
 
     /**
-     * Get the category for the blog article.
+     * Get the article record without draft scope.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @param  int $id
+     * @return mixed
      */
-    public function category()
+    public function getById($id)
     {
-        return $this->belongsTo(Category::class);
+        return $this->model->withoutGlobalScope(DraftScope::class)->findOrFail($id);
     }
 
     /**
-     * Get the tags for the blog article.
+     * Update the article record without draft scope.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\morphToMany
+     * @param  int $id
+     * @param  array $input
+     * @return boolean
      */
-    public function tags()
+    public function update($id, $input)
     {
-        return $this->morphToMany(Tag::class, 'taggable');
+        $this->model = $this->model->withoutGlobalScope(DraftScope::class)->findOrFail($id);
+
+        return $this->save($this->model, $input);
     }
 
     /**
-     * Get the comments for the discussion.
+     * Get the article by article's slug.
+     * The Admin can preview the article if the article is drafted.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     * @param $slug
+     * @return object
      */
-    public function comments()
+    public function getBySlug($slug)
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        $this->model = $this->checkAuthScope();
+
+        $article = $this->model->where('slug', $slug)->firstOrFail();
+
+        $article->increment('view_count');
+
+        $this->visitor->log($article->id);
+
+        return $article;
     }
 
     /**
-     * Get the config for the configuration.
+     * Check the auth and the model without global scope when user is the admin.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     * @return Model
      */
-    public function config()
+    public function checkAuthScope()
     {
-        return $this->morphMany(Configuration::class, 'configuration');
+        if (auth()->check() && auth()->user()->is_admin) {
+            $this->model = $this->model->withoutGlobalScope(DraftScope::class);
+        }
+
+        return $this->model;
     }
 
     /**
-     * Get the created at attribute.
+     * Sync the tags for the article.
      *
-     * @param $value
-     * @return string
+     * @param  array $tags
+     * @return Paginate
      */
-    public function getCreatedAtAttribute($value)
+    public function syncTag(array $tags)
     {
-        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->diffForHumans();
+        $this->model->tags()->sync($tags);
     }
 
     /**
-     * Set the title and the readable slug.
+     * Search the articles by the keyword.
      *
-     * @param string $value
+     * @param  string $key
+     * @return collection
      */
-    public function setTitleAttribute($value)
+    public function search($key)
     {
-        $this->attributes['title'] = $value;
+        $key = trim($key);
 
-        if (!config('services.youdao.key') || !config('services.youdao.from')) {
-            $this->setUniqueSlug($value, '');
+        return $this->model
+                    ->where('title', 'like', "%{$key}%")
+                    ->orderBy('published_at', 'desc')
+                    ->get();
+
+    }
+
+    /**
+     * Delete the draft article.
+     *
+     * @param int $id
+     * @return boolean
+     */
+    public function destroy($id)
+    {
+        return $this->getById($id)->delete();
+    }
+
+    /**
+     * get a list of tag ids associated with the current article
+     * @return [array]
+     */
+    public function getTagListAttribute()
+    {
+        return $this->tags->pluck('id')->all();
+    }
+
+    /**
+     * 范围查询
+     * @param $query
+     * @param $userId
+     * @return mixed
+     */
+    public function scopeUserId($query, $userId)
+    {
+        return $query->where('user_id', '=', $userId);
+    }
+
+    /**
+     * get article model
+     * @param int $id
+     * @return mixed
+     */
+    public function getArticleModel($id)
+    {
+        if (is_numeric($id)) {
+            return $this->model->findOrFail($id);
         } else {
-            $this->attributes['slug'] = translug($value);
+            return $this->model->where('slug', '=', $id)->first();
         }
     }
 
-    /**
-     * Set the unique slug.
-     *
-     * @param $value
-     * @param $extra
-     */
-    public function setUniqueSlug($value, $extra) {
-        $slug = str_slug($value.'-'.$extra);
-        if (static::whereSlug($slug)->exists()) {
-            $this->setUniqueSlug($slug, $extra+1);
-            return;
-        }
-        $this->attributes['slug'] = $slug;
-    }
 
     /**
-     * Set the content attribute.
-     *
-     * @param $value
+     * get archived articles
+     * @param int $year
+     * @param int $month
+     * @param int $limit
+     * @return mixed
      */
-    public function setContentAttribute($value)
+    public function getArchivedArticleList($year, $month, $limit = 8)
     {
-        $data = [
-            'raw'  => $value,
-            'html' => (new Markdowner)->convertMarkdownToHtml($value)
-        ];
-
-        $this->attributes['content'] = json_encode($data);
+        return $this->model->select(['id','title','slug','content','created_at','category_id'])
+                ->where(DB::raw("DATE_FORMAT(`created_at`, '%Y %c')"), '=', "$year $month")
+                ->where('category_id', '<>', 0)
+                ->latest()
+                ->paginate($limit);
     }
+
+    /**
+     * get archive list of articles
+     * @param  integer $limit [description]
+     * @return [type]         [description]
+     */
+    public function getArchiveList($limit = 12)
+    {
+        return $this->model->select(DB::raw("DATE_FORMAT(`created_at`, '%Y %m') as `archive`, count(*) as `count`"))
+                ->where('category_id', '<>', 0)
+                ->groupBy('archive')
+                ->orderBy('archive', 'desc')
+                ->limit($limit)
+                ->get();
+    }
+
+    /**
+     * get latest articles
+     * @param int $pageNum
+     * @return mixed
+     */
+    public function getLatestArticleList($pageNum = 10)
+    {
+        return $this->model->select(['id','title','slug','content','created_at','category_id'])
+                ->where('category_id', '<>', 0)
+                ->orderBy('id', 'desc')
+                ->paginate($pageNum);
+    }
+
+    /**
+     * get articles of the given category
+     * @param $categoryId
+     * @param int $limit
+     * @return mixed
+     */
+    public function getArticleListByCategoryId($categoryId, $limit = 10)
+    {
+        return $this->model->select(['id','title','slug','content','created_at','category_id'])
+                ->where('category_id', $categoryId)
+                ->orderBy('id', 'desc')
+                ->paginate($limit);
+    }
+
+    /**
+     * get hot articles
+     * @param int $limit
+     * @return mixed
+     */
+    public function getHotArticleList($limit = 3)
+    {
+        $select = [
+            'articles.id',
+            'articles.pic',
+            'articles.title',
+            'articles.slug',
+            'articles.created_at',
+            'article_status.views',
+        ];
+        return $this->model->select($select)
+                ->leftJoin('article_status', 'articles.id', '=', 'article_status.article_id')
+                ->where('category_id', '<>', 0)
+                ->orderBy('article_status.views', 'desc')
+                ->limit($limit)
+                ->get();
+    }
+
+    /**
+     * get articles associated with the given keyword
+     * @param $keyword
+     * @return mixed
+     */
+    public function getArticleListByKeyword($keyword)
+    {
+        return $this->model->select(['id','title','slug','content','created_at','category_id'])
+                ->where('title', 'like', "%$keyword%")
+                ->orWhere('content', 'like', "%$keyword%")
+                ->where('category_id', '<>', 0)
+                ->orderBy('id', 'desc')
+                ->paginate(8);
+    }
+
 }

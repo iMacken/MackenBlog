@@ -4,8 +4,8 @@ use Illuminate\Pagination\BootstrapThreePresenter;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Article;
-use App\Models\Tag;
+use App\Article;
+use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 

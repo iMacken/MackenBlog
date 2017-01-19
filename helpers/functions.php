@@ -70,11 +70,11 @@ if (!function_exists('setting_config')) {
      * get settings of the website
      * @param  [type] $field   [description]
      * @param  string $default [description]
-     * @return [type]          [description]
+     * @return string          [description]
      */
     function setting_config($field, $default = '')
     {
-        $system = app('App\Models\Setting');
+        $system = app('App\Setting');
         $val = $system->getSetting($field);
         return !empty($val) ? $val : $default;
     }
