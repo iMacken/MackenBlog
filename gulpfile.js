@@ -1,7 +1,5 @@
 const elixir = require('laravel-elixir');
 
-require('laravel-elixir-vue');
-
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -13,29 +11,14 @@ require('laravel-elixir-vue');
  |
  */
 
-elixir(function(mix) {
+elixir(mix => {
 
-    mix.sass('app.scss')
+	mix.sass('app.scss')
+		.webpack('app.js');
 
-    mix.styles([
-    	'plugins/bootstrap/themes/bootstrap-paper.min.css',
-    	'plugins/font-awesome/css/font-awesome.min.css',
-    	'plugins/social-share.js/css/share.min.css',
-    	'plugins/primer-markdown/build/build.css',
-    	'plugins/prism/prism.css',
-        'plugins/nprogress/nprogress.css',
-    	'css/app.css',
-    	], null, 'public')
+	mix.version([
+		'public/css/app.css',
+		'public/js/app.js',
+	]);
 
-    mix.scripts([
-    	'plugins/bootstrap/js/bootstrap.min.js',
-    	'plugins/social-share.js/js/jquery.share.min.js',
-    	'plugins/geopattern/js/geopattern.min.js',
-    	'plugins/prism/prism.js',
-        'plugins/pjax/jquery.pjax.js',
-        'plugins/nprogress/nprogress.js',
-    	'plugins/scripts.js'
-    	], null, 'public')
-
-	mix.webpack('app.js')
 });

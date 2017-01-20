@@ -1,0 +1,80 @@
+.alert {
+  border: none;
+  color: #fff;
+
+  &-success {
+    background-color: $brand-success;
+  }
+
+  &-info {
+    background-color: $brand-info;
+  }
+
+  &-warning {
+    background-color: $brand-warning;
+  }
+
+  &-danger {
+    background-color: $brand-danger;
+  }
+
+  a:not(.close):not(.btn),
+  .alert-link {
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .close {
+    color: #fff;
+  }
+}
+
+.badge {
+  padding: 4px 6px 4px;
+}
+
+.progress {
+  position: relative;
+  z-index: 1;
+  height: 6px;
+  border-radius: 0;
+
+  @include box-shadow(none);
+
+  &-bar {
+    @include box-shadow(none);
+
+    &:last-child {
+      border-radius: 0 3px 3px 0;
+    }
+
+    &:last-child {
+      &:before {
+        display: block;
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        right: 0;
+        z-index: -1;
+        background-color: lighten($progress-bar-bg, 35%);
+      }
+    }
+
+    &-success:last-child.progress-bar:before {
+      background-color: lighten($brand-success, 35%);
+    }
+
+    &-info:last-child.progress-bar:before {
+      background-color: lighten($brand-info, 45%);
+    }
+    &-warning:last-child.progress-bar:before {
+      background-color: lighten($brand-warning, 35%);
+    }
+
+    &-danger:last-child.progress-bar:before {
+      background-color: lighten($brand-danger, 25%);
+    }
+  }
+}

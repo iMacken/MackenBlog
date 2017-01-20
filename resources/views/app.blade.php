@@ -7,11 +7,9 @@
 
     @yield('header')
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/all.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ elixir('css/app.css') }}">
 
     @yield('styles')
-
-    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -42,7 +40,7 @@
 
 @yield('scripts')
 
-<script src="{{ asset('js/all.js') }}"></script>
+<script src="{{ elixir('js/app.js') }}"></script>
 
 </body>
 </html>

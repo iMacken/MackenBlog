@@ -1,0 +1,7 @@
+.table-hover {
+  > tbody > tr,
+  > tbody > tr > th,
+  > tbody > tr > td {
+    @include transition(all 0.2s);
+  }
+}

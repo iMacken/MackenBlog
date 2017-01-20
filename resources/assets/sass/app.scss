@@ -1,4 +1,16 @@
-@import "resources/assets/sass/components/variables.scss";
-@import "resources/assets/sass/components/bootstrap-reset.scss";
-@import "resources/assets/sass/components/article-list.scss";
-@import "resources/assets/sass/components/responsive.scss";
+// Public
+@import "common";
+
+// Share.js
+@import "node_modules/social-share.js/src/css/share";
+
+// Select 2
+@import "../vendor/select2/css/select2.min";
+
+// Markdown
+@import "markdown";
+@import "../vendor/highlight/highlight.min";
+
+@import "themes/paper/index";
+
+@import "responsive";

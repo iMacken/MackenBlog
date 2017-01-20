@@ -1,0 +1,71 @@
+.close {
+  font-size: 34px;
+  font-weight: 300;
+  line-height: 24px;
+  opacity: 0.6;
+  @include transition(all 0.2s);
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.list-group {
+
+  &-item {
+    padding: 15px;
+  }
+
+  &-item-text {
+    color: $gray-light;
+  }
+}
+
+.well {
+  border-radius: 0;
+  @include box-shadow(none);
+}
+
+.panel {
+  border: none;
+  box-shadow: none;
+  border-radius: 2px;
+  @include box-shadow(0 1px 4px rgba(0,0,0,.3));
+
+  &-heading {
+    border-bottom: none;
+  }
+
+  &-footer {
+    border-top: none;
+  }
+}
+
+.popover {
+  border: none;
+  @include box-shadow(0 1px 4px rgba(0,0,0,.3));
+}
+
+.carousel {
+  &-caption {
+    h1, h2, h3, h4, h5, h6 {
+      color: inherit;
+    }
+  }
+}
+
+.container {
+  width: auto;
+  max-width: 1020px !important;
+  padding-left: 20px;
+  padding-right: 20px
+}
+
+.panel-primary > .panel-heading {
+  background-color: $mk-white;
+  border-color: $mk-white;
+  color: $mk-dark;
+  border-bottom: 2px solid $mk-blue;
+}
+
+

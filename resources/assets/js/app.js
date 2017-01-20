@@ -1,20 +1,23 @@
+window._ = require('lodash');
+window.$ = window.jQuery = require('jquery');
+require('bootstrap-sass');
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * include Vue and Vue Resource. This gives a great starting point for
- * building robust, powerful web applications using Vue and Laravel.
- */
+window.swal = require('sweetalert');
+window.marked = require('marked');
+window.hljs = require('../vendor/highlight/highlight.min.js');
 
-require('./bootstrap');
+window.toastr = require('toastr/build/toastr.min.js');
+window.toastr.options = {
+    positionClass: "toast-bottom-right",
+    showDuration: "300",
+    hideDuration: "1000",
+    timeOut: "5000",
+    extendedTimeOut: "1000",
+    showEasing: "swing",
+    hideEasing: "linear",
+    showMethod: "fadeIn",
+    hideMethod: "fadeOut"
+};
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the body of the page. From here, you may begin adding components to
- * the application, or feel free to tweak this setup for your needs.
- */
-
-Vue.component('example', require('./components/Example.vue'));
-
-const app = new Vue({
-    el: 'body'
-});
+require('social-share.js/dist/js/social-share.min.js');
+require('../vendor/select2/js/select2.min.js');
