@@ -1,4 +1,4 @@
-<nav id="site-header" class="navbar navbar-default">
+<nav id="site-header" class="navbar">
 <div class="container">
   <div class="navbar-header">
     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-main">
@@ -22,9 +22,8 @@
     <form data-pjax class="navbar-form nav navbar-nav navbar-right" role="search" action="{{ url('search') }}">
         {{ csrf_field() }}
         <div class="form-group">
-            <input type="text" id="search-keyword" name="keyword" value="{{ $keyword or '' }}" class="form-control" placeholder="输入关键字 回车搜索">
+            <input type="text" id="search-keyword" name="keyword" value="{{ $keyword or '' }}" class="form-control" placeholder="搜索">
         </div>
-        <button type="submit" class="btn btn-default fa fa-search"></button>
     </form>
       @if (Auth::check())
           <li class="dropdown">

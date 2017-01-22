@@ -27,7 +27,7 @@ class TagController extends Controller
      *
      * @return Response
      */
-    public function list()
+    public function index()
     {
         $tags = Tag::orderBy('id', 'desc')->paginate(10);
         return view('tag.list', compact('tags'));
@@ -46,13 +46,14 @@ class TagController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param  TagRequest $request
      * @return Response
      */
-    public function store(TagRequest $result)
+    public function store(TagRequest $request)
     {
         try {
 
-            if (Tag::create($result->all())) {
+            if (Tag::create($request->all())) {
                 Notification::success('添加成功');
                 return redirect()->route('tag.index');
             }
@@ -67,7 +68,7 @@ class TagController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  Tag $tag
      * @return Response
      */
     public function edit(Tag $tag)
@@ -78,14 +79,15 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @param  TagRequest $request
      * @param  int $id
      * @return Response
      */
-    public function update(TagRequest $result, $id)
+    public function update(TagRequest $request, $id)
     {
         try {
 
-            if (Tag::where('id', $id)->update(['name'=>$result->input('name')])) {
+            if (Tag::where('id', $id)->update(['name'=>$request->input('name')])) {
 
                 Notification::success('更新成功');
 

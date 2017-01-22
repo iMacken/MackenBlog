@@ -21,8 +21,11 @@ Route::post('auth/github/register', 'Auth\AuthController@store');
 
 Route::get('/', 'ArticleController@index');
 
-Route::get('category/{category}', 'CategoryController@show');
-Route::get('tag/{tag}', 'TagController@show');
+Route::resource('user','UserController');
+Route::resource('category','CategoryController');
+Route::resource('tag','TagController');
+Route::resource('navigation','NavigationController');
+Route::resource('link','LinkController');
 Route::get('search/{keyword}', 'SearchController@show');
 
 Route::resource('article', 'ArticleController');

@@ -34,6 +34,7 @@
                             <a href="/tag/{{ $tag->name }}">{{ $tag->name }}</a>&nbsp;
                         @endforeach
                     </p>
+
                 </li>
             @endforeach
         @endif

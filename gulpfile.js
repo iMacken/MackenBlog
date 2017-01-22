@@ -21,4 +21,8 @@ elixir(mix => {
 		'public/js/app.js',
 	]);
 
+	mix.browserSync({
+		proxy: 'macken.dev'
+	});
+
 });

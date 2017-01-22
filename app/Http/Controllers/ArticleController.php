@@ -12,11 +12,13 @@ use Parsedown;
 class ArticleController extends Controller
 {
 
-    protected $article;
+    protected $articleRepository;
 
-    public function __construct(ArticleRepository $article)
+    public function __construct(ArticleRepository $articleRepository)
     {
-        $this->article = $article;
+        $this->articleRepository = $articleRepository;
+
+	    $this->middleware(['auth', 'admin'], ['except' => ['show', 'index']]);
     }
 
     /**
@@ -39,12 +41,12 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  string $slug
      * @return Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        $article = $this->article->getArticleModel($id);
+        $article = $this->article->getBySlug($slug);
         return view('article.show', compact('article'));
     }
 
@@ -79,17 +81,6 @@ class ArticleController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function list()
-    {
-        $articles = Article::latest()->paginate(10);
-        return view('article.list', compact('articles'));
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return Response
@@ -105,6 +96,7 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param  ArticleRequest $request
      * @return Response
      */
     public function store(ArticleRequest $request)
@@ -145,21 +137,30 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  Article $article
      * @return Response
      */
     public function edit(Article $article)
     {
-        $tags = Tag::pluck('name', 'id');
-        $categoryTree = Category::getCategoryTree();
-        $categoryTree[0] = '单页';
-        return view('article.edit', compact('article', 'categoryTree', 'tags'));
+//        $tags = Tag::pluck('name', 'id');
+
+        $this->checkPolicy('update', $article);
+
+	    $categories = $this->categoryRepository->getAll();
+	    $tags       = $this->tagRepository->getAll();
+
+        return view('article.edit', [
+            'article' => $article,
+            'categories' => $categories,
+            'tags' => $tags,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  ArticleRequest $request
+     * @param  Article $article
      * @return Response
      */
     public function update(ArticleRequest $request, Article $article)
@@ -235,7 +236,6 @@ class ArticleController extends Controller
     /**
      * delete all images of the given article
      * @param  Article $article [description]
-     * @return [type]           [description]
      */
     private function deleteArticleImages(Article $article)
     {
@@ -261,7 +261,6 @@ class ArticleController extends Controller
      * sync tags of the given article
      * @param  Article $article [description]
      * @param  array   $tags    [description]
-     * @return [type]           [description]
      */
     private function syncTags(Article $article, array $tags)
     {

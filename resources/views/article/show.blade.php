@@ -25,10 +25,10 @@
 @endsection
 
 @section('jumbotron-meta')
-    <span class="fa fa-calendar"></span> {{ $article->published_at->diffForHumans() }}
-    &nbsp;&nbsp;<span class="fa fa-folder-o"></span>
+    <span class="ion-calendar"></span> {{ $article->published_at->diffForHumans() }}
+    &nbsp;&nbsp;<span class="ion-ios-folder"></span>
     <a href="/category/{{ $article->category->slug }}">{{ $article->category->name }}</a>
-    &nbsp;&nbsp;<span class="fa fa-tags"></span>
+    &nbsp;&nbsp;<span class="ion-ios-pricetag"></span>
     @if ($article->tags)
         @foreach($article->tags as $tag)
             <a href="/tag/{{ $tag->name }}">{{ $tag->name }}</a>&nbsp;
@@ -50,6 +50,9 @@
             在转载或修改本文后发布的文章中注明原文来源信息的前提下，允许进行转载该篇文章或经修改后发布且不用告知本文作者。
         </p>
     </article>
+    <p>
+       <span class="pull-right"><a class="operation op-edit ion-edit" href="{{ route('article.edit', ['id' => $article->id]) }}"></a><a class="operation op-delete ion-trash-a" href="javascript:void(0)"></a></span>
+    </p>
     <div class="share">
         <div class="share-bar"></div>
     </div>
@@ -59,6 +62,7 @@
         <br>
         注：如果长时间无法加载，请针对 disq.us | disquscdn.com | disqus.com 启用代理。
     </div>
+
 <script>
 
 /**
@@ -79,4 +83,8 @@ var disqus_config = function () {
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
+@endsection
+
+@section('scripts')
+    @include('partials.delete')
 @endsection

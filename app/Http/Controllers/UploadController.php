@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -12,6 +12,7 @@ class UploadController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param Request $request
      * @return Response
      */
     public function store(Request $request)

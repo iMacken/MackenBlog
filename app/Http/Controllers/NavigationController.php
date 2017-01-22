@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Backend;
+<?php namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -20,10 +20,10 @@ class NavigationController extends Controller
      *
      * @return Response
      */
-    public function list()
+    public function index()
     {
         $list = Navigation::getNavigationAll();
-        return view('navigation.list', compact('list'));
+        return view('navigation.index', compact('list'));
     }
 
     /**
@@ -37,6 +37,7 @@ class NavigationController extends Controller
     }
 
     /**
+     * @param NavigationRequest $request
      * Store a newly created resource in storage.
      *
      * @return Response
@@ -47,7 +48,7 @@ class NavigationController extends Controller
         try {
             if (Navigation::create($request->all())) {
                 Notification::success('添加成功');
-                return redirect()->route('navigation.list');
+                return redirect()->route('navigation.index');
             }
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();
@@ -82,6 +83,7 @@ class NavigationController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @param  NavigationRequest $request
      * @param  int $id
      * @return Response
      */
@@ -92,7 +94,7 @@ class NavigationController extends Controller
             if (Navigation::find($id)->update($request->all())) {
                 Notification::success('修改成功');
             }
-            return redirect()->route('navigation.list');
+            return redirect()->route('navigation.index');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();
         }
@@ -116,7 +118,7 @@ class NavigationController extends Controller
         }
 
 
-        return redirect()->route('navigation.list');
+        return redirect()->route('navigation.index');
     }
 
 }

@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Backend;
+<?php namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -17,10 +17,10 @@ class SettingController extends Controller
     }
 
 
-    public function list()
+    public function index()
     {
 
-        return view('setting.list', ['setting' => Setting::all()]);
+        return view('setting.index', ['setting' => Setting::all()]);
     }
 
     public function save()

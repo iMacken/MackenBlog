@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -26,9 +26,9 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function list()
+    public function index()
     {
-        return view('user.list', ['users' => User::orderBy('id', 'desc')->paginate(10)]);
+        return view('user.index', ['users' => User::orderBy('id', 'desc')->paginate(10)]);
     }
 
     /**
@@ -44,6 +44,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -78,7 +79,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  User $user
      * @return Response
      */
     public function edit(User $user)
@@ -90,6 +91,7 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  int $id
+     * @param  Request $request
      * @return Response
      */
     public function update($id, Request $request)
@@ -128,7 +130,7 @@ class UserController extends Controller
         if (User::destroy($id)) {
             Notification::success('删除成功');
         }
-        return redirect()->route('user.list');
+        return redirect()->route('user.index');
     }
 
 }

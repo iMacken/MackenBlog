@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers;
 
 use App\Link;
 
@@ -19,9 +19,9 @@ class LinkController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function list()
+    public function index()
     {
-        return view('link.list', [
+        return view('link.index', [
             'list' => Link::all(),
         ]);
     }
@@ -39,7 +39,7 @@ class LinkController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\LinkRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(LinkRequest $request)
@@ -47,7 +47,7 @@ class LinkController extends Controller
         try {
             if (Link::create($request->all())) {
                 Notification::success('添加成功');
-                return redirect()->route('link.list');
+                return redirect()->route('link.index');
             }
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();
@@ -71,7 +71,7 @@ class LinkController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\LinkRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -82,7 +82,7 @@ class LinkController extends Controller
             if (Link::find($id)->update($request->all())) {
                 Notification::success('修改成功');
             }
-            return redirect()->route('link.list');
+            return redirect()->route('link.index');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();
         }
@@ -104,6 +104,6 @@ class LinkController extends Controller
         }
 
 
-        return redirect()->route('link.list');
+        return redirect()->route('link.index');
     }
 }

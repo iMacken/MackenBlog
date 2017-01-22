@@ -39,10 +39,10 @@ class CategoryController extends Controller
      *
      * @return Response
      */
-    public function list()
+    public function index()
     {
         $category = Category::getCategoryDataModel();
-        return view('category.list', compact('category'));
+        return view('category.index', compact('category'));
     }
 
     /**
@@ -59,6 +59,7 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param CategoryRequest $request
      * @return Response
      */
     public function store(CategoryRequest $request)
@@ -67,7 +68,7 @@ class CategoryController extends Controller
 
             if (Category::create($request->all())) {
                 Notification::success('添加成功');
-                return redirect()->route('category.list');
+                return redirect()->route('category.index');
             }
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();
@@ -75,20 +76,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  Category $category
      * @return Response
      */
     public function edit(Category $category)
@@ -99,7 +89,7 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  Category $category
      * @return Response
      */
     public function update(Category $category, CategoryRequest $request)
@@ -108,7 +98,7 @@ class CategoryController extends Controller
             $updateData = $request->all();
             if ($category->update($updateData)) {
                 Notification::success('更新成功');
-                return redirect()->route('category.list');
+                return redirect()->route('category.index');
             }
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();
@@ -127,11 +117,11 @@ class CategoryController extends Controller
         $son = Category::where('parent_id', '=', $id)->get()->toArray();
         if (!empty($son)) {
             Notification::error('请先删除下级分类');
-            return redirect()->route('category.list');
+            return redirect()->route('category.index');
         }
         if (Category::destroy($id)) {
             Notification::success('删除成功');
-            return redirect()->route('category.list');
+            return redirect()->route('category.index');
         }
     }
 }
