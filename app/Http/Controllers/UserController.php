@@ -96,6 +96,8 @@ class UserController extends Controller
      */
     public function update($id, Request $request)
     {
+        $this->authorize('update', $request);
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255',

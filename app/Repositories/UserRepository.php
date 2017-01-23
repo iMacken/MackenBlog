@@ -91,17 +91,6 @@ class UserRepository
 	}
 
 	/**
-	 * Get user by the user github id.
-	 *
-	 * @param  int $githubId
-	 * @return mixed
-	 */
-	public function getByGithubId($githubId)
-	{
-		return $this->model->where('github_id', $githubId)->first();
-	}
-
-	/**
 	 * Change the user password.
 	 *
 	 * @param  App\User $user
@@ -139,4 +128,5 @@ class UserRepository
 	{
 		return $this->getById($id)->delete();
 	}
+
 }

@@ -7,10 +7,10 @@
 	<title>{{ setting_config('title','') }}</title>
 
 	<link href="{{ asset('css/bootstrap-paper.min.css') }}" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="{{ asset('css/backend.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/css') }}">
 	<link href="{{ asset('plugins/bootstrap-sweetalert/dist/sweetalert.css') }}" rel="stylesheet">
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/backend.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/js') }}"></script>
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -43,7 +43,6 @@
 	</footer>
 
 	<!-- Scripts -->
-	<script src="{{ asset('plugins/bootstrap/js/bootstrap.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('plugins/bootstrap-sweetalert/dist/sweetalert.min.js') }}"></script>
+	<script src="{{ elixir('') }}"></script>
 </body>
 </html>

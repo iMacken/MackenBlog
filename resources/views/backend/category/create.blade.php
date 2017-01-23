@@ -1,4 +1,4 @@
-@extends('backend.app')
+@extends('app')
 
 @section('content')
         
@@ -17,9 +17,9 @@
         @endif
 
         <div class="panel-body">
-            {!! Form::open(['route' => 'backend.category.store', 'method' => 'POST']) !!}
+            {!! Form::open(['route' => 'category.store', 'method' => 'POST']) !!}
             
-            @include('backend.category.form', ['submitBtnTxt'=>'完成'])
+            @include('category.form', ['submitBtnTxt'=>'完成'])
                 
             {!! Form::close() !!}
         </div>

@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Http\Repositories;
+namespace App\Repositories;
 
 use App\Category;
-use App\Article;
-use Illuminate\Http\Request;
 
 /**
  * Class CategoryRepository
  * @package App\Http\Repository
  */
-class CategoryRepository extends Repository
+class CategoryRepository
 {
+	use Repository;
 	/**
 	 * @return mixed
 	 */
 	public function getAll()
 	{
-		return Category::withCount('posts')->get();
+		return Category::withCount('articles')->get();
 	}
 
 }

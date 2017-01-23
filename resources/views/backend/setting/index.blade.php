@@ -1,4 +1,4 @@
-@extends('backend.app')
+@extends('app')
 
 @section('content')
     <div class="panel panel-default">
@@ -6,7 +6,7 @@
         <div class="panel-heading">基本设置</div>
 
         <div class="panel-body">
-            {!! Form::open(['route' => 'backend.setting.save', 'method' => 'POST']) !!}
+            {!! Form::open(['route' => 'setting.save', 'method' => 'POST']) !!}
                 <table class="table table-hover table-top">
                     <tr>
                         <th>#</th>

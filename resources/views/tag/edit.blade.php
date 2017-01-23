@@ -1,4 +1,4 @@
-@extends('backend.app')
+@extends('app')
 
 @section('content')
 <div class="col-md-10">
@@ -17,9 +17,9 @@
         @endif
 
         <div class="panel-body">
-            {!! Form::model($tag, ['route' => ['backend.tag.update', $tag->id], 'method' => 'PATCH']) !!}
+            {!! Form::model($tag, ['route' => ['tag.update', $tag->id], 'method' => 'PATCH']) !!}
             
-            @include('backend.tag.form', ['submitBtnTxt'=>'更新'])
+            @include('tag.form', ['submitBtnTxt'=>'更新'])
 
             {!! Form::close() !!}
         </div>

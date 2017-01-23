@@ -1,4 +1,4 @@
-@extends('backend.app')
+@extends('app')
 
 @section('content')
 
@@ -16,9 +16,9 @@
         @endif
 
         <div class="panel-body">
-            {!! Form::model($category, ['route' => ['backend.category.update', $category->id], 'method' => 'PATCH']) !!}
+            {!! Form::model($category, ['route' => ['category.update', $category->id], 'method' => 'PATCH']) !!}
             
-            @include('backend.category.form', ['submitBtnTxt'=>'更新'])
+            @include('category.form', ['submitBtnTxt'=>'更新'])
             
             {!! Form::close() !!}
         </div>

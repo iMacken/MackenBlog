@@ -1,4 +1,4 @@
-@extends('backend.app')
+@extends('app')
 
 @section('content')
 
@@ -7,7 +7,7 @@
             <div class="panel-heading">分类管理</div>
 
             <div class="panel-body">
-                <a class="btn btn-success" href="{{ URL::route('backend.category.create')}}">创建分类</a>
+                <a class="btn btn-success" href="{{ URL::route('category.create')}}">创建分类</a>
 
                 <table class="table table-hover table-top">
                     <tr>
@@ -23,7 +23,7 @@
                         <td>{{ $v->html}} {{ $v->name }}</td>
                         <td>{{ $v->created_at }}</td>
                         <td class="text-right">
-                            <a href="{{ route('backend.category.edit', ['id'=>$v->id]) }}" class="btn btn-primary btn-sm">
+                            <a href="{{ route('category.edit', ['id'=>$v->id]) }}" class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 修改
                             </a>
@@ -40,6 +40,6 @@
             </div>
         </div>
 
-        @include('backend.partials.delete')
+        @include('partials.delete')
    
 @endsection

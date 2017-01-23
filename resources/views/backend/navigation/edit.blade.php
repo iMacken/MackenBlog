@@ -1,4 +1,4 @@
-@extends('backend.app')
+@extends('app')
 
 @section('content')
 
@@ -17,9 +17,9 @@
         @endif
 
         <div class="panel-body">
-            {!! Form::model($navigation, ['route' => ['backend.navigation.update', $navigation->id], 'method' => 'PATCH']) !!}
+            {!! Form::model($navigation, ['route' => ['navigation.update', $navigation->id], 'method' => 'PATCH']) !!}
 
-            @include('backend.navigation.form', ['submitBtnTxt'=>'更新'])
+            @include('navigation.form', ['submitBtnTxt'=>'更新'])
 
             {!! Form::close() !!}
         </div>

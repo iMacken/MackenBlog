@@ -1,4 +1,4 @@
-@extends('backend.app')
+@extends('app')
 
 @section('content')
     <div class="panel panel-default">
@@ -6,7 +6,7 @@
         <div class="panel-heading">导航设置</div>
 
         <div class="panel-body">
-            <a class="btn btn-success" href="{{ URL::route('backend.navigation.create')}}">添加导航</a>
+            <a class="btn btn-success" href="{{ URL::route('navigation.create')}}">添加导航</a>
 
             <table class="table table-hover table-top">
                 <tr>
@@ -24,7 +24,7 @@
                     <td>{{ $v->url }}</td>
                     <td>{{ $v->created_at }}</td>
                     <td class="text-right">
-                        <a href="{{ route('backend.navigation.edit', ['id'=>$v->id]) }}" class="btn btn-primary btn-sm">
+                        <a href="{{ route('navigation.edit', ['id'=>$v->id]) }}" class="btn btn-primary btn-sm">
                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                             修改
                         </a>
@@ -42,5 +42,5 @@
         </div>
     </div>
 
-    @include('backend.partials.delete')
+    @include('partials.delete')
 @endsection

@@ -1,4 +1,4 @@
-@extends('backend.app')
+@extends('app')
 
 @section('content')
 <div class="col-md-10">
@@ -16,9 +16,9 @@
         @endif
 
         <div class="panel-body">
-            {!! Form::open(['route' => 'backend.tag.store', 'method' => 'POST']) !!}
+            {!! Form::open(['route' => 'tag.store', 'method' => 'POST']) !!}
 
-            @include('backend.tag.form', ['submitBtnTxt'=>'完成'])
+            @include('tag.form', ['submitBtnTxt'=>'完成'])
             
             {!! Form::close() !!}
         </div>

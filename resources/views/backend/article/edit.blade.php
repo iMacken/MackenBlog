@@ -1,4 +1,4 @@
-@extends('backend.app')
+@extends('app')
 
 @section('content')
 
@@ -17,9 +17,9 @@
                 @endif
 
                 <div class="panel-body">
-                    {!! Form::model($article, ['route' => ['backend.article.update', $article->id], 'method' => 'PATCH','enctype'=>'multipart/form-data']) !!}
+                    {!! Form::model($article, ['route' => ['article.update', $article->id], 'method' => 'PATCH','enctype'=>'multipart/form-data']) !!}
 
-                    @include('backend.article.form', ['submitBtnTxt'=>'更新'])
+                    @include('article.form', ['submitBtnTxt'=>'更新'])
                         
                     {!! Form::close() !!}
                 </div>

@@ -2,21 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\CategoryRepository;
 use App\Repositories\ArticleRepository;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Repositories\TagRepository;
 
 use App\Article;
-
-use Parsedown;
 
 class ArticleController extends Controller
 {
 
     protected $articleRepository;
+    protected $categoryRepository;
+    protected $tagRepository;
 
-    public function __construct(ArticleRepository $articleRepository)
+    public function __construct(ArticleRepository $articleRepository,
+                                CategoryRepository $categoryRepository,
+                                TagRepository $tagRepository)
     {
-        $this->articleRepository = $articleRepository;
+        $this->articleRepository  = $articleRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->tagRepository      = $tagRepository;
 
 	    $this->middleware(['auth', 'admin'], ['except' => ['show', 'index']]);
     }
@@ -143,8 +148,6 @@ class ArticleController extends Controller
     public function edit(Article $article)
     {
 //        $tags = Tag::pluck('name', 'id');
-
-        $this->checkPolicy('update', $article);
 
 	    $categories = $this->categoryRepository->getAll();
 	    $tags       = $this->tagRepository->getAll();

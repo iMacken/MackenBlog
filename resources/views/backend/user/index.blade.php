@@ -1,4 +1,4 @@
-@extends('backend.app')
+@extends('app')
 
 @section('content')
     <div class="col-md-12">
@@ -7,7 +7,7 @@
             <div class="panel-heading">用户管理</div>
 
             <div class="panel-body">
-                <a class="btn btn-success" href="{{ URL::route('backend.user.create')}}">创建用户</a>
+                <a class="btn btn-success" href="{{ URL::route('user.create')}}">创建用户</a>
 
                 <table class="table table-hover table-top">
                     <tr>
@@ -25,7 +25,7 @@
                         <td>{{ $v->email }}</td>
                         <td>{{ $v->created_at->format('Y-m-d H:i') }}</td>
                         <td class="text-right">
-                            <a href="{{ route('backend.user.edit', ['id'=>$v->id]) }}" class="btn btn-primary btn-sm">
+                            <a href="{{ route('user.edit', ['id'=>$v->id]) }}" class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 修改
                             </a>
@@ -45,5 +45,5 @@
         </div>
     </div>
 
-    @include('backend.partials.delete')
+    @include('partials.delete')
 @endsection
