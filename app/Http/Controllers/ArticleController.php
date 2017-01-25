@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Repositories\CategoryRepository;
 use App\Repositories\ArticleRepository;
 use App\Repositories\TagRepository;
+use App\Http\Requests\ArticleRequest;
 
 use App\Article;
+use DB;
 
 class ArticleController extends Controller
 {
@@ -33,7 +35,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-	    $articles = $this->article->page(config('blog.article.number'), config('blog.article.sort'), config('blog.article.sortColumn'));
+	    $articles = $this->articleRepository->page(config('blog.article.number'), config('blog.article.sort'), config('blog.article.sortColumn'));
 
         $jumbotron = [];
         $jumbotron['title'] = config('blog.default_owner');
@@ -51,7 +53,7 @@ class ArticleController extends Controller
      */
     public function show($slug)
     {
-        $article = $this->article->getBySlug($slug);
+        $article = $this->articleRepository->getBySlug($slug);
         return view('article.show', compact('article'));
     }
 
@@ -147,56 +149,37 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-//        $tags = Tag::pluck('name', 'id');
+	    $categories = $this->categoryRepository->getAll()->mapWithKeys(function ($item) {
+		    return [$item['id'] => $item['name']];
+	    });
+	    $tags       = $this->tagRepository->getAll()->mapWithKeys(function ($item) {
+		    return [$item['id'] => $item['name']];
+	    });
 
-	    $categories = $this->categoryRepository->getAll();
-	    $tags       = $this->tagRepository->getAll();
-
-        return view('article.edit', [
-            'article' => $article,
-            'categories' => $categories,
-            'tags' => $tags,
-        ]);
+        return view('article.edit', compact('article', 'categories', 'tags'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  ArticleRequest $request
-     * @param  Article $article
+     * @param  int $id
      * @return Response
      */
-    public function update(ArticleRequest $request, Article $article)
+    public function update(ArticleRequest $request, $id)
     {
-        try {
+	    $this->articleRepository->update($id, $request->all());
 
-            $updateData = $request->all();
+	    #update the article in elasticsearch index
+	    if (config('elasticquent.elasticsearch')) {
+		    $this->model->updateIndex();
+	    }
 
-            if (Request::hasFile('pic'))
-            {
-                $pic = upload_file('pic', $request);
-                !$pic && Notification::error('文章配图上传失败');
-                $updateData['pic'] = $pic;
-                $article->pic && $oldPic = public_path() . $article->pic;
-            }
+	    $this->syncTags($article, $request->input('tag_list'));
 
-            if ($article->update($updateData))
-            {
-                #update the article in elasticsearch index
-                if (config('elasticquent.elasticsearch')) {
-                    $article->updateIndex();
-                }
+	    Notification::success('更新成功');
 
-                $this->syncTags($article, $request->input('tag_list'));
-
-                Notification::success('更新成功');
-
-                if (Request::hasFile('pic') && file_exists($oldPic)) {
-                    @unlink($oldPic);
-                }
-
-                return redirect()->route('article.index');
-            }
+	    return redirect()->route('article.show', ['id' => $article->id]);
         } catch (\Exception $e) {
 
             return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();
@@ -222,7 +205,6 @@ class ArticleController extends Controller
                 $article->removeFromIndex();
 
                 Notification::success('删除成功');
-                $this->deleteArticleImages($article);
             } else {
                 Notification::error('主数据删除失败');
             }
@@ -234,30 +216,6 @@ class ArticleController extends Controller
         }
 
         return redirect()->route('article.index');
-    }
-
-    /**
-     * delete all images of the given article
-     * @param  Article $article [description]
-     */
-    private function deleteArticleImages(Article $article)
-    {
-        $publicPath = public_path();
-
-        if (!empty($article->pic)) {
-            $fileName = $publicPath . $article->pic;
-            if (file_exists($fileName)) {
-                @unlink($fileName);
-            }
-        }
-
-        preg_match_all('/\((.*?(png|jpg|jpeg|gif))\)/i', $article->content, $matches);
-        $images = $matches[1];
-        if (!empty($images)) {
-            foreach ($images as $v) {
-                @unlink($publicPath . $v);
-            }
-        }
     }
 
     /**

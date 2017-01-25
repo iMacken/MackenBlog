@@ -1,3 +1,7 @@
+@section('styles')
+    <link href="//cdn.bootcss.com/select2/4.0.3/css/select2.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/simplemde/1.11.2/simplemde.min.css" rel="stylesheet">
+@endsection
 
 <div class="form-group">
 	{!!  Form::label('title', '标题') !!}
@@ -33,7 +37,7 @@
 
 <div class="form-group">
 	{!! Form::label('image', '配图') !!}
-	{!! Form::file('image', null, ['class' => 'form-control']) !!}
+    {!!  Form::text('image', null, ['class' => 'form-control']) !!}
 	@if ($errors->has('image'))
 		<span class="help-block">
             <strong>{{ $errors->first('image') }}</strong>
@@ -43,9 +47,7 @@
 
 <div class="form-group">
 	{!!  Form::label('content', '内容') !!}
-	<div id="editormd">
-	{!!  Form::textarea('content', null, ['class' => 'form-control']) !!}
-	</div>
+	{!!  Form::textarea('content', null, ['class' => 'form-control', 'id' => 'editor']) !!}
 	@if ($errors->has('content'))
 		<span class="help-block">
             <strong>{{ $errors->first('content') }}</strong>
@@ -68,51 +70,21 @@
 </div>
 
 @section('scripts')
+    <script src="//cdn.bootcss.com/select2/4.0.3/js/select2.min.js"></script>
+    <script src="//cdn.bootcss.com/simplemde/1.11.2/simplemde.min.js"></script>
 <script>
 	$('#tag_list').select2({
 		placeholder: '选择一个标签',
-		tags: true,
-		ajax: {
-            type: 'post',
-			dataType: 'json',
-			url: '{{ route("api.tag.search") }}',
-			delay: 200,
-			data: function (params, page) {
-				return {
-					keyword :params.term
-				}
-			},
-			processResults: function(res, page) {
-                return {
-                    results: $.map(res.data, function (item) {
-                        return {
-                            text: item.name,
-                            id: item.id
-                        }
-                    })
-                };
-            }
-		},
-		cache: true,
-		minimumInputLength: 1,  //至少输入多少个字符后才会去调用ajax  
-        maximumInputLength: 20, //最多能输入多少个字符后才会去调用ajax  
-        minimumResultsForSearch: 1,   
-	});	
+		tags: true
+	});
 
-	{{--$(function() {--}}
-        {{--var editor = editormd("editormd", {--}}
-            {{--emoji: true,--}}
-            {{--flowChart : true,--}}
-            {{--tex  : true,--}}
-            {{--htmlDecode : true,--}}
-            {{--htmlDecode : "style,script,iframe,sub,sup",--}}
-            {{--imageUpload : true,--}}
-            {{--imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],--}}
-            {{--imageUploadToken : '{{ csrf_token() }}',--}}
-            {{--imageUploadURL : "{{ url(config('editor.uploadUrl')) }}",--}}
-            {{--height  : 420,--}}
-            {{--path : "{{ asset('plugins/editor.md/lib') }}/" // Autoload modules mode, codemirror, marked... dependents libs path--}}
-        {{--});--}}
-    {{--});--}}
+    new SimpleMDE({
+        element: document.getElementById("editor"),
+        placeholder: 'Please input the article content.',
+        autoDownloadFontAwesome: true
+    })
+
+
+
 </script>
 @endsection

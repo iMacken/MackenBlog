@@ -20,4 +20,3 @@ window.toastr.options = {
 };
 
 require('social-share.js/dist/js/social-share.min.js');
-require('../vendor/select2/js/select2.min.js');

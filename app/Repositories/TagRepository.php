@@ -16,4 +16,9 @@ class TagRepository
 		return Tag::withCount('articles')->get();
 	}
 
+	public function search($keyword, $num)
+	{
+		return Tag::where('name', 'like', '%' . $keyword. '%')->paginate($num);
+	}
+
 }

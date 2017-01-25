@@ -16,6 +16,6 @@ class TagController extends Controller
 	public function search(Request $request)
 	{
 		$keyword = $request->input('keyword');
-		return Tag::where('name', 'like', '%' . $keyword. '%')->paginate(10);
+		return $this->tagRepository->search($keyword, 10);
 	}
 }

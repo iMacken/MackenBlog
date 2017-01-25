@@ -14376,8 +14376,7 @@ fieldset[disabled] .btn-default:focus {
 }
 
 .panel {
-  border: none;
-  box-shadow: none;
+  margin-top: 2em;
 }
 
 .panel-heading {
@@ -14389,7 +14388,6 @@ fieldset[disabled] .btn-default:focus {
 }
 
 .popover {
-  border: none;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -14982,7 +14980,11 @@ input[type="checkbox"]:disabled:checked:after,
   transition: all 0.2s;
 }
 
-#tag-cloud a {
+#tags {
+  border: none;
+}
+
+#tags a {
   border: 1px solid #eee;
   padding: 3px 7px;
   color: #2196f3;
@@ -14994,22 +14996,22 @@ input[type="checkbox"]:disabled:checked:after,
   transition: all 0.2s ease;
 }
 
-#tag-cloud {
-  padding: 1px 10px;
-}
-
-#tag-cloud a:hover {
+#tags a:hover {
   color: #ffffff !important;
   background: #f4645f;
   border: 1px solid #f4645f;
   text-decoration: none;
 }
 
-#archive-list a:hover {
+#archives {
+  border: none;
+}
+
+#archives a:hover {
   color: #2196f3;
 }
 
-#archive-list .list-group-item {
+#archives .list-group-item {
   border: 1px solid #eee;
   border-radius: 3em;
   height: 2.4em;
@@ -15020,43 +15022,19 @@ input[type="checkbox"]:disabled:checked:after,
   transition: all 0.2s;
 }
 
-#archive-list .list-group-item:hover {
+#archives .list-group-item:hover {
   border-color: #f4645f;
 }
 
-#archive-list .badge {
+#archives .badge {
   margin-top: 0.75em;
 }
 
-#site-footer {
-  position: relative;
-  margin-top: 40px;
-  padding: 40px 0;
-  font-size: 0.8em;
-  line-height: 1.5;
-  border-top: 1px solid #eee;
+#links {
+  border: none;
 }
 
-#site-footer .fa-arrow-circle-up {
-  color: #f4645f;
-}
-
-#site-footer .fa-github {
-  position: absolute;
-  top: 35px;
-  left: 50%;
-  height: 34px;
-  width: 34px;
-  margin-left: -17px;
-  font-size: 34px;
-  color: #ccc;
-}
-
-#site-footer .fa-github:hover {
-  color: #888;
-}
-
-#friend-links li {
+#links li {
   float: left;
   height: 2em;
   line-height: 2em;
@@ -15065,7 +15043,11 @@ input[type="checkbox"]:disabled:checked:after,
   list-style: none;
 }
 
-#hot-article-list li {
+#hot-articles {
+  border: none;
+}
+
+#hot-articles li {
   font-size: 0.9em;
   padding: 10px 15px;
 }
