@@ -32,7 +32,7 @@ return [
         'title'       => 'Nothing is impossible.',
         'description' => 'https://pigjian.com',
         'number'      => 10,
-        'sort'        => 'desc',
+        'sortOrder'        => 'desc',
         'sortColumn'  => 'published_at',
     ],
 

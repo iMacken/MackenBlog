@@ -2,18 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Repositories\Contracts\Repository;
 use App\Services\IP;
-use App\Visitor;
 
-class VisitorRepository
+class VisitorRepository extends Repository
 {
-    use Repository;
-
-    /**
-     * @var $model
-     */
-    protected $model;
-
     /**
      * @var IP
      */
@@ -21,14 +14,15 @@ class VisitorRepository
 
     /**
      * VisitorRepository constructor.
-     * @param Visitor $visitor
      * @param IP $ip
      */
-    public function __construct(Visitor $visitor, IP $ip)
+    public function __construct(IP $ip)
     {
-        $this->model = $visitor->with('article');
-
         $this->ip = $ip;
+    }
+
+    public function model() {
+        return 'App\Visitor';
     }
 
     /**
@@ -55,30 +49,4 @@ class VisitorRepository
             $this->model->firstOrCreate( $data );
         }
     }
-
-    /**
-     * Check the record by article id and ip if it exists.
-     *
-     * @param $article_id
-     * @param $ip
-     * @return bool
-     */
-    public function hasArticleIp($article_id, $ip)
-    {
-        return $this->model
-                    ->where('article_id', $article_id)
-                    ->where('ip', $ip)
-                    ->count() ? true : false;
-    }
-
-    /**
-     * Get all the clicks.
-     *
-     * @return int
-     */
-    public function getAllClicks()
-    {
-        return $this->model->sum('clicks');
-    }
-
 }

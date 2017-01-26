@@ -2,21 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Category;
+use App\Repositories\Contracts\Repository;
 
 /**
  * Class CategoryRepository
- * @package App\Http\Repository
  */
-class CategoryRepository
+class CategoryRepository extends Repository
 {
-	use Repository;
-	/**
-	 * @return mixed
-	 */
-	public function getAll()
-	{
-		return Category::withCount('articles')->get();
+	public function model() {
+		return 'App\Category';
 	}
-
 }

@@ -4,69 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "783db460906866f36f7916636a8114eb",
-    "content-hash": "57dba19fb6fbc365345675dfe844ae84",
+    "hash": "ad83bd8b62958875c36aaffdf71a4ef3",
+    "content-hash": "2dbe1c9e69e9bb68a5adad87d4fc6a71",
     "packages": [
-        {
-            "name": "bosnadev/repositories",
-            "version": "0.13",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bosnadev/repository.git",
-                "reference": "3a289a137e27ac6b795852a0d72c509a51b70a26"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/bosnadev/repository/3a289a137e27ac6b795852a0d72c509a51b70a26.zip",
-                "reference": "3a289a137e27ac6b795852a0d72c509a51b70a26",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/console": "^5.2",
-                "illuminate/database": "^5.2",
-                "illuminate/filesystem": "^5.2",
-                "illuminate/support": "^5.2",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "dev-master@dev"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Bosnadev\\": "src/Bosnadev/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Maarten Paauw",
-                    "email": "maartenpaauw@gmail.com"
-                },
-                {
-                    "name": "Mirza Pasic",
-                    "email": "mirza@bosnadev.com"
-                }
-            ],
-            "description": "Laravel Repositories",
-            "homepage": "https://bosnadev.com",
-            "keywords": [
-                "database",
-                "eloquent",
-                "laravel",
-                "repositories",
-                "repository"
-            ],
-            "time": "2016-08-19 13:21:55"
-        },
         {
             "name": "caouecs/laravel-lang",
             "version": "3.0.20",
@@ -4187,16 +4127,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.7.6",
+            "version": "5.7.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "caf8141b89691498d91aaac6c82e9cd5f685ae86"
+                "reference": "e52551bbc229c6cee26c7a00deef80c2108c5b15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/sebastianbergmann/phpunit/caf8141b89691498d91aaac6c82e9cd5f685ae86.zip",
-                "reference": "caf8141b89691498d91aaac6c82e9cd5f685ae86",
+                "url": "https://packagist.phpcomposer.com/files/sebastianbergmann/phpunit/e52551bbc229c6cee26c7a00deef80c2108c5b15.zip",
+                "reference": "e52551bbc229c6cee26c7a00deef80c2108c5b15",
                 "shasum": ""
             },
             "require": {
@@ -4265,7 +4205,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-01-22 08:39:59"
+            "time": "2017-01-25 19:19:41"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

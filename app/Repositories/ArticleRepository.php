@@ -2,16 +2,10 @@
 
 namespace App\Repositories;
 
-use Bosnadev\Repositories\Eloquent\Repository;
+use App\Repositories\Contracts\Repository;
 
 class ArticleRepository extends Repository
 {
-    protected $visitor;
-
-    public function __construct(VisitorRepository $visitor)
-    {
-        $this->visitor = $visitor;
-    }
 
 	public function model() {
 		return 'App\Article';
@@ -46,15 +40,6 @@ class ArticleRepository extends Repository
     }
 
     /**
-     * get a list of tag ids associated with the current article
-     * @return [array]
-     */
-    public function getTagListAttribute()
-    {
-        return $this->tags->pluck('id')->all();
-    }
-
-    /**
      * get archive list of articles
      * @param  integer $limit [description]
      * @return [type]         [description]
@@ -76,7 +61,7 @@ class ArticleRepository extends Repository
      */
     public function getLatestArticleList($pageNum = 10)
     {
-        return $this->model->select(['id','title','slug','content','created_at','category_id'])
+        return $this->model->select(['id','title','slug','content','created_at','category_id','published_at'])
                 ->where('category_id', '<>', 0)
                 ->orderBy('id', 'desc')
                 ->paginate($pageNum);

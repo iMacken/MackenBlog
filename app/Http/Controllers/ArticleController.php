@@ -35,7 +35,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-	    $articles = $this->articleRepository->page(config('blog.article.number'), config('blog.article.sort'), config('blog.article.sortColumn'));
+	    $articles = $this->articleRepository->paginate(config('blog.article.number'), config('blog.article.sortColumn'), config('blog.article.sortOrder'));
 
         $jumbotron = [];
         $jumbotron['title'] = config('blog.default_owner');
@@ -53,7 +53,7 @@ class ArticleController extends Controller
      */
     public function show($slug)
     {
-        $article = $this->articleRepository->getBySlug($slug);
+        $article = $this->articleRepository->findBy('slug', $slug);
         return view('article.show', compact('article'));
     }
 
@@ -76,7 +76,6 @@ class ArticleController extends Controller
 
     /**
      * index all articles with elasticsearch
-     * @return [type] [description]
      */
     public function indexAll()
     {
@@ -149,12 +148,8 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-	    $categories = $this->categoryRepository->getAll()->mapWithKeys(function ($item) {
-		    return [$item['id'] => $item['name']];
-	    });
-	    $tags       = $this->tagRepository->getAll()->mapWithKeys(function ($item) {
-		    return [$item['id'] => $item['name']];
-	    });
+	    $categories = $this->categoryRepository->pluck('name', 'id');
+	    $tags       = $this->tagRepository->pluck('name', 'id');
 
         return view('article.edit', compact('article', 'categories', 'tags'));
     }
@@ -168,23 +163,19 @@ class ArticleController extends Controller
      */
     public function update(ArticleRequest $request, $id)
     {
-	    $this->articleRepository->update($id, $request->all());
-
+	    $this->articleRepository->update($request->all(), $id);
 	    #update the article in elasticsearch index
 	    if (config('elasticquent.elasticsearch')) {
 		    $this->model->updateIndex();
 	    }
+	    return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();
 
 	    $this->syncTags($article, $request->input('tag_list'));
 
 	    Notification::success('更新成功');
 
 	    return redirect()->route('article.show', ['id' => $article->id]);
-        } catch (\Exception $e) {
 
-            return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();
-
-        }
     }
 
     /**

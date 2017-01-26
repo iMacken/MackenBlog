@@ -17,8 +17,7 @@
         "jacobbennett/pjax": "~1.0",
         "yzalis/identicon": "^1.1",
         "laravel/socialite": "^2.0",
-        "league/html-to-markdown": "^4.2",
-        "bosnadev/repositories": "0.*"
+        "league/html-to-markdown": "^4.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
