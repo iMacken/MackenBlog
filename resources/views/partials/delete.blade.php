@@ -1,6 +1,7 @@
-{!! Form::open(['method' => 'DELETE','id'=>'form-delete']) !!}
-	
-{!! Form::close() !!}
+<form action="" id="form-delete">
+    {{ csrf_field() }}
+    {{ method_field('delete') }}
+</form>
 
 <script type="text/javascript">
 	$(document).on('click', '.op-delete', function(event){

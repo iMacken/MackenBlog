@@ -3,70 +3,56 @@
     <link href="//cdn.bootcss.com/simplemde/1.11.2/simplemde.min.css" rel="stylesheet">
 @endsection
 
+{{ csrf_field() }}
+
 <div class="form-group">
-	{!!  Form::label('title', '标题') !!}
-	{!!  Form::text('title', null, ['class' => 'form-control']) !!}
-	@if ($errors->has('title'))
-		<span class="help-block">
-            <strong>{{ $errors->first('title') }}</strong>
-        </span>
-	@endif
+	<label for="title" class="control-label">标题</label>
+	<input type="text" name="title" id="title" class="form-control" value="{{ isset($article) ? $article->title : old('title') }}" autofocus>
 </div>
 
 <div class="form-group">
-	{!!  Form::label('slug', '别名') !!}
-	{!!  Form::text('slug', null, ['class' => 'form-control']) !!}
-	@if($errors->has('slug'))
-		<span class="help-block">
-            <strong>{{ $errors->first('slug') }}</strong>
-			<p>只允许包含小写英文字母、数字以及"-"</p>
-        </span>
-	@endif
-
+	<label for="slug" class="control-label">别名</label>
+	<input type="text" name="slug" id="slug" class="form-control" value="{{ isset($article) ? $article->slug : old('slug') }}" autofocus>
 </div>
 
 <div class="form-group">
-	{!! Form::label('category_id', '所属分类') !!}
-	{!! Form::select('category_id', $categories , null , ['class' => 'form-control']) !!}
-	@if ($errors->has('category_id'))
-		<span class="help-block">
-            <strong>{{ $errors->first('category_id') }}</strong>
-        </span>
-	@endif
+	<label for="category_id" class="control-label">分类</label>
+	<select name="category_id" class="form-control">
+		@foreach($categories as $id => $name)
+			@if((isset($article) ? $article->category_id : old('category_id', -1)) == $id)
+				<option value="{{ $id }}" selected>{{ $name }}</option>
+			@else
+				<option value="{{ $id }}">{{ $name }}</option>
+			@endif
+		@endforeach
+	</select>
 </div>
 
 <div class="form-group">
-	{!! Form::label('image', '配图') !!}
-    {!!  Form::text('image', null, ['class' => 'form-control']) !!}
-	@if ($errors->has('image'))
-		<span class="help-block">
-            <strong>{{ $errors->first('image') }}</strong>
-        </span>
-	@endif
+	<label for="image" class="control-label">配图</label>
+	<input type="text" name="image" id="image" class="form-control" value="{{ isset($article) ? $article->image : old('image') }}" autofocus>
 </div>
 
 <div class="form-group">
-	{!!  Form::label('content', '内容') !!}
-	{!!  Form::textarea('content', null, ['class' => 'form-control', 'id' => 'editor']) !!}
-	@if ($errors->has('content'))
-		<span class="help-block">
-            <strong>{{ $errors->first('content') }}</strong>
-        </span>
-	@endif
+	<label for="editor" class="control-label">正文</label>
+	<textarea type="text" name="content" id="editor" class="form-control" autofocus>{{ isset($article) ? $article->content : old('content') }}</textarea>
 </div>
 
 <div class="form-group">
-	{!!  Form::label('tag_list', '标签') !!}
-	{!!  Form::select('tag_list[]', $tags, null, ['id' => 'tag_list', 'class' => 'form-control', 'multiple']) !!}
-	@if ($errors->has('tag_list'))
-		<span class="help-block">
-            <strong>{{ $errors->first('tag_list') }}</strong>
-        </span>
-	@endif
+	<label for="tag_list" class="control-label">标签</label>
+    <select id="tag_list" name="tag_list[]" class="form-control" multiple>
+        @foreach($tags as $id => $name)
+            @if(isset($post) && $article->tags->contains($id))
+                <option value="{{ $id }}" selected>{{ $name }}</option>
+            @else
+                <option value="{{ $id }}">{{ $name }}</option>
+            @endif
+        @endforeach
+    </select>
 </div>
 
 <div class="form-group">
-	{!!  Form::submit($submitBtnTxt, ['class' => 'btn btn-success form-control']) !!}
+    <button type="submit" class="btn btn-success form-control">{{ $submitBtnTxt }}</button>
 </div>
 
 @section('scripts')

@@ -180,8 +180,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ViewComposerServiceProvider::class,
-        Collective\Html\HtmlServiceProvider::class,
-        Krucas\Notification\NotificationServiceProvider::class,
         Elasticquent\ElasticquentServiceProvider::class,
 
     ],
@@ -231,9 +229,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Form' => Collective\Html\FormFacade::class,
-        'Html' => Collective\Html\HtmlFacade::class,
-        'Notification' => Krucas\Notification\Facades\Notification::class,
         'Es' => Elasticquent\ElasticquentElasticsearchFacade::class,
 
     ],

@@ -17,7 +17,7 @@ class ArticleRepository extends Repository
      * @param  array $tags
      * @return Paginate
      */
-    public function syncTag(array $tags)
+    public function syncTags(array $tags)
     {
         $this->model->tags()->sync($tags);
     }

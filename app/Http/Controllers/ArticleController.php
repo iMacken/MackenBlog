@@ -16,14 +16,17 @@ class ArticleController extends Controller
     protected $articleRepository;
     protected $categoryRepository;
     protected $tagRepository;
+    protected $model;
 
     public function __construct(ArticleRepository $articleRepository,
                                 CategoryRepository $categoryRepository,
-                                TagRepository $tagRepository)
+                                TagRepository $tagRepository,
+								Article $article)
     {
         $this->articleRepository  = $articleRepository;
         $this->categoryRepository = $categoryRepository;
         $this->tagRepository      = $tagRepository;
+		$this->model              = $article;
 
 	    $this->middleware(['auth', 'admin'], ['except' => ['show', 'index']]);
     }
@@ -163,19 +166,17 @@ class ArticleController extends Controller
      */
     public function update(ArticleRequest $request, $id)
     {
-	    $this->articleRepository->update($request->all(), $id);
-	    #update the article in elasticsearch index
-	    if (config('elasticquent.elasticsearch')) {
-		    $this->model->updateIndex();
+	    $result = $this->articleRepository->updateRich($request->all(), $id);
+
+	    if ($result) {
+		    $this->articleRepository->syncTags($request->input('tag_list'));
+		    return redirect()->route('article.show', ['slug' => $request->input('slug')])->with('success', '更新成功');
+		    #update the article in elasticsearch index
+		    if (config('elasticquent.elasticsearch')) {
+			    $this->model->updateIndex();
+		    }
 	    }
-	    return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();
-
-	    $this->syncTags($article, $request->input('tag_list'));
-
-	    Notification::success('更新成功');
-
-	    return redirect()->route('article.show', ['id' => $article->id]);
-
+	    return redirect()->back()->withErrors('更新失败')->withInput();
     }
 
     /**

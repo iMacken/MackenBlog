@@ -3,17 +3,15 @@
 @section('content')
     <section class="container">
         <div class="row">
+            <br>
+            @include('partials.errors')
             <div class="panel panel-default">
                 <div class="panel-heading">修改文章</div>
-
-                @include('partials.errors')
-
                 <div class="panel-body">
-                    {!! Form::model($article, ['route' => ['article.update', $article->id], 'method' => 'PATCH','enctype'=>'multipart/form-data']) !!}
-
-                    @include('article.form', ['submitBtnTxt'=>'更新'])
-                        
-                    {!! Form::close() !!}
+                    <form role="form" action="{{ route('article.update',$article->id) }}" method="POST">
+                        {{ method_field('patch') }}
+                        @include('article.form', ['submitBtnTxt'=>'更新'])
+                    </form>
                 </div>
             </div>
         </div>

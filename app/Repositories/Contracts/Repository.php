@@ -130,7 +130,10 @@ abstract class Repository implements RepositoryInterface
             return false;
         }
 
-        return $model->fill($data)->save();
+        $result = $model->fill($data)->save();
+	    $this->model = $model;
+
+	    return $result;
     }
 
     /**
