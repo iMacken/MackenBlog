@@ -19,20 +19,28 @@
             @endforeach
         @endif
     </ul>
+      @if (Auth::check())
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                      <li><a href="{{ route('article.create') }}">写文章</a></li>
+                      <li><a href="javascript:void(0)" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">登出</a></li>
+                      <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                            style="display: none;">
+                          {{ csrf_field() }}
+                      </form>
+                  </ul>
+              </li>
+          </ul>
+      @endif
     <form data-pjax class="navbar-form nav navbar-nav navbar-right" role="search" action="{{ url('search') }}">
         {{ csrf_field() }}
         <div class="form-group">
             <input type="text" id="search-keyword" name="keyword" value="{{ $keyword or '' }}" class="form-control" placeholder="搜索">
         </div>
     </form>
-      @if (Auth::check())
-          <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                  <li><a href="{{ url('/auth/logout') }}">登出</a></li>
-              </ul>
-          </li>
-      @endif
+
   </div>
 </div>
 </nav>

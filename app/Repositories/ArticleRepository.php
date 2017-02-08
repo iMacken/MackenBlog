@@ -10,6 +10,17 @@ class ArticleRepository extends Repository
 	public function model() {
 		return 'App\Article';
 	}
+
+	/**
+	 * @param array $data
+	 * @return mixed
+	 */
+	public function create(array $data)
+	{
+		$this->model = auth()->user()->articles()->create($data);
+
+		return $this->model;
+	}
 	
     /**
      * Sync the tags for the article.
@@ -38,7 +49,7 @@ class ArticleRepository extends Repository
                     ->get();
 
     }
-
+	
     /**
      * get archive list of articles
      * @param  integer $limit [description]

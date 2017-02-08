@@ -28,7 +28,7 @@ class ArticleRequest extends FormRequest
 
         return [
             'category_id' => 'required',
-            'title' => 'required',
+            'title' => 'required|unique:articles',
             'slug' => 'required|regex:/^[a-z0-9\-]+$/',
             'content' => 'required',
             'tag_list' => 'required',

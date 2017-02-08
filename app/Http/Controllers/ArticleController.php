@@ -9,6 +9,7 @@ use App\Http\Requests\ArticleRequest;
 
 use App\Article;
 use DB;
+use Auth;
 
 class ArticleController extends Controller
 {
@@ -56,7 +57,8 @@ class ArticleController extends Controller
      */
     public function show($slug)
     {
-        $article = $this->articleRepository->findBy('slug', $slug);
+	    $article = $this->articleRepository->findBy('slug', $slug);
+
         return view('article.show', compact('article'));
     }
 
@@ -96,10 +98,10 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $categoryTree = Category::getCategoryTree();
-        $categoryTree[0] = '单页';
-        $tags = Tag::pluck('name', 'id');
-        return view('article.create', compact('categoryTree', 'tags'));
+	    $categories = $this->categoryRepository->pluck('name', 'id');
+	    $tags       = $this->tagRepository->pluck('name', 'id');
+
+	    return view('article.create', compact('article', 'categories', 'tags'));
     }
 
     /**
@@ -110,36 +112,20 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-        try {
+	    $article = $this->articleRepository->create($request->all());
 
-            $pic = upload_file('pic', $request);
-            !$pic && Notification::error('文章配图上传失败');
+	    if (!$article) {
+		    return redirect()->back()->withErrors('发布失败')->withInput();
+	    }
 
-            $createData = $request->all();
-            $createData['pic'] = $pic;
-            $article = Auth::user()->articles()->create($createData);
+	    #add the new article into elasticsearch index
+	    if (config('elasticquent.elasticsearch')) {
+		    $article->addToIndex();
+	    }
 
-            #add the new article into elasticsearch index
-            if (config('elasticquent.elasticsearch')) {
-                $article && $article->addToIndex();
-            }
+	    $this->articleRepository->syncTags($request->input('tag_list'));
 
-            if ($request->has('tag_list')) {
-                $this->syncTags($article, $request->input('tag_list'));
-            }
-
-            if (ArticleStatus::initArticleStatus($article->id)) {
-                Notification::success('文章发表成功');
-                return redirect()->route('article.index');
-            } else {
-                self::destroy($article->id);
-            }
-
-            return $article;
-
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
-        }
+	    return redirect()->route('article.show', ['slug' => $request->input('slug')])->with('success', '更新成功');
     }
 
 

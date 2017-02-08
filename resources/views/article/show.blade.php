@@ -6,14 +6,6 @@
     <meta name="description" content="{!! str_limit(preg_replace('/\s/', '',strip_tags(convert_markdown($article->content))),100) !!},{{ setting_config('seo_desc') }}">
 @endsection
 
-@section('styles')
-    <style type="text/css">
-        .ds-sync,.ds-powered-by {
-            display: none !important;
-        }
-    </style>
-@endsection
-
 @section('jumbotron-title')
     {{ $article->title }}
 @endsection
@@ -21,7 +13,7 @@
 @unless(isset($isSinglePage))
 
 @section('jumbotron-desc')
-    {{ str_cut(convert_markdown($article->content),40) }}
+    {!! str_cut(json_decode($article->content)->html,40) !!}
 @endsection
 
 @section('jumbotron-meta')
@@ -40,7 +32,7 @@
 
 @section('left')
     <article class="article-content markdown-body">
-        {!! convert_markdown($article->content) !!}
+        {!! json_decode($article->content)->html !!}
         <br>
         <p>本文链接: <a href="{{ route('article.show',array('id'=>$article->slug ? $article->slug : $article->id)) }}">{{ route('article.show',array('id'=>$article->slug ? $article->slug : $article->id)) }}</a></p>
         <p class="well">

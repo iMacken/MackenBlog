@@ -114,17 +114,6 @@ class Article extends Model
     }
 
     /**
-     * Get the created at attribute.
-     *
-     * @param $value
-     * @return string
-     */
-    public function getCreatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->diffForHumans();
-    }
-
-    /**
      * get a list of tag ids associated with the current article
      * @return [array]
      */

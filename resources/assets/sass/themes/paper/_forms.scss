@@ -2,6 +2,10 @@ label {
   font-weight: normal;
 }
 
+input.form-control {
+  @include box-shadow(inset 0 -1px 0 #ddd);
+}
+
 textarea,
 textarea.form-control,
 input.form-control,
@@ -18,7 +22,7 @@ input[type=number],
   border: none;
   border-radius: 0;
   -webkit-appearance: none;
-  font-size: $font-size-base;
+  font-size: $font-size-large;
 
   &:focus {
     @include box-shadow(inset 0 -2px 0 $brand-primary);

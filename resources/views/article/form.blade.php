@@ -35,14 +35,14 @@
 
 <div class="form-group">
 	<label for="editor" class="control-label">正文</label>
-	<textarea type="text" name="content" id="editor" class="form-control" autofocus>{{ isset($article) ? $article->content : old('content') }}</textarea>
+	<textarea type="text" name="content" id="editor" class="form-control" autofocus>{!! isset($article) ? json_decode($article->content)->raw : old('content') !!}</textarea>
 </div>
 
 <div class="form-group">
 	<label for="tag_list" class="control-label">标签</label>
     <select id="tag_list" name="tag_list[]" class="form-control" multiple>
         @foreach($tags as $id => $name)
-            @if(isset($post) && $article->tags->contains($id))
+            @if(isset($article) && $article->tags->contains($id))
                 <option value="{{ $id }}" selected>{{ $name }}</option>
             @else
                 <option value="{{ $id }}">{{ $name }}</option>

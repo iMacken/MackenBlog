@@ -1,28 +1,18 @@
 @extends('app')
 
 @section('content')
-
+    <section class="container">
+        <div class="row">
+            <br>
+            @include('partials.errors')
             <div class="panel panel-default">
-                <div class="panel-heading">创建文章</div>
-
-                @if ($errors->has('error'))
-                <div class="alert alert-danger alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <strong>Error!</strong>
-                    {{ $errors->first('error', ':message') }}
-                    <br />
-                    请联系开发者！
-                </div>
-                @endif
-
+                <div class="panel-heading">撰写文章</div>
                 <div class="panel-body">
-                    {!! Form::model($article = new \App\Models\Article, ['method' => 'post', 'url'=>'backend/article','enctype'=>'multipart/form-data']) !!}
-
-                    @include('article.form', ['submitBtnTxt'=>'完成'])
-                        
-                    {!! Form::close() !!}
+                    <form role="form" action="{{ route('article.store') }}" method="POST">
+                        @include('article.form', ['submitBtnTxt'=>'提交'])
+                    </form>
                 </div>
             </div>
-
+        </div>
+    </section>
 @endsection

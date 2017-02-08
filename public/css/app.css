@@ -14400,6 +14400,10 @@ label {
   font-weight: normal;
 }
 
+input.form-control {
+  box-shadow: inset 0 -1px 0 #ddd;
+}
+
 textarea,
 textarea.form-control,
 input.form-control,
@@ -14416,7 +14420,7 @@ input[type=number],
   border: none;
   border-radius: 0;
   -webkit-appearance: none;
-  font-size: 13px;
+  font-size: 17px;
 }
 
 textarea:focus,
