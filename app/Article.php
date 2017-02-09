@@ -3,11 +3,11 @@
 namespace App;
 
 use App\Scopes\DraftScope;
+use App\Scopes\PublishedScope;
 use App\Services\Markdowner;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Elasticquent\ElasticquentTrait;
-use Elasticquent\ElasticquentResultCollection;
 
 class Article extends Model
 {
@@ -61,6 +61,7 @@ class Article extends Model
         parent::boot();
 
         static::addGlobalScope(new DraftScope());
+	    static::addGlobalScope(new PublishedScope());
     }
 
     /**

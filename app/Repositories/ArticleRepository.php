@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Repositories\Contracts\Repository;
+use App\Scopes\PublishedScope;
 
 class ArticleRepository extends Repository
 {
@@ -67,11 +68,12 @@ class ArticleRepository extends Repository
 
     /**
      * get latest articles
-     * @param int $pageNum
      * @return mixed
      */
-    public function getLatestArticleList($pageNum = 10)
+    public function getLatestArticles()
     {
+	    $this->checkAuthScope();
+
         return $this->model->select(['id','title','slug','content','created_at','category_id','published_at'])
                 ->where('category_id', '<>', 0)
                 ->orderBy('id', 'desc')
@@ -129,6 +131,20 @@ class ArticleRepository extends Repository
                 ->orderBy('id', 'desc')
                 ->paginate(8);
     }
+
+	/**
+	 * Check the auth and the model without global scope when user is the admin.
+	 *
+	 * @return Model
+	 */
+	public function checkAuthScope()
+	{
+		if (auth()->check() && auth()->user()->is_admin) {
+			$this->model = $this->model->withoutGlobalScope([DraftScope::class, PublishedScope::class]);
+		}
+
+		return $this->model;
+	}
 
 
 
