@@ -8,4 +8,4 @@ sudo: true
 
 install:
   - travis_retry composer install --no-interaction --prefer-source
-  - travis_retry sudo pm install
+  - travis_retry sudo npm install
