@@ -19,10 +19,10 @@ class CreateArticlesTable extends Migration {
             $table->integer('category_id')->unsigned()->default(0);
             $table->integer('user_id')->unsigned();
             $table->string('title')->unique();
-            $table->string('subtitle')->nullable();
             $table->string('slug')->unique();
             $table->string('image');
             $table->text('content');
+	        $table->text('html_content');
             $table->boolean('is_original')->default(false);
             $table->boolean('is_draft')->default(false);
             $table->string('keywords')->nullable();

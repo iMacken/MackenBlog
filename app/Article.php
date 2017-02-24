@@ -36,19 +36,22 @@ class Article extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'user_id',
-        'last_user_id',
-        'category_id',
-        'title',
-        'subtitle',
-        'slug',
-        'image',
-        'content',
-        'description',
-        'is_draft',
-        'is_original',
-        'published_at',
+    protected $fillable = ['user_id', 'last_user_id', 'category_id', 'title', 'slug', 'image', 'content', 'description', 'is_draft', 'is_original', 'published_at'];
+
+    const INDEX_FIELDS = [
+	    'id',
+	    'user_id',
+	    'last_user_id',
+	    'category_id',
+	    'image',
+	    'title',
+	    'slug',
+	    'description',
+	    'is_draft',
+	    'is_original',
+	    'created_at',
+	    'deleted_at',
+	    'published_at'
     ];
 
     /**

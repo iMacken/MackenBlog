@@ -2,37 +2,125 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Contracts\Repository;
-use App\Scopes\PublishedScope;
+use App\Http\Requests\ArticleRequest;
+use App\Services\Markdowner;
+use Model, DB;
 
 class ArticleRepository extends Repository
 {
+	protected $markdowner;
 
-	public function model() {
-		return 'App\Article';
+	static $tag = 'article';
+
+	/**
+	 * ArticleRepository constructor.
+	 * @param Markdowner $markdowner
+	 */
+	public function __construct(Markdowner $markdowner)
+	{
+		$this->markdowner = $markdowner;
+	}
+
+	public function model()
+	{
+		return app(Article::class);
+	}
+
+	public function tag()
+	{
+		return ArticleRepository::$tag;
+	}
+
+	public function count()
+	{
+		$count = $this->remember($this->tag() . '.count', function () {
+			return $this->model()->withoutGlobalScopes()->count();
+		});
+		return $count;
 	}
 
 	/**
-	 * @param array $data
+	 * @param int $page
 	 * @return mixed
 	 */
-	public function create(array $data)
+	public function pagedArticlesWithoutGlobalScopes($page = 15)
 	{
-		$this->model = auth()->user()->articles()->create($data);
-
-		return $this->model;
+		$articles = $this->remember('articles.withoutContent.page.' . $page . '' . request()->get('page', 1), function () use ($page) {
+			return Article::withoutGlobalScopes()->withCount('comments')->orderBy('created_at', 'desc')->select(Article::INDEX_FIELDS)->with(['tags', 'category'])->paginate($page);
+		});
+		return $articles;
 	}
-	
-    /**
-     * Sync the tags for the article.
-     *
-     * @param  array $tags
-     * @return Paginate
-     */
-    public function syncTags(array $tags)
-    {
-        $this->model->tags()->sync($tags);
-    }
+
+	/**
+	 * @param int $page
+	 * @return mixed
+	 */
+	public function pagedArticles($page = 10)
+	{
+		$articles = $this->remember('articles.page.' . $page . '' . request()->get('page', 1), function () use ($page) {
+			return Article::select(Article::INDEX_FIELDS)->with(['tags', 'category'])->withCount('comments')->orderBy('published_at', 'desc')->paginate($page);
+		});
+		return $articles;
+	}
+
+	/**
+	 * @param $slug string
+	 * @return Article
+	 */
+	public function get($slug)
+	{
+		$article = $this->remember('article.one.' . $slug, function () use ($slug) {
+			return Article::where('slug', $slug)->with(['tags', 'category', 'configuration'])->withCount('comments')->firstOrFail();
+		});
+		return $article;
+	}
+
+	public function hot($count = 5)
+	{
+		$articles = $this->remember('article.hot.' . $count, function () use ($count) {
+			return Article::select([
+				'title',
+				'slug',
+				'view_count',
+			])->withCount('comments')->orderBy('view_count', 'desc')->limit($count)->get();
+		});
+		return $articles;
+	}
+
+	public function achieve()
+	{
+		$articles = $this->remember('article.achieve', function () use ($limit) {
+			return Model::select(DB::raw("DATE_FORMAT(`created_at`, '%Y %m') as `archive`, count(*) as `count`"))
+				->where('category_id', '<>', 0)
+				->groupBy('archive')
+				->orderBy('archive', 'desc')
+				->get();
+		});
+		return $articles;
+	}
+
+	/**
+	 * @param ArticleRequest $request
+	 * @return mixed
+	 */
+	public function create(ArticleRequest $request)
+	{
+		$this->clearAllCache();
+
+		$article = auth()->user()->articles()->create(
+			array_merge(
+				$request->all(),
+				[
+					'html_content' => $this->markdowner->convertMarkdownToHtml($request->get('content'), false),
+					'description' => $this->markdowner->convertMarkdownToHtml($request->get('description'), false),
+				]
+			)
+		);
+
+		$article->tags()->sync($request->get('tag_list'));
+
+		
+	}
 
     /**
      * Search the articles by the keyword.
@@ -50,102 +138,4 @@ class ArticleRepository extends Repository
                     ->get();
 
     }
-	
-    /**
-     * get archive list of articles
-     * @param  integer $limit [description]
-     * @return [type]         [description]
-     */
-    public function getArchiveList($limit = 12)
-    {
-        return $this->model->select(DB::raw("DATE_FORMAT(`created_at`, '%Y %m') as `archive`, count(*) as `count`"))
-                ->where('category_id', '<>', 0)
-                ->groupBy('archive')
-                ->orderBy('archive', 'desc')
-                ->limit($limit)
-                ->get();
-    }
-
-    /**
-     * get latest articles
-     * @return mixed
-     */
-    public function getLatestArticles()
-    {
-	    $this->checkAuthScope();
-
-        return $this->model->select(['id','title','slug','content','created_at','category_id','published_at'])
-                ->where('category_id', '<>', 0)
-                ->orderBy('id', 'desc')
-                ->paginate($pageNum);
-    }
-
-    /**
-     * get articles of the given category
-     * @param $categoryId
-     * @param int $limit
-     * @return mixed
-     */
-    public function getArticleListByCategoryId($categoryId, $limit = 10)
-    {
-        return $this->model->select(['id','title','slug','content','created_at','category_id'])
-                ->where('category_id', $categoryId)
-                ->orderBy('id', 'desc')
-                ->paginate($limit);
-    }
-
-    /**
-     * get hot articles
-     * @param int $limit
-     * @return mixed
-     */
-    public function getHotArticleList($limit = 3)
-    {
-        $select = [
-            'articles.id',
-            'articles.pic',
-            'articles.title',
-            'articles.slug',
-            'articles.created_at',
-            'article_status.views',
-        ];
-        return $this->model->select($select)
-                ->leftJoin('article_status', 'articles.id', '=', 'article_status.article_id')
-                ->where('category_id', '<>', 0)
-                ->orderBy('article_status.views', 'desc')
-                ->limit($limit)
-                ->get();
-    }
-
-    /**
-     * get articles associated with the given keyword
-     * @param $keyword
-     * @return mixed
-     */
-    public function getArticleListByKeyword($keyword)
-    {
-        return $this->model->select(['id','title','slug','content','created_at','category_id'])
-                ->where('title', 'like', "%$keyword%")
-                ->orWhere('content', 'like', "%$keyword%")
-                ->where('category_id', '<>', 0)
-                ->orderBy('id', 'desc')
-                ->paginate(8);
-    }
-
-	/**
-	 * Check the auth and the model without global scope when user is the admin.
-	 *
-	 * @return Model
-	 */
-	public function checkAuthScope()
-	{
-		if (auth()->check() && auth()->user()->is_admin) {
-			$this->model = $this->model->withoutGlobalScope([DraftScope::class, PublishedScope::class]);
-		}
-
-		return $this->model;
-	}
-
-
-
 }

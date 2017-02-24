@@ -43,7 +43,6 @@ $factory->define(App\Article::class, function (Faker\Generator $faker) {
         'last_user_id' => $userId,
         'slug'     => str_slug($title),
         'title'    => $title,
-        'subtitle' => strtolower($title),
         'content'  => $faker->paragraph,
         'image'       => $faker->imageUrl(),
         'description' => $faker->sentence,
