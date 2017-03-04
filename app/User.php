@@ -4,12 +4,12 @@ namespace App;
 
 use App\Traits\FollowTrait;
 use App\Scopes\StatusScope;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    use SoftDeletes;
 
     /**
      * The attributes that should be mutated to dates.

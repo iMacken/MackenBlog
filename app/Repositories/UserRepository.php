@@ -2,13 +2,20 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Contracts\Repository;
 use Auth;
 
 class UserRepository extends Repository
 {
-	public function model() {
-		return 'App\User';
+	static $tag = 'user';
+
+	public function tag()
+	{
+		return UserRepository::$tag;
+	}
+
+	public function model()
+	{
+		return app(User::class);
 	}
 
 	/**

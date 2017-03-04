@@ -27,7 +27,6 @@ class ArticleController extends Controller
         $this->articleRepository  = $articleRepository;
         $this->categoryRepository = $categoryRepository;
         $this->tagRepository      = $tagRepository;
-		$this->model              = $article;
 
 	    $this->middleware(['auth', 'admin'], ['except' => ['show', 'index']]);
     }
@@ -39,7 +38,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-	    $articles = $this->articleRepository->paginate(config('blog.article.number'), config('blog.article.sortColumn'), config('blog.article.sortOrder'));
+	    $articles = $this->articleRepository->pagedArticles();
 
         $jumbotron = [];
         $jumbotron['title'] = config('blog.default_owner');
@@ -57,7 +56,7 @@ class ArticleController extends Controller
      */
     public function show($slug)
     {
-	    $article = $this->articleRepository->findBy('slug', $slug);
+	    $article = $this->articleRepository->get($slug);
 
         return view('article.show', compact('article'));
     }
@@ -130,17 +129,18 @@ class ArticleController extends Controller
 
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  Article $article
+     * @param  int $id
      * @return Response
      */
-    public function edit(Article $article)
+    public function edit($id)
     {
-	    $categories = $this->categoryRepository->pluck('name', 'id');
-	    $tags       = $this->tagRepository->pluck('name', 'id');
+	    $article = $this->articleRepository->getById($id);
 
-        return view('article.edit', compact('article', 'categories', 'tags'));
+	    return view('article.edit', [
+		    'article' => $article,
+		    'categories' => $this->categoryRepository->getAll(),
+		    'tags' => $this->tagRepository->getAll(),
+	    ]);
     }
 
     /**

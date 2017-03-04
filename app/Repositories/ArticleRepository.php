@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Article;
 use App\Http\Requests\ArticleRequest;
 use App\Services\Markdowner;
 use Model, DB;
@@ -13,7 +14,6 @@ class ArticleRepository extends Repository
 	static $tag = 'article';
 
 	/**
-	 * ArticleRepository constructor.
 	 * @param Markdowner $markdowner
 	 */
 	public function __construct(Markdowner $markdowner)
@@ -21,16 +21,25 @@ class ArticleRepository extends Repository
 		$this->markdowner = $markdowner;
 	}
 
+	/**
+	 * @return \Illuminate\Foundation\Application|mixed
+	 */
 	public function model()
 	{
 		return app(Article::class);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function tag()
 	{
 		return ArticleRepository::$tag;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function count()
 	{
 		$count = $this->remember($this->tag() . '.count', function () {
@@ -40,25 +49,25 @@ class ArticleRepository extends Repository
 	}
 
 	/**
-	 * @param int $page
+	 * @param int $limit
 	 * @return mixed
 	 */
-	public function pagedArticlesWithoutGlobalScopes($page = 15)
+	public function pagedArticlesWithoutGlobalScopes($limit = 15)
 	{
-		$articles = $this->remember('articles.withoutContent.page.' . $page . '' . request()->get('page', 1), function () use ($page) {
-			return Article::withoutGlobalScopes()->withCount('comments')->orderBy('created_at', 'desc')->select(Article::INDEX_FIELDS)->with(['tags', 'category'])->paginate($page);
+		$articles = $this->remember('articles.withoutContent.page.' . $limit . '' . request()->get('page', 1), function () use ($limit) {
+			return Article::withoutGlobalScopes()->withCount('comments')->orderBy('created_at', 'desc')->select(Article::INDEX_FIELDS)->with(['tags', 'category'])->paginate($limit);
 		});
 		return $articles;
 	}
 
 	/**
-	 * @param int $page
+	 * @param int $limit
 	 * @return mixed
 	 */
-	public function pagedArticles($page = 10)
+	public function pagedArticles($limit = 10)
 	{
-		$articles = $this->remember('articles.page.' . $page . '' . request()->get('page', 1), function () use ($page) {
-			return Article::select(Article::INDEX_FIELDS)->with(['tags', 'category'])->withCount('comments')->orderBy('published_at', 'desc')->paginate($page);
+		$articles = $this->remember('articles.page.' . $limit . '' . request()->get('page', 1), function () use ($limit) {
+			return Article::select(Article::INDEX_FIELDS)->with(['tags', 'category'])->withCount('comments')->orderBy('published_at', 'desc')->paginate($limit);
 		});
 		return $articles;
 	}
@@ -70,11 +79,20 @@ class ArticleRepository extends Repository
 	public function get($slug)
 	{
 		$article = $this->remember('article.one.' . $slug, function () use ($slug) {
-			return Article::where('slug', $slug)->with(['tags', 'category', 'configuration'])->withCount('comments')->firstOrFail();
+			return Article::where('slug', $slug)->with(['tags', 'category'])->withCount('comments')->firstOrFail();
 		});
 		return $article;
 	}
 
+	public function getById($id)
+	{
+		return Article::with(['tags', 'category'])->withCount('comments')->firstOrFail($id);
+	}
+
+	/**
+	 * @param int $count
+	 * @return mixed
+	 */
 	public function hot($count = 5)
 	{
 		$articles = $this->remember('article.hot.' . $count, function () use ($count) {
@@ -87,14 +105,18 @@ class ArticleRepository extends Repository
 		return $articles;
 	}
 
-	public function achieve()
+	/**
+	 * @param int $limit
+	 * @return mixed
+	 */
+	public function achieve($limit = 12)
 	{
 		$articles = $this->remember('article.achieve', function () use ($limit) {
 			return Model::select(DB::raw("DATE_FORMAT(`created_at`, '%Y %m') as `archive`, count(*) as `count`"))
 				->where('category_id', '<>', 0)
 				->groupBy('archive')
 				->orderBy('archive', 'desc')
-				->get();
+				->get($limit);
 		});
 		return $articles;
 	}
@@ -123,7 +145,6 @@ class ArticleRepository extends Repository
 	}
 
     /**
-     * Search the articles by the keyword.
      *
      * @param  string $key
      * @return collection

@@ -12,6 +12,19 @@ class VisitorRepository extends Repository
      */
     protected $ip;
 
+    static $tag = 'category';
+
+    public function tag()
+    {
+        return CategoryRepository::$tag;
+    }
+
+    public function model()
+    {
+        return app(Category::class);
+    }
+
+
     /**
      * VisitorRepository constructor.
      * @param IP $ip
@@ -19,10 +32,6 @@ class VisitorRepository extends Repository
     public function __construct(IP $ip)
     {
         $this->ip = $ip;
-    }
-
-    public function model() {
-        return 'App\Visitor';
     }
 
     /**
