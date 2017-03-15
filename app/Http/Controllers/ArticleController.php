@@ -134,10 +134,8 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-	    $article = $this->articleRepository->getById($id);
-
 	    return view('article.edit', [
-		    'article' => $article,
+		    'article' => $this->articleRepository->getById($id),
 		    'categories' => $this->categoryRepository->getAll(),
 		    'tags' => $this->tagRepository->getAll(),
 	    ]);

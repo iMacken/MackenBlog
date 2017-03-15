@@ -13,7 +13,7 @@
 @unless(isset($isSinglePage))
 
 @section('jumbotron-desc')
-    {!! str_cut(json_decode($article->content)->html,40) !!}
+    {!! $article->description !!}
 @endsection
 
 @section('jumbotron-meta')

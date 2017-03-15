@@ -18,11 +18,11 @@
 <div class="form-group">
 	<label for="category_id" class="control-label">分类</label>
 	<select name="category_id" class="form-control">
-		@foreach($categories as $id => $name)
-			@if((isset($article) ? $article->category_id : old('category_id', -1)) == $id)
-				<option value="{{ $id }}" selected>{{ $name }}</option>
+		@foreach($categories as $category)
+			@if((isset($article) ? $article->category_id : old('category_id', -1)) == $category->id)
+				<option value="{{ $category->id }}" selected>{{ $category->name }}</option>
 			@else
-				<option value="{{ $id }}">{{ $name }}</option>
+				<option value="{{ $category->id }}">{{ $category->name }}</option>
 			@endif
 		@endforeach
 	</select>
@@ -35,17 +35,17 @@
 
 <div class="form-group">
 	<label for="editor" class="control-label">正文</label>
-	<textarea type="text" name="content" id="editor" class="form-control" autofocus>{!! isset($article) ? json_decode($article->content)->raw : old('content') !!}</textarea>
+	<textarea type="text" name="content" id="editor" class="form-control" autofocus>{!! isset($article) ? $article->content : old('content') !!}</textarea>
 </div>
 
 <div class="form-group">
 	<label for="tag_list" class="control-label">标签</label>
     <select id="tag_list" name="tag_list[]" class="form-control" multiple>
-        @foreach($tags as $id => $name)
-            @if(isset($article) && $article->tags->contains($id))
-                <option value="{{ $id }}" selected>{{ $name }}</option>
+        @foreach($tags as $tag)
+            @if(isset($article) && $article->tags->contains($tag->id))
+                <option value="{{ $tag->id }}" selected>{{ $tag->name }}</option>
             @else
-                <option value="{{ $id }}">{{ $name }}</option>
+                <option value="{{ $tag->id }}">{{ $tag->name }}</option>
             @endif
         @endforeach
     </select>

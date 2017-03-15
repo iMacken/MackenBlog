@@ -144,6 +144,29 @@ class ArticleRepository extends Repository
 		
 	}
 
+	/**
+	 * @param ArticleRequest $request
+	 * @return mixed
+	 */
+	public function update(ArticleRequest $request)
+	{
+		$this->clearAllCache();
+
+		$article = auth()->user()->articles()->create(
+			array_merge(
+				$request->all(),
+				[
+					'html_content' => $this->markdowner->convertMarkdownToHtml($request->get('content'), false),
+					'description' => $this->markdowner->convertMarkdownToHtml($request->get('description'), false),
+				]
+			)
+		);
+
+		$article->tags()->sync($request->get('tag_list'));
+
+
+	}
+
     /**
      *
      * @param  string $key

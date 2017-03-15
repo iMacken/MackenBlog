@@ -157,21 +157,6 @@ class Article extends Model
     }
 
     /**
-     * Set the content attribute.
-     *
-     * @param $value
-     */
-    public function setContentAttribute($value)
-    {
-        $data = [
-            'raw'  => $value,
-            'html' => (new Markdowner)->convertMarkdownToHtml($value)
-        ];
-
-        $this->attributes['content'] = json_encode($data);
-    }
-
-    /**
      * get articles associated with the given keyword in elasticsearch index
      * @param $keyword
      * @return mixed

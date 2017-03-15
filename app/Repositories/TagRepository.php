@@ -1,6 +1,8 @@
 <?php
 namespace App\Repositories;
 
+use App\Article;
+use App\Http\Requests\TagRequest;
 use App\Tag;
 
 /**
@@ -24,7 +26,7 @@ class TagRepository extends Repository
 	public function getAll()
 	{
 		$tags = $this->remember('tag.all', function () {
-			return Tag::withCount('posts')->get();
+			return Tag::withCount('articles')->get();
 		});
 		return $tags;
 	}
@@ -37,15 +39,23 @@ class TagRepository extends Repository
 		return $tag;
 	}
 
-	public function pagedPostsByTag(Tag $tag, $page = 7)
+	public function pagedArticlesByTag(Tag $tag, $limit = 7)
 	{
-		$posts = $this->remember('tag.posts.' . $tag->name . $page . request()->get('page', 1), function () use ($tag, $page) {
-			return $tag->posts()->select(Post::selectArrayWithOutContent)->with(['tags', 'category'])->withCount('comments')->orderBy('created_at', 'desc')->paginate($page);
+		$articles = $this->remember('tag.articles.' . $tag->name . $limit . request()->get('page', 1), function () use ($tag, $limit) {
+			return $tag->articles()->select(Article::INDEX_FIELDS)->with(['tags', 'category'])->withCount('comments')->orderBy('published_at', 'desc')->paginate($limit);
 		});
-		return $posts;
+		return $articles;
 	}
 
-	public function create(Request $request)
+	public function create(TagRequest $request)
+	{
+		$this->clearCache();
+
+		$tag = Tag::create(['name' => $request['name']]);
+		return $tag;
+	}
+
+	public function update(TagRequest $request)
 	{
 		$this->clearCache();
 

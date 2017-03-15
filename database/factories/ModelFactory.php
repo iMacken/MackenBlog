@@ -40,10 +40,10 @@ $factory->define(App\Article::class, function (Faker\Generator $faker) {
     return [
         'user_id'      => $userId,
         'category_id'  => $categoryId,
-        'last_user_id' => $userId,
         'slug'     => str_slug($title),
         'title'    => $title,
         'content'  => $faker->paragraph,
+        'html_content' => $faker->paragraph,
         'image'       => $faker->imageUrl(),
         'description' => $faker->sentence,
         'is_draft'         => false,
