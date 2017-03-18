@@ -4,7 +4,7 @@ require('bootstrap-sass');
 
 window.swal = require('sweetalert');
 window.marked = require('marked');
-window.hljs = require('../vendor/highlight/highlight.min.js');
+// window.hljs = require('../vendor/highlight/highlight.min.js');
 
 window.toastr = require('toastr/build/toastr.min.js');
 window.toastr.options = {

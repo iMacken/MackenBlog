@@ -25,10 +25,10 @@ class ArticleRequest extends FormRequest
      */
     public function rules()
     {
-
+        $id = $this->route('article');
         return [
             'category_id' => 'required',
-            'title' => 'required|unique:articles',
+            'title' => 'required|unique:articles,title,' . $id,
             'slug' => 'required|regex:/^[a-z0-9\-]+$/',
             'content' => 'required',
             'tag_list' => 'required',

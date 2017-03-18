@@ -141,18 +141,28 @@ class ArticleRepository extends Repository
 
 		$article->tags()->sync($request->get('tag_list'));
 
-		
+		#add the new article into elasticsearch index
+		if ($article && config('elasticquent.elasticsearch')) {
+			$article->addToIndex();
+		}
+
+		return $article;
 	}
 
 	/**
 	 * @param ArticleRequest $request
+	 * @param int $id
 	 * @return mixed
 	 */
-	public function update(ArticleRequest $request)
+	public function update(ArticleRequest $request, $id)
 	{
 		$this->clearAllCache();
 
-		$article = auth()->user()->articles()->create(
+		$article = $this->model()->find($id);
+
+		$article->tags()->sync($request->get('tag_list'));
+
+		$result = $article->update(
 			array_merge(
 				$request->all(),
 				[
@@ -162,9 +172,12 @@ class ArticleRepository extends Repository
 			)
 		);
 
-		$article->tags()->sync($request->get('tag_list'));
+		#update the article in elasticsearch index
+		if ($result && config('elasticquent.elasticsearch')) {
+			$this->model->updateIndex();
+		}
 
-
+		return $result;
 	}
 
     /**

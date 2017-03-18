@@ -97,10 +97,10 @@ class ArticleController extends Controller
      */
     public function create()
     {
-	    $categories = $this->categoryRepository->pluck('name', 'id');
-	    $tags       = $this->tagRepository->pluck('name', 'id');
-
-	    return view('article.create', compact('article', 'categories', 'tags'));
+	    return view('article.create', [
+		    'categories' => $this->categoryRepository->getAll(),
+		    'tags' => $this->tagRepository->getAll(),
+	    ]);
     }
 
     /**
@@ -111,20 +111,13 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-	    $article = $this->articleRepository->create($request->all());
+	    $article = $this->articleRepository->create($request);
 
 	    if (!$article) {
-		    return redirect()->back()->withErrors('发布失败')->withInput();
+		    return redirect()->back()->withErrors('创建失败')->withInput();
 	    }
 
-	    #add the new article into elasticsearch index
-	    if (config('elasticquent.elasticsearch')) {
-		    $article->addToIndex();
-	    }
-
-	    $this->articleRepository->syncTags($request->input('tag_list'));
-
-	    return redirect()->route('article.show', ['slug' => $request->input('slug')])->with('success', '更新成功');
+	    return redirect()->route('article.show', ['slug' => $request->input('slug')])->with('success', '创建成功');
     }
 
 
@@ -150,16 +143,12 @@ class ArticleController extends Controller
      */
     public function update(ArticleRequest $request, $id)
     {
-	    $result = $this->articleRepository->updateRich($request->all(), $id);
+	    $result = $this->articleRepository->update($request, $id);
 
 	    if ($result) {
-		    $this->articleRepository->syncTags($request->input('tag_list'));
 		    return redirect()->route('article.show', ['slug' => $request->input('slug')])->with('success', '更新成功');
-		    #update the article in elasticsearch index
-		    if (config('elasticquent.elasticsearch')) {
-			    $this->model->updateIndex();
-		    }
 	    }
+
 	    return redirect()->back()->withErrors('更新失败')->withInput();
     }
 
