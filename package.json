@@ -30,6 +30,7 @@
     "chart.js": "^2.4.0",
     "ionicons": "^2.0.1",
     "marked": "^0.3.6",
+    "moment": "^2.18.0",
     "simplemde": "^1.11.2",
     "social-share.js": "^1.0.15",
     "sweetalert": "^1.1.3",

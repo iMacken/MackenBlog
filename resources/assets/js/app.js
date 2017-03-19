@@ -1,6 +1,7 @@
 window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
 require('bootstrap-sass');
+window.moment = require('moment');
 
 window.swal = require('sweetalert');
 window.marked = require('marked');

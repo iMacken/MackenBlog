@@ -5,6 +5,7 @@ namespace App;
 use App\Scopes\DraftScope;
 use App\Scopes\PublishedScope;
 use App\Services\Markdowner;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Elasticquent\ElasticquentTrait;
@@ -140,7 +141,7 @@ class Article extends Model
             $this->attributes['slug'] = translug($value);
         }
     }
-
+	
     /**
      * Set the unique slug.
      *

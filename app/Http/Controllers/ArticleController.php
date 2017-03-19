@@ -160,24 +160,15 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        $article = Article::find($id);
+        $article = $this->articleRepository->getById($id);
 
-        if (ArticleStatus::deleteArticleStatus($id)) {
+        if (Article::destroy($id)) {
+            #remove the article from the elasticsearch index
+            $article->removeFromIndex();
 
-            if (Article::destroy($id)) {
-
-                #remove the article from the elasticsearch index
-                $article->removeFromIndex();
-
-                Notification::success('删除成功');
-            } else {
-                Notification::error('主数据删除失败');
-            }
-
+            Notification::success('删除成功');
         } else {
-
-            Notification::error('动态删除失败');
-
+            Notification::error('主数据删除失败');
         }
 
         return redirect()->route('article.index');

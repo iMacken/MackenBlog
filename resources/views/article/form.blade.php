@@ -1,6 +1,7 @@
 @section('styles')
     <link href="//cdn.bootcss.com/select2/4.0.3/css/select2.min.css" rel="stylesheet">
     <link href="//cdn.bootcss.com/simplemde/1.11.2/simplemde.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('vendor/datetimepicker/bootstrap-datetimepicker.min.css') }}">
 @endsection
 
 {{ csrf_field() }}
@@ -51,6 +52,15 @@
     </select>
 </div>
 
+<div class="form-group date">
+    <div class="row">
+        <div class="col-sm-12">
+	        <label for="image" class="control-label">发布时间</label>
+            <input type="text" name="published_at" class="form-control" id='datetimepicker' value="{{ isset($article) ? $article->published_at : old('published_at') }}" autofocus>
+        </div>
+    </div>
+</div>
+
 <div class="form-group">
     <button type="submit" class="btn btn-success form-control">{{ $submitBtnTxt }}</button>
 </div>
@@ -58,6 +68,7 @@
 @section('scripts')
     <script src="//cdn.bootcss.com/select2/4.0.3/js/select2.min.js"></script>
     <script src="//cdn.bootcss.com/simplemde/1.11.2/simplemde.min.js"></script>
+    <script src="{{ asset('vendor/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
 <script>
 	$('#tag_list').select2({
 		placeholder: '选择一个标签',
@@ -70,7 +81,20 @@
         autoDownloadFontAwesome: true
     })
 
-
+    $(function () {
+        $('#datetimepicker').datetimepicker({
+            locale: 'zh-CN',
+            format: 'YYYY-MM-DD HH:mm:ss',
+            icons: {
+                time: "ion-clock",
+                date: "ion-calendar",
+                up: "ion-arrow-up-a",
+                down: "ion-arrow-down-a",
+                previous: "ion-chevron-left",
+                next: "ion-chevron-right"
+            }
+        });
+    });
 
 </script>
 @endsection
