@@ -32,7 +32,7 @@
 
 @section('left')
     <article class="article-content markdown-body">
-        {!! json_decode($article->content)->html !!}
+        {!! $article->html_content !!}
         <br>
         <p>本文链接: <a href="{{ route('article.show',array('id'=>$article->slug ? $article->slug : $article->id)) }}">{{ route('article.show',array('id'=>$article->slug ? $article->slug : $article->id)) }}</a></p>
         <p class="well">
@@ -43,7 +43,7 @@
         </p>
     </article>
     <p>
-       <span class="pull-right"><a class="operation op-edit ion-edit" href="{{ route('article.edit', ['id' => $article->id]) }}"></a><a class="operation op-delete ion-trash-a" href="javascript:void(0)"></a></span>
+       <span class="pull-right"><a class="operation op-edit ion-edit" href="{{ route('article.edit', ['id' => $article->id]) }}"></a><a class="operation op-delete ion-trash-a" data-target="{{ route('article.destroy', ['id' => $article->id]) }}" href="javascript:void(0)"></a></span>
     </p>
     <div class="share">
         <div class="share-bar"></div>

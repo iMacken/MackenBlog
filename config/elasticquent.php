@@ -14,7 +14,7 @@ return array(
     */
 
     'config' => [
-        'hosts'     => [env('DB_HOST', 'localhost').':9200'],
+        'hosts'     => [env('APP_URL', 'localhost').':9200'],
         'retries'   => 1,
     ],
 

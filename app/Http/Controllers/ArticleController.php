@@ -38,6 +38,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
+	    Article::createIndex($shards = null, $replicas = null);
 	    $articles = $this->articleRepository->pagedArticles();
 
         $jumbotron = [];
@@ -160,49 +161,12 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        $article = $this->articleRepository->getById($id);
+	    $result = $this->articleRepository->delete($id);
 
-        if (Article::destroy($id)) {
-            #remove the article from the elasticsearch index
-            $article->removeFromIndex();
-
-            Notification::success('删除成功');
+        if ($result) {
+	        return redirect()->route('article.index')->with('success', '更新成功');
         } else {
-            Notification::error('主数据删除失败');
+	        return redirect()->back()->withErrors('删除失败');
         }
-
-        return redirect()->route('article.index');
     }
-
-    /**
-     * sync tags of the given article
-     * @param  Article $article [description]
-     * @param  array   $tags    [description]
-     */
-    private function syncTags(Article $article, array $tags)
-    {
-        #extract the input into separate numeric and string arrays
-        $currentTags = array_filter($tags, 'is_numeric'); # ["1", "3", "5"]
-        $newTags = array_diff($tags, $currentTags); # ["awesome", "cool"]
-
-        #Create a new tag for each string in the input and update the current tags array
-        foreach ($newTags as $newTag)
-        {
-          if ($tag = Tag::firstOrCreate(['name' => $newTag]))
-          {
-             $currentTags[] = $tag->id;
-          }
-        }
-
-        #recalculate the cited number of the tags related to the given article
-        $oldTags = $article->tags()->get()->keyBy('id')->keys()->toArray();
-        $decTags = array_diff($oldTags, $currentTags);
-        $incTags = array_diff($currentTags, $oldTags);
-        DB::table('tags')->whereIn('id', $incTags)->increment('number');
-        DB::table('tags')->whereIn('id', $decTags)->decrement('number');
-
-        #sync the pivot table of article_tag
-        $article->tags()->sync($currentTags);
-    }
-
 }

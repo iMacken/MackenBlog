@@ -13,5 +13,5 @@ use Illuminate\Http\Request;
 |
 */
 Route::group(['namespace' => 'Api'], function() {
-	Route::post('tag/search', 'TagController@search')->name('api.tag.search');
+
 });

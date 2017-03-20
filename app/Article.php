@@ -4,8 +4,6 @@ namespace App;
 
 use App\Scopes\DraftScope;
 use App\Scopes\PublishedScope;
-use App\Services\Markdowner;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Elasticquent\ElasticquentTrait;
@@ -106,17 +104,7 @@ class Article extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
-
-    /**
-     * Get the config for the configuration.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\morphMany
-     */
-    public function config()
-    {
-        return $this->morphMany(Configuration::class, 'configuration');
-    }
-
+	
     /**
      * get a list of tag ids associated with the current article
      * @return [array]
@@ -124,37 +112,6 @@ class Article extends Model
     public function getTagListAttribute()
     {
         return $this->tags->pluck('id')->all();
-    }
-
-    /**
-     * Set the title and the readable slug.
-     *
-     * @param string $value
-     */
-    public function setTitleAttribute($value)
-    {
-        $this->attributes['title'] = $value;
-
-        if (!config('services.youdao.key') || !config('services.youdao.from')) {
-            $this->setUniqueSlug($value, '');
-        } else {
-            $this->attributes['slug'] = translug($value);
-        }
-    }
-	
-    /**
-     * Set the unique slug.
-     *
-     * @param $value
-     * @param $extra
-     */
-    public function setUniqueSlug($value, $extra) {
-        $slug = str_slug($value.'-'.$extra);
-        if (static::whereSlug($slug)->exists()) {
-            $this->setUniqueSlug($slug, $extra+1);
-            return;
-        }
-        $this->attributes['slug'] = $slug;
     }
 
     /**

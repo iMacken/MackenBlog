@@ -1,4 +1,4 @@
-<form action="" id="form-delete">
+<form action="" method="POST" id="form-delete">
     {{ csrf_field() }}
     {{ method_field('delete') }}
 </form>

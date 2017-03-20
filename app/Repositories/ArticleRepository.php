@@ -180,6 +180,24 @@ class ArticleRepository extends Repository
 		return $result;
 	}
 
+	/**
+	 * @param $id
+	 */
+	public function delete($id)
+	{
+		$this->clearAllCache();
+
+		$article = $this->model()->find($id);
+		$result = $article->destroy($id);
+
+		#add the new article into elasticsearch index
+		if ($result && config('elasticquent.elasticsearch')) {
+			$article->addToIndex();
+		}
+
+		return $result;
+	}
+
     /**
      *
      * @param  string $key
