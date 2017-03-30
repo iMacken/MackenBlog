@@ -20,7 +20,7 @@ class CreateArticlesTable extends Migration {
             $table->integer('user_id')->unsigned();
             $table->string('title')->unique();
             $table->string('slug')->unique();
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->text('content');
 	        $table->text('html_content');
             $table->boolean('is_original')->default(false);

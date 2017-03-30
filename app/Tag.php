@@ -22,9 +22,7 @@ class Tag extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'tag', 'title', 'subtitle', 'meta_description'
-    ];
+    protected $fillable = ['name'];
 
 	/**
 	 * Get all of the articles that are assigned this tag.
@@ -35,21 +33,6 @@ class Tag extends Model
 	{
 		return $this->morphedByMany(Article::class, 'taggable');
 	}
-
-    /**
-     * get tag model
-     * @param $id
-     * @return mixed
-     */
-    public static function getTagModel($id)
-    {
-        if (is_numeric($id)) {
-            return self::findOrFail($id);
-        } else {
-            return self::where('name', '=', $id)->first();
-        }
-
-    }
 
     /**
      * get all tags
@@ -74,19 +57,6 @@ class Tag extends Model
         }
         return isset(self::$tags[$tagId])?self::$tags[$tagId]:'';
     }
-
-    /**
-     * 根据标签id串获取标签数据
-     * @param string $tagIds
-     * @return \Illuminate\Support\Collection|null|static
-     */
-    public static function getTagModelByTagIds($tagIds)
-    {
-        $tags = explode(',', $tagIds);
-        return !empty($tags) ? self::find($tags) : null;
-
-    }
-
 
     /**
      * get hot tags

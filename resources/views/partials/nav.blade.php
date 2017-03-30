@@ -34,8 +34,7 @@
               </li>
           </ul>
       @endif
-    <form data-pjax class="navbar-form nav navbar-nav navbar-right" role="search" action="{{ url('search') }}">
-        {{ csrf_field() }}
+    <form data-pjax class="navbar-form nav navbar-nav navbar-right" role="search" action="{{ route('search') }}">
         <div class="form-group">
             <input type="text" id="search-keyword" name="keyword" value="{{ $keyword or '' }}" class="form-control" placeholder="搜索">
         </div>

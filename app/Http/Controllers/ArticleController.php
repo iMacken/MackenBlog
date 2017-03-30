@@ -8,8 +8,7 @@ use App\Repositories\TagRepository;
 use App\Http\Requests\ArticleRequest;
 
 use App\Article;
-use DB;
-use Auth;
+use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
@@ -38,7 +37,6 @@ class ArticleController extends Controller
      */
     public function index()
     {
-	    Article::createIndex($shards = null, $replicas = null);
 	    $articles = $this->articleRepository->pagedArticles();
 
         $jumbotron = [];
@@ -77,18 +75,6 @@ class ArticleController extends Controller
         $jumbotron['desc'] = '陈列在时光里的记忆，拂去轻尘，依旧如新。';
 
         return view('pages.list', compact('articles', 'jumbotron'));
-    }
-
-    /**
-     * index all articles with elasticsearch
-     */
-    public function indexAll()
-    {
-        if (Article::typeExists()) {
-            Article::deleteIndex();
-        }
-        Article::createIndex($shards = null, $replicas = null);
-        Article::addAllToIndex();
     }
 
     /**
@@ -169,4 +155,20 @@ class ArticleController extends Controller
 	        return redirect()->back()->withErrors('删除失败');
         }
     }
+
+	public function search(Request $request)
+	{
+		$keyword = trim($request->input('keyword'));
+		if (! $keyword) {
+			return redirect()->route('article.index');
+		}
+
+		$articles = $this->articleRepository->search($keyword);
+
+		$jumbotron = [];
+		$jumbotron['title'] = '关键词：' . $keyword;
+		$jumbotron['desc'] = '';
+
+		return view('article.search', compact('keyword', 'articles', 'jumbotron'));
+	}
 }

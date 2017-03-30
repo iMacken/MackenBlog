@@ -18,6 +18,7 @@ class CreateTagsTable extends Migration {
 			$table->increments('id');
             $table->string('name')->unique();
             $table->integer('click_count')->default(0);
+			$table->integer('cited_count')->default(0);
             $table->timestamps();
             $table->softDeletes();
 		});

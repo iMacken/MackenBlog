@@ -26,8 +26,7 @@ Route::resource('category','CategoryController');
 Route::resource('tag','TagController');
 Route::resource('navigation','NavigationController');
 Route::resource('link','LinkController');
-Route::get('search/{keyword}', 'SearchController@show');
-
 Route::resource('article', 'ArticleController');
+Route::get('search', 'ArticleController@search')->name('search');
 Route::get('page/{page}', 'PageController@show');
 Route::get('archive/{year}/{month}', ['as' => 'article-archive-list', 'uses' => 'ArticleController@archive']);

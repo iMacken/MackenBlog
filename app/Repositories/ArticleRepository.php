@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Article;
+use App\Tag;
 use App\Http\Requests\ArticleRequest;
 use App\Services\Markdowner;
 use Model, DB;
@@ -10,15 +11,19 @@ use Model, DB;
 class ArticleRepository extends Repository
 {
 	protected $markdowner;
+	protected $tagRepository;
 
 	static $tag = 'article';
 
 	/**
+	 * ArticleRepository constructor.
 	 * @param Markdowner $markdowner
+	 * @param TagRepository $tagRepository
 	 */
-	public function __construct(Markdowner $markdowner)
+	public function __construct(Markdowner $markdowner, TagRepository $tagRepository)
 	{
-		$this->markdowner = $markdowner;
+		$this->markdowner    = $markdowner;
+		$this->tagRepository = $tagRepository;
 	}
 
 	/**
@@ -86,7 +91,7 @@ class ArticleRepository extends Repository
 
 	public function getById($id)
 	{
-		return Article::with(['tags', 'category'])->withCount('comments')->firstOrFail($id);
+		return Article::with(['tags', 'category'])->withCount('comments')->findOrFail($id);
 	}
 
 	/**
@@ -139,12 +144,9 @@ class ArticleRepository extends Repository
 			)
 		);
 
-		$article->tags()->sync($request->get('tag_list'));
+		$article->save(); # save it in scout
 
-		#add the new article into elasticsearch index
-		if ($article && config('elasticquent.elasticsearch')) {
-			$article->addToIndex();
-		}
+		$this->syncTags($article, $request->get('tag_list'));
 
 		return $article;
 	}
@@ -160,7 +162,7 @@ class ArticleRepository extends Repository
 
 		$article = $this->model()->find($id);
 
-		$article->tags()->sync($request->get('tag_list'));
+		$this->syncTags($article, $request->get('tag_list'));
 
 		$result = $article->update(
 			array_merge(
@@ -172,10 +174,7 @@ class ArticleRepository extends Repository
 			)
 		);
 
-		#update the article in elasticsearch index
-		if ($result && config('elasticquent.elasticsearch')) {
-			$this->model->updateIndex();
-		}
+		$result && $article->save(); # update it in scout
 
 		return $result;
 	}
@@ -190,27 +189,58 @@ class ArticleRepository extends Repository
 		$article = $this->model()->find($id);
 		$result = $article->destroy($id);
 
-		#add the new article into elasticsearch index
-		if ($result && config('elasticquent.elasticsearch')) {
-			$article->addToIndex();
-		}
+		$result && $article->delete(); # delete from scout
 
 		return $result;
 	}
 
     /**
      *
-     * @param  string $key
+     * @param  string $keyword
      * @return collection
      */
-    public function search($key)
+    public function search($keyword)
     {
-        $key = trim($key);
-
-        return $this->model
-                    ->where('title', 'like', "%{$key}%")
-                    ->orderBy('published_at', 'desc')
-                    ->get();
-
+	    if (env('SCOUT_DRIVER')) {
+			return $this->model()->search($keyword)->paginate();
+	    } else {
+		    $keyword = trim($keyword);
+		    return $this->model()
+			    ->where('title', 'like', "%{$keyword}%")
+			    ->orWhere('content', 'like', "%{$keyword}%")
+			    ->orderBy('published_at', 'desc')
+			    ->get();
+	    }
     }
+
+	/**
+	 * sync tags of the given article
+	 * @param  Article $article [description]
+	 * @param  array   $tags    [description]
+	 */
+	private function syncTags(Article $article, array $tags)
+	{
+		#extract the input into separate numeric and string arrays
+		$currentTags = array_filter($tags, 'is_numeric'); # ["1", "3", "5"]
+		$newTags = array_diff($tags, $currentTags); # ["awesome", "cool"]
+
+		#Create a new tag for each string in the input and update the current tags array
+		foreach ($newTags as $newTag)
+		{
+			if ($tag = Tag::firstOrCreate(['name' => $newTag]))
+			{
+				$currentTags[] = $tag->id;
+			}
+		}
+
+		#recalculate the cited number of the tags related to the given article
+		$oldTags = $article->tags()->get()->keyBy('id')->keys()->toArray();
+		$decTags = array_diff($oldTags, $currentTags);
+		$incTags = array_diff($currentTags, $oldTags);
+		DB::table('tags')->whereIn('id', $incTags)->increment('cited_count');
+		DB::table('tags')->whereIn('id', $decTags)->decrement('cited_count');
+
+		#sync the pivot table of article_tag
+		$article->tags()->sync($currentTags);
+	}
 }

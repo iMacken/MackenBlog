@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Console\Commands\ImportArticles;
+use App\Console\Commands\InitEs;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +15,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        InitEs::class
     ];
 
     /**

@@ -180,9 +180,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ViewComposerServiceProvider::class,
-        App\Providers\CacheServiceProvider::class,
-        Elasticquent\ElasticquentServiceProvider::class,
-
+        App\Providers\BlogCacheServiceProvider::class,
+	    Laravel\Scout\ScoutServiceProvider::class,
+	    ScoutEngines\Elasticsearch\ElasticsearchProvider::class,
     ],
 
     /*

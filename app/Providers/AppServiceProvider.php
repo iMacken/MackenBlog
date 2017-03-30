@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Services\ES\EsEngine;
+use Elasticsearch\ClientBuilder as ElasticBuilder;
 use Illuminate\Support\ServiceProvider;
 use Carbon\Carbon;
+use Laravel\Scout\EngineManager;
 
 class AppServiceProvider extends ServiceProvider
 {

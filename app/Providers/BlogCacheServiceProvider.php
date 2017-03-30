@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Services\BlogCache;
 use Illuminate\Support\ServiceProvider;
 
-class CacheServiceProvider extends ServiceProvider
+class BlogCacheServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.

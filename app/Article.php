@@ -6,22 +6,20 @@ use App\Scopes\DraftScope;
 use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Elasticquent\ElasticquentTrait;
+use Laravel\Scout\Searchable;
+
 
 class Article extends Model
 {
-    use SoftDeletes, ElasticquentTrait;
+    use SoftDeletes, Searchable;
 
-    protected $mappingProperties = array(
-       'title' => array(
-            'type' => 'string',
-            'analyzer' => 'ik_max_word'
-        ),
-       'content' => array(
-            'type' => 'string',
-            'analyzer' => 'ik_max_word'
-        )
-    );
+	public function toSearchableArray()
+	{
+		return [
+			'title' => $this->title,
+			'content' => $this->content
+		];
+	}
 
     /**
      * The attributes that should be mutated to dates.
@@ -114,34 +112,6 @@ class Article extends Model
         return $this->tags->pluck('id')->all();
     }
 
-    /**
-     * get articles associated with the given keyword in elasticsearch index
-     * @param $keyword
-     * @return mixed
-     */
-    public static function searchIndex($keyword)
-    {
-        try {
-            $query = ['filtered' => [
-                'filter' => ['range' => ['category_id' => ['gt' => 0]]],
-                'query'  => [
-                    ['multi_match'=>[
-                        'query' => $keyword,
-                        'fields'=>['title', 'content']]
-                    ],
-                ],
-            ]];
-            $fields = ['id','title','slug','content','created_at','category_id'];
-
-            $perPage = 8;
-            $page = \Request::input('page');
-            !$page && $page = 1;
-            $offset = ($page - 1) * $perPage;
-            return self::searchByQuery($query, null, $fields, $perPage, $offset)->paginate($perPage);
-        } catch (Exception $e) {
-            return false;
-        }
-    }
 }
 
 
