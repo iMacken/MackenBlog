@@ -7,14 +7,13 @@ use Input;
 
 class Category extends Model
 {
+    const PAGE_LIMIT = 7;
 
     protected $fillable = [
         'name',
         'slug',
-        'parent_id',
-        'seo_title',
-        'seo_key',
-        'seo_desc',
+	    'description',
+	    'order'
     ];
 
     static $categoryData = [

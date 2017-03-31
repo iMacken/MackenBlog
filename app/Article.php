@@ -13,6 +13,8 @@ class Article extends Model
 {
     use SoftDeletes, Searchable;
 
+	const PAGE_LIMIT = 7;
+
 	public function toSearchableArray()
 	{
 		return [

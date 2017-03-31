@@ -11,7 +11,7 @@
 @endsection
 
 @section('jumbotron-desc')
-    {{ $jumbotron['desc'] }}
+    {{ $jumbotron['description'] }}
 @endsection
 
 @section('left')

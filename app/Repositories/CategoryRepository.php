@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Article;
 use App\Http\Requests\CategoryRequest;
 use App\Category;
 
@@ -40,16 +41,16 @@ class CategoryRepository extends Repository
 	}
 
 	/**
-	 * @param $name
+	 * @param $slug
 	 * @return mixed
 	 */
-	public function get($name)
+	public function get($slug)
 	{
-		$category = $this->remember('category.one.' . $name, function () use ($name) {
-			return Category::where('name', $name)->first();
+		$category = $this->remember('category.one.' . $slug, function () use ($slug) {
+			return Category::where('slug', $slug)->first();
 		});
 
-		!$category && abort(404);
+		! $category && abort(404);
 
 		return $category;
 	}
@@ -59,15 +60,14 @@ class CategoryRepository extends Repository
 	 * @param int $limit
 	 * @return mixed
 	 */
-	public function pagedArticlesByCategory(Category $category, $limit = 7)
+	public function pagedArticlesByCategory(Category $category, $limit = Category::PAGE_LIMIT)
 	{
-		$cacheKey = 'articles.category.' . $category->name . '.page.' . $limit . request()->get('page', 1);
+		$cacheKey = 'articles.category.' . $category->slug . '.page.' . $limit . request()->get('page', 1);
 		$articles = $this->remember($cacheKey, function () use ($category, $limit) {
 			return $category->articles()
 					->select(Article::INDEX_FIELDS)
 					->with(['tags', 'category'])
 					->withCount('comments')
-					->orderBy('created_at', 'desc')
 					->paginate($limit);
 		});
 		return $articles;
@@ -81,7 +81,7 @@ class CategoryRepository extends Repository
 	{
 		$this->clearCache();
 
-		$category = Category::create(['name' => $request['name']]);
+		$category = Category::create($request->all());
 
 		return $category;
 	}

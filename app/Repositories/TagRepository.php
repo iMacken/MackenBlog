@@ -31,17 +31,17 @@ class TagRepository extends Repository
 		return $tags;
 	}
 
-	public function get($name)
+	public function get($slug)
 	{
-		$tag = $this->remember('tag.one.' . $name, function () use ($name) {
-			return Tag::where('name', $name)->firstOrFail();
+		$tag = $this->remember('tag.one.' . $slug, function () use ($slug) {
+			return Tag::where('slug', $slug)->firstOrFail();
 		});
 		return $tag;
 	}
 
-	public function pagedArticlesByTag(Tag $tag, $limit = 7)
+	public function pagedArticlesByTag(Tag $tag, $limit = Tag::PAGE_LIMIT)
 	{
-		$articles = $this->remember('tag.articles.' . $tag->name . $limit . request()->get('page', 1), function () use ($tag, $limit) {
+		$articles = $this->remember('tag.articles.' . $tag->slug . $limit . request()->get('page', 1), function () use ($tag, $limit) {
 			return $tag->articles()->select(Article::INDEX_FIELDS)->with(['tags', 'category'])->withCount('comments')->orderBy('published_at', 'desc')->paginate($limit);
 		});
 		return $articles;

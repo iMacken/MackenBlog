@@ -10,6 +10,8 @@ class Tag extends Model
 
     use SoftDeletes;
 
+	const PAGE_LIMIT = 7;
+
     /**
      * The attributes that should be mutated to dates.
      *

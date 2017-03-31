@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\TagRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Tag;
@@ -9,17 +10,23 @@ use Illuminate\Pagination\BootstrapThreePresenter;
 
 class TagController extends Controller
 {
-    public function show($id)
+    protected $tagRepository;
+
+    public function __construct(TagRepository $tagRepository)
     {
-        $tag = Tag::getTagModel($id);
-        $tagName = $tag->name;
-        $articles = $tag->articles()->where('category_id', '<>', 0)->paginate(8);
+        $this->tagRepository = $tagRepository;
+    }
+
+    public function show($slug)
+    {
+        $tag = $this->tagRepository->get($slug);
+        $articles = $this->tagRepository->pagedArticlesByTag($tag);
 
         $jumbotron = [];
-        $jumbotron['title'] = '标签：' . $tagName;
-        $jumbotron['desc'] = '梦里花落知多少，贴上标签方便找~';
+        $jumbotron['title'] = '标签：' . $tag->name;
+        $jumbotron['description'] = '梦里花落知多少，贴上标签方便找~';
 
-        return view('pages.list', compact('tagName', 'articles', 'page', 'jumbotron'));
+        return view('article.index', compact('tagName', 'articles', 'jumbotron'));
     }
 
     /**

@@ -3,35 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
-use App\Article;
 use App\Category;
-use Illuminate\Http\Request;
+use App\Repositories\CategoryRepository;
 use Illuminate\Pagination\BootstrapThreePresenter;
 
 class CategoryController extends Controller
 {
+	protected $categoryRepository;
+
+    public function __construct(CategoryRepository $categoryRepository)
+    {
+		$this->categoryRepository = $categoryRepository;
+    }
+
     /**
      * display the articles of the given category
      *
-     * @param  int $id
+     * @param  string $slug
      * @return Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        $category = Category::getCategoryModel($id);
-        if (empty($category)) {
-            return redirect(url(route('article.index')));
-        }
+        $category = $this->categoryRepository->get($slug);
 
-        $articles = $category->articles()->latest()->paginate(8);
+        $articles = $this->categoryRepository->pagedArticlesByCategory($category);
 
         $jumbotron = [];
         $jumbotron['title'] = '分类：'.$category->name;
-        $jumbotron['desc'] = $category->seo_desc;
+        $jumbotron['description'] = $category->description;
 
-        return view('pages.list', compact('category', 'articles', 'page', 'jumbotron'));
+        return view('article.index', compact('category', 'articles', 'jumbotron'));
     }
 
     /**

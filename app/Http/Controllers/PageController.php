@@ -3,12 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
-use App\Article;
-use App\ArticleStatus;
-use App\User;
-use Illuminate\Http\Request;
 
 class PageController extends Controller {
 
