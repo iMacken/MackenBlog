@@ -68,6 +68,7 @@ class CategoryRepository extends Repository
 					->select(Article::INDEX_FIELDS)
 					->with(['tags', 'category'])
 					->withCount('comments')
+					->orderBy('created_at', 'desc')
 					->paginate($limit);
 		});
 		return $articles;

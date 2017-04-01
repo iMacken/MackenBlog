@@ -2,18 +2,24 @@
 
 namespace App;
 
+use App\Services\Mention;
+use App\Services\Markdowner;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * @property mixed commentable_type
- * @property mixed commentable_id
- */
 class Comment extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['content'];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id', 'commentable_id', 'commentable_type', 'content'
+    ];
+
     /**
      * The attributes that should be mutated to dates.
      *
@@ -21,37 +27,41 @@ class Comment extends Model
      */
     protected $dates = ['deleted_at'];
 
+    /**
+     * Get the user for the discussion comment.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get all of the owning commentable models.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\morphTo
+     */
     public function commentable()
     {
         return $this->morphTo();
     }
 
-    protected $commentableData = [];
-
-    public function getCommentableData()
+    /**
+     * Set the content Attribute.
+     *
+     * @param $value
+     */
+    public function setContentAttribute($value)
     {
-        if (empty($this->commentableData)) {
-            switch ($this->commentable_type) {
-                case 'App\Article':
-                    $article = app('App\Article')->where('id', $this->commentable_id)->select('title', 'slug')->firstOrFail();
-                    $this->commentableData['type'] = '文章';
-                    $this->commentableData['title'] = $article->title;
-                    $this->commentableData['url'] = route('article.show', $article->slug);
-                    break;
-                case 'App\Page':
-                    $page = app('App\Page')->where('id', $this->commentable_id)->select('name', 'display_name')->firstOrFail();
-                    $this->commentableData['type'] = '页面';
-                    $this->commentableData['title'] = $page->display_name;
-                    $this->commentableData['url'] = route('page.show', $page->name);
-                    break;
-            }
-        }
+        $content = (new Mention)->parse($value);
 
-        return $this->commentableData;
+        $data = [
+            'raw'  => $content,
+            'html' => (new Markdowner)->convertMarkdownToHtml($content)
+        ];
+
+        $this->attributes['content'] = json_encode($data);
     }
+
 }

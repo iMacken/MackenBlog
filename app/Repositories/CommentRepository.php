@@ -1,16 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lufficc
- * Date: 2016/8/19
- * Time: 17:41
- */
+
 namespace App\Http\Repositories;
 
 use App\Comment;
 use Illuminate\Http\Request;
-use Lufficc\MarkDownParser;
-use Lufficc\Mention;
+use App\Services\Markdowner;
 
 /**
  * Class CommentRepository
@@ -18,8 +12,10 @@ use Lufficc\Mention;
  */
 class CommentRepository extends Repository
 {
+
     static $tag = 'comment';
-    protected $markdownParser;
+
+    protected $markdowner;
     protected $mention;
 
     /**

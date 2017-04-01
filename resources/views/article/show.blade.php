@@ -48,12 +48,17 @@
     <div class="share">
         <div class="share-bar"></div>
     </div>
-    <div id="disqus_thread">
-        评论加载中...
-        <br>
-        <br>
-        注：如果长时间无法加载，请针对 disq.us | disquscdn.com | disqus.com 启用代理。
-    </div>
+    
+    @include('widget.comment',
+    [
+        'comment_key'=>$article->slug,
+        'comment_title'=>$article->title,
+        'comment_url'=>route('article.show',$article->slug),
+        'commentable'=>$article,
+        'comments'=>isset($comments) ? $comments:[],
+        'redirect'=>request()->fullUrl(),
+         'commentable_type'=>'App\Post'
+    ])
 
 <script>
 
