@@ -68,14 +68,14 @@ if (!function_exists('tree')) {
 if (!function_exists('setting_config')) {
     /**
      * get settings of the website
-     * @param  [type] $field   [description]
+     * @param  [type] $key     [description]
      * @param  string $default [description]
      * @return string          [description]
      */
-    function setting_config($field, $default = '')
+    function setting_config($key, $default = '')
     {
-        $system = app('App\Setting');
-        $val = $system->getSetting($field);
+        $settingRepository = new \App\Repositories\MapRepository();
+        $val = $settingRepository->getValue($key);
         return !empty($val) ? $val : $default;
     }
 }

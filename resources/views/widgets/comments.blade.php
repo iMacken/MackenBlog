@@ -1,9 +1,6 @@
 <div class="comments" id="comments">
     <div class="comments-body">
-        <div id="comments-container"
-             data-api-url="{{ route('comment.show',[$commentable->id,
-             'commentable_type'=>$commentable_type,
-             'redirect'=>(isset($redirect) && $redirect ? $redirect:'')]) }}">
+        <div id="comments-container">
             @if(isset($comments) && !empty($comments))
                 @include('comment.show',$comments)
             @endif

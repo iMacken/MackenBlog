@@ -49,15 +49,15 @@
         <div class="share-bar"></div>
     </div>
     
-    @include('widget.comment',
+    @include('widgets.comments',
     [
-        'comment_key'=>$article->slug,
-        'comment_title'=>$article->title,
-        'comment_url'=>route('article.show',$article->slug),
-        'commentable'=>$article,
-        'comments'=>isset($comments) ? $comments:[],
-        'redirect'=>request()->fullUrl(),
-         'commentable_type'=>'App\Post'
+        'comment_key'      => $article->slug,
+        'comment_title'    => $article->title,
+        'comment_url'      => route('article.show',$article->slug),
+        'commentable'      => $article,
+        'comments'         => isset($comments) ? $comments:[],
+        'redirect'         => request()->fullUrl(),
+        'commentable_type' => 'App\Article'
     ])
 
 <script>
