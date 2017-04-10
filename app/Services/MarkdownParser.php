@@ -5,7 +5,7 @@ namespace App\Services;
 use Parsedown;
 use League\HTMLToMarkdown\HtmlConverter;
 
-class Markdowner
+class MarkdownParser
 {
     /**
      * @var HtmlConverter
@@ -18,7 +18,7 @@ class Markdowner
     protected $markdownConverter;
 
     /**
-     * Markdowner constructor.
+     * MarkdownParser constructor.
      */
     public function __construct()
     {

@@ -23,8 +23,6 @@ class CreateArticlesTable extends Migration {
             $table->string('image')->nullable();
             $table->text('content');
 	        $table->text('html_content');
-            $table->boolean('is_original')->default(false);
-            $table->boolean('is_draft')->default(false);
             $table->string('keywords')->nullable();
             $table->string('description')->nullable();
             $table->timestamp('published_at')->nullable();

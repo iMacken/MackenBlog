@@ -2,11 +2,9 @@
 
 namespace App\Providers;
 
-use App\Services\ES\EsEngine;
-use Elasticsearch\ClientBuilder as ElasticBuilder;
+use App\Repositories\MapRepository;
 use Illuminate\Support\ServiceProvider;
 use Carbon\Carbon;
-use Laravel\Scout\EngineManager;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton('BlogConfig', function ($app) {
+            return new MapRepository();
+        });
     }
 }

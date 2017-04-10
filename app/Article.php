@@ -4,6 +4,8 @@ namespace App;
 
 use App\Scopes\DraftScope;
 use App\Scopes\PublishedScope;
+use App\Traits\Commentable;
+use App\Traits\Configurable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
@@ -11,7 +13,7 @@ use Laravel\Scout\Searchable;
 
 class Article extends Model
 {
-    use SoftDeletes, Searchable;
+    use SoftDeletes, Searchable, Configurable, Commentable;
 
 	const PAGE_LIMIT = 7;
 
@@ -35,7 +37,7 @@ class Article extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'category_id', 'title', 'slug', 'image', 'content', 'html_content', 'description', 'is_draft', 'is_original', 'published_at'];
+    protected $fillable = ['user_id', 'category_id', 'title', 'slug', 'image', 'content', 'html_content', 'description', 'published_at'];
 
     const INDEX_FIELDS = [
 	    'id',
@@ -45,8 +47,6 @@ class Article extends Model
 	    'title',
 	    'slug',
 	    'description',
-	    'is_draft',
-	    'is_original',
 	    'created_at',
 	    'deleted_at',
 	    'published_at'
@@ -61,7 +61,6 @@ class Article extends Model
     {
         parent::boot();
 
-        static::addGlobalScope(new DraftScope());
 	    static::addGlobalScope(new PublishedScope());
     }
 
@@ -107,12 +106,20 @@ class Article extends Model
 	
     /**
      * get a list of tag ids associated with the current article
-     * @return [array]
+     * @return array
      */
     public function getTagListAttribute()
     {
         return $this->tags->pluck('id')->all();
     }
+
+	/**
+	 * @return array
+	 */
+	public function getConfigKeys()
+	{
+		return ['if_allow_comment', 'if_show_comments', 'is_draft', 'is_original'];
+	}
 
 }
 

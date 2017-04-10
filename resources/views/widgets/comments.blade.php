@@ -1,15 +1,15 @@
-<div class="comments" id="comments">
-    <div class="comments-body">
+<div class="panel panel-default" id="comments">
+    <div class="panel-body">
         <div id="comments-container">
             @if(isset($comments) && !empty($comments))
                 @include('comment.show',$comments)
             @endif
         </div>
-        <form id="comment-form" method="post" action="{{ route('comment.store') }}">
+        <form id="comment-form" method="POST" action="{{ route('comment.store') }}">
             {{ csrf_field() }}
             <input type="hidden" name="commentable_id" value="{{ $commentable->id }}">
             <input type="hidden" name="commentable_type" value="{{ $commentable_type }}">
-            <?php $final_allow_comment = $commentable->allowComment()?>
+            <?php $final_allow_comment = $commentable->ifAllowComment()?>
             @if(!auth()->check())
                 <div class="form-group">
                     <label for="username">姓名<span class="required">*</span></label>
@@ -26,17 +26,13 @@
             @endif
             <div class="form-group">
                 <label for="comment-content">评论内容<span class="required">*</span></label>
-                <textarea {{ $final_allow_comment?' ':' disabled ' }} placeholder="支持Markdown" style="resize: vertical"
-                          id="comment-content" name="content"
-                          rows="5" spellcheck="false"
-                          class="form-control markdown-content autosize-target"></textarea>
+                <textarea placeholder="支持 Markdown" style="resize: vertical" id="comment-content" name="content" rows="5" spellcheck="false" class="form-control markdown-content autosize-target"></textarea>
                 <span class="help-block required">
                     <strong id="comment_error_msg"></strong>
                 </span>
             </div>
             <div class="form-group">
-                <input {{ $final_allow_comment?' ':' disabled ' }} type="submit" id="comment-submit" class="btn btn-primary"
-                       value="回复"/>
+                <input {{ $final_allow_comment?' ':' disabled ' }} type="submit" id="comment-submit" class="btn btn-primary" value="回复"/>
             </div>
         </form>
     </div>

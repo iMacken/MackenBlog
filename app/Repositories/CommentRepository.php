@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Repositories;
+namespace App\Repositories;
 
 use App\Comment;
+use App\Services\MarkdownParser;
+use App\Services\Mention;
 use Illuminate\Http\Request;
-use App\Services\Markdowner;
 
 /**
  * Class CommentRepository
@@ -15,7 +16,7 @@ class CommentRepository extends Repository
 
     static $tag = 'comment';
 
-    protected $markdowner;
+    protected $markdownParser;
     protected $mention;
 
     /**
@@ -23,7 +24,7 @@ class CommentRepository extends Repository
      * @param Mention $mention
      * @param MarkDownParser $markDownParser
      */
-    public function __construct(Mention $mention, MarkDownParser $markDownParser)
+    public function __construct(Mention $mention, MarkdownParser $markDownParser)
     {
         $this->mention = $mention;
         $this->markdownParser = $markDownParser;
@@ -78,7 +79,7 @@ class CommentRepository extends Repository
         $content = $request->get('content');
 
         $comment->content = $this->mention->parse($content);
-        $comment->html_content = $this->markdownParser->parse($comment->content);
+        $comment->html_content = $this->markdownParser->convertMarkdownToHtml($comment->content);
         $result = $commentable->comments()->save($comment);
 
         /**

@@ -5,284 +5,276 @@ namespace App\Services\FileManager;
 use Carbon\Carbon;
 use App\Exceptions\UploadException;
 use Illuminate\Support\Facades\Storage;
-use Dflydev\ApacheMimeTypes\PhpRepository;
 
 class BaseManager
 {
-    /**
-     * @var $disk
-     */
-    protected $disk;
+	/**
+	 * @var $disk
+	 */
+	protected $disk;
 
-    /**
-     * @var PhpRepository $mimeDetect
-     */
-    protected $mimeDetect;
+	/**
+	 * @var PhpRepository $mimeDetect
+	 */
+	protected $mimeDetect;
 
-    /**
-     * UploadManager constructor.
-     * @param PhpRepository $mimeDetect
-     */
-    public function __construct(PhpRepository $mimeDetect)
-    {
-        $this->disk = Storage::disk(config('filesystmes.default'));
+	/**
+	 * UploadManager constructor.
+	 */
+	public function __construct()
+	{
+		$this->disk = Storage::disk(config('filesystems.default'));
+	}
 
-        $this->mimeDetect = $mimeDetect;
-    }
+	/**
+	 * Get the folder information.
+	 *
+	 * @param $folder
+	 * @return array
+	 */
+	public function folderInfo($folder)
+	{
+		$folder      = $this->cleanFolder($folder);
+		$breadcrumbs = $this->breadcrumbs($folder);
+		$slice       = array_slice($breadcrumbs, -1);
+		$folderName  = current($slice);
+		$breadcrumbs = array_slice($breadcrumbs, 0, -1);
+		$subfolders  = $this->getSubfolderList($folder);
+		$files       = $this->getFileList($folder);
 
-    /**
-     * Get the folder information.
-     *
-     * @param $folder
-     * @return array
-     */
-    public function folderInfo($folder)
-    {
-        $folder = $this->cleanFolder($folder);
+		return compact([
+			'folder',
+			'folderName',
+			'breadcrumbs',
+			'subfolders',
+			'files'
+		]);
+	}
 
-        $breadcrumbs = $this->breadcrumbs($folder);
-        $slice = array_slice($breadcrumbs, -1);
-        $folderName = current($slice);
-        $breadcrumbs = array_slice($breadcrumbs, 0, -1);
+	/**
+	 * Get all the subfolders by folder.
+	 *
+	 * @param  string $folder
+	 * @return array
+	 */
+	public function getSubfolderList($folder)
+	{
+		$subfolders = [];
+		foreach (array_unique($this->disk->directories($folder)) as $subfolder) {
+			$subfolders["/$subfolder"] = basename($subfolder);
+		}
 
-        $subfolders = $this->getSubfolderList($folder);
+		return $subfolders;
+	}
 
-        $files = $this->getFileList($folder);
+	/**
+	 * Get all the files by the folder.
+	 *
+	 * @param  string $folder
+	 * @return array
+	 */
+	public function getFileList($folder)
+	{
+		$files = [];
 
-        return compact([
-            'folder',
-            'folderName',
-            'breadcrumbs',
-            'subfolders',
-            'files'
-        ]);
-    }
+		$filesContent = $this->disk->files($folder);
 
-    /**
-     * Get all the subfolders by folder.
-     * 
-     * @param  string $folder
-     * @return array
-     */
-    public function getSubfolderList($folder)
-    {
-        $subfolders = [];
-        foreach (array_unique($this->disk->directories($folder)) as $subfolder) {
-            $subfolders["/$subfolder"] = basename($subfolder);
-        }
+		foreach ($filesContent as $file) {
+			$files[] = $this->fileDetail($file);
+		}
 
-        return $subfolders;
-    }
+		return $files;
+	}
 
-    /**
-     * Get all the files by the folder.
-     * 
-     * @param  string $folder
-     * @return array
-     */
-    public function getFileList($folder)
-    {
-        $files = [];
+	/**
+	 * Clean the folder.
+	 *
+	 * @param $folder
+	 * @return string
+	 */
+	public function cleanFolder($folder)
+	{
+		return '/' . trim(str_replace('..', '', $folder), '/'); //eq: ../../uploads
+	}
 
-        $filesContent = $this->disk->files($folder);
+	/**
+	 * Get the breadcrumbs by the folder.
+	 *
+	 * @param $folder
+	 * @return array
+	 */
+	public function breadcrumbs($folder)
+	{
+		$folder = trim($folder, '/'); //eq: /post_img/2016/10/01/
+		$crumbs = ['/' => 'root'];
 
-        foreach ($filesContent as $file) {
-            $files[] = $this->fileDetail($file);
-        }
+		if (empty($folder)) return $crumbs;
 
-        return $files;
-    }
+		$folders = explode('/', $folder); // eq: ['post_img', '2016', '10', '01']
+		$build   = '';
+		foreach ($folders as $folder) {
+			$build .= '/' . $folder;
+			$crumbs[$build] = $folder;
+		}
 
-    /**
-     * Clean the folder.
-     *
-     * @param $folder
-     * @return string
-     */
-    public function cleanFolder($folder)
-    {
-        return '/' . trim(str_replace('..', '', $folder), '/'); //eq: ../../uploads
-    }
+		return $crumbs;
+	}
 
-    /**
-     * Get the breadcrumbs by the folder.
-     *
-     * @param $folder
-     * @return array
-     */
-    public function breadcrumbs($folder)
-    {
-        $folder = trim($folder, '/'); //eq: /post_img/2016/10/01/
-        $crumbs = ['/' => 'root'];
+	/**
+	 * Get the file detail by the path.
+	 *
+	 * @param $path
+	 * @return array
+	 */
+	public function fileDetail($path)
+	{
+		$path = '/' . trim($path, '/');
 
-        if (empty($folder)) return $crumbs;
+		return [
+			'name'     => basename($path),
+			'fullPath' => $path,
+			'webPath'  => $this->fileWebPath($path),
+			'mimeType' => $this->fileMimeType($path),
+			'size'     => $this->fileSize($path),
+			'modified' => $this->fileModified($path)
+		];
+	}
 
-        $folders = explode('/', $folder); // eq: ['post_img', '2016', '10', '01']
-        $build = '';
-        foreach ($folders as $folder)
-        {
-            $build .= '/' . $folder;
-            $crumbs[$build] = $folder;
-        }
+	/**
+	 * Get the file's webpath by the path.
+	 *
+	 * @param $path
+	 * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+	 */
+	public function fileWebPath($path)
+	{
+		$path = rtrim(config('filesystems.disks.local.webpath'), '/') . '/' . ltrim($path, '/');
 
-        return $crumbs;
-    }
+		return url($path);
+	}
 
-    /**
-     * Get the file detail by the path.
-     *
-     * @param $path
-     * @return array
-     */
-    public function fileDetail($path)
-    {
-        $path = '/' . trim($path, '/');
+	/**
+	 * Get the file's mime type by the path.
+	 *
+	 * @param $path
+	 * @return mixed|null|string
+	 */
+	public function fileMimeType($path)
+	{
+		return $this->disk->mimeType(
+			pathinfo($path, PATHINFO_EXTENSION)
+		);
+	}
 
-        return [
-            'name' => basename($path),
-            'fullPath' => $path,
-            'webPath'  => $this->fileWebPath($path),
-            'mimeType' => $this->fileMimeType($path),
-            'size'     => $this->fileSize($path),
-            'modified' => $this->fileModified($path)
-        ];
-    }
+	/**
+	 * Get the file's size by the path.
+	 *
+	 * @param $path
+	 * @return mixed
+	 */
+	public function fileSize($path)
+	{
+		return human_filesize($this->disk->size($path));
+	}
 
-    /**
-     * Get the file's webpath by the path.
-     *
-     * @param $path
-     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
-     */
-    public function fileWebPath($path)
-    {
-        $path = rtrim(config('filesystems.disks.local.webpath'), '/') . '/' . ltrim($path, '/');
+	/**
+	 * Get the file's last modified time by the path.
+	 *
+	 * @param $path
+	 * @return string
+	 */
+	public function fileModified($path)
+	{
+		return Carbon::createFromTimestamp(
+			substr($this->disk->lastModified($path), 0, 10)
+		)->toDateTimeString();
+	}
 
-        return url($path);
-    }
+	/**
+	 * Create a new folder.
+	 *
+	 * @param $folder
+	 * @return string
+	 */
+	public function createFolder($folder)
+	{
+		$this->cleanFolder($folder);
 
-    /**
-     * Get the file's mime type by the path.
-     *
-     * @param $path
-     * @return mixed|null|string
-     */
-    public function fileMimeType($path)
-    {
-        return $this->mimeDetect->findType(
-            pathinfo($path, PATHINFO_EXTENSION)
-        );
-    }
+		if ($this->checkFolder($folder)) {
+			throw new UploadException("The Folder exists.");
+		}
 
-    /**
-     * Get the file's size by the path.
-     *
-     * @param $path
-     * @return mixed
-     */
-    public function fileSize($path)
-    {
-        return human_filesize($this->disk->size($path));
-    }
+		return $this->disk->makeDirectory($folder);
+	}
 
-    /**
-     * Get the file's last modified time by the path.
-     *
-     * @param $path
-     * @return string
-     */
-    public function fileModified($path)
-    {
-        return Carbon::createFromTimestamp(
-            substr($this->disk->lastModified($path), 0, 10)
-        )->toDateTimeString();
-    }
+	/**
+	 * Check if the folder exists.
+	 *
+	 * @param $folder
+	 * @return mixed
+	 */
+	public function checkFolder($folder)
+	{
+		return $this->disk->exists($folder);
+	}
 
-    /**
-     * Create a new folder.
-     *
-     * @param $folder
-     * @return string
-     */
-    public function createFolder($folder)
-    {
-        $this->cleanFolder($folder);
+	/**
+	 * Save the file.
+	 *
+	 * @param $path
+	 * @param $content
+	 * @return string
+	 */
+	public function saveFile($path, $content)
+	{
+		$this->cleanFolder($path);
 
-        if ($this->checkFolder($folder)) {
-            throw new UploadException("The Folder exists.");
-        }
+		return $this->disk->put($path, $content);
+	}
 
-        return $this->disk->makeDirectory($folder);
-    }
+	/**
+	 * Determine whether the file exists
+	 *
+	 * @param  string $path
+	 * @return boolean
+	 */
+	public function checkFile($path)
+	{
+		return $this->disk->exists($path);
+	}
 
-    /**
-     * Check if the folder exists.
-     *
-     * @param $folder
-     * @return mixed
-     */
-    public function checkFolder($folder)
-    {
-        return $this->disk->exists($folder);
-    }
+	/**
+	 * Delete the folder.
+	 *
+	 * @param $folder
+	 * @return string
+	 */
+	public function deleteFolder($folder)
+	{
+		$this->cleanFolder($folder);
 
-    /**
-     * Save the file.
-     *
-     * @param $path
-     * @param $content
-     * @return string
-     */
-    public function saveFile($path, $content)
-    {
-        $this->cleanFolder($path);
+		$filesFolders = array_merge(
+			$this->disk->directories($folder),
+			$this->disk->files($folder)
+		);
 
-        return $this->disk->put($path, $content);
-    }
+		if (!empty($filesFolders)) {
+			throw new UploadException("The directory must be empty to delete it.");
+		}
 
-    /**
-     * Determine whether the file exists
-     * 
-     * @param  string $path
-     * @return boolean
-     */
-    public function checkFile($path)
-    {
-        return $this->disk->exists($path);
-    }
+		return $this->disk->deleteDirectory($folder);
+	}
 
-    /**
-     * Delete the folder.
-     *
-     * @param $folder
-     * @return string
-     */
-    public function deleteFolder($folder)
-    {
-        $this->cleanFolder($folder);
+	/**
+	 * Delete the file.
+	 *
+	 * @param $path
+	 * @return mixed
+	 */
+	public function deleteFile($path)
+	{
+		$this->cleanFolder($path);
 
-        $filesFolders = array_merge(
-            $this->disk->directories($folder),
-            $this->disk->files($folder)
-        );
-
-        if (!empty($filesFolders)) {
-            throw new UploadException("The directory must be empty to delete it.");
-        }
-
-        return $this->disk->deleteDirectory($folder);
-    }
-
-    /**
-     * Delete the file.
-     *
-     * @param $path
-     * @return mixed
-     */
-    public function deleteFile($path)
-    {
-        $this->cleanFolder($path);
-
-        return $this->disk->delete($path);
-    }
+		return $this->disk->delete($path);
+	}
 }

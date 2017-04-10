@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Response;
 
-class SettingRequest extends FormRequest
+class MapRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class SettingRequest extends FormRequest
     {
 
         return [
-            'name' => 'required',
+            'key' => 'required|unique:maps',
             'value' => 'required',
         ];
 

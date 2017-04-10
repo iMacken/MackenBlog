@@ -5,24 +5,24 @@ namespace App\Repositories;
 use App\Article;
 use App\Tag;
 use App\Http\Requests\ArticleRequest;
-use App\Services\Markdowner;
+use App\Services\MarkdownParser;
 use Model, DB;
 
 class ArticleRepository extends Repository
 {
-	protected $markdowner;
+	protected $markdownParser;
 	protected $tagRepository;
 
 	static $tag = 'article';
 
 	/**
 	 * ArticleRepository constructor.
-	 * @param Markdowner $markdowner
+	 * @param MarkdownParser $markdownParser
 	 * @param TagRepository $tagRepository
 	 */
-	public function __construct(Markdowner $markdowner, TagRepository $tagRepository)
+	public function __construct(MarkdownParser $markdownParser, TagRepository $tagRepository)
 	{
-		$this->markdowner    = $markdowner;
+		$this->markdownParser    = $markdownParser;
 		$this->tagRepository = $tagRepository;
 	}
 
@@ -138,8 +138,8 @@ class ArticleRepository extends Repository
 			array_merge(
 				$request->all(),
 				[
-					'html_content' => $this->markdowner->convertMarkdownToHtml($request->get('content'), false),
-					'description' => $this->markdowner->convertMarkdownToHtml($request->get('description'), false),
+					'html_content' => $this->markdownParser->convertMarkdownToHtml($request->get('content'), false),
+					'description' => $this->markdownParser->convertMarkdownToHtml($request->get('description'), false),
 				]
 			)
 		);
@@ -168,8 +168,8 @@ class ArticleRepository extends Repository
 			array_merge(
 				$request->all(),
 				[
-					'html_content' => $this->markdowner->convertMarkdownToHtml($request->get('content'), false),
-					'description' => $this->markdowner->convertMarkdownToHtml($request->get('description'), false),
+					'html_content' => $this->markdownParser->convertMarkdownToHtml($request->get('content'), false),
+					'description' => $this->markdownParser->convertMarkdownToHtml($request->get('description'), false),
 				]
 			)
 		);

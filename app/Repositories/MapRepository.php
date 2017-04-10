@@ -54,7 +54,7 @@ class MapRepository extends Repository
 		return $count;
 	}
 
-	public function saveMaps(array $inputs)
+	public function save(array $inputs)
 	{
 		foreach ($inputs as $key => $value) {
 			$map = Map::firstOrNew(['key' => $key]);

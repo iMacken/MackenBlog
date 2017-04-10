@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Services\Mention;
-use App\Services\Markdowner;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -45,23 +43,6 @@ class Comment extends Model
     public function commentable()
     {
         return $this->morphTo();
-    }
-
-    /**
-     * Set the content Attribute.
-     *
-     * @param $value
-     */
-    public function setContentAttribute($value)
-    {
-        $content = (new Mention)->parse($value);
-
-        $data = [
-            'raw'  => $content,
-            'html' => (new Markdowner)->convertMarkdownToHtml($content)
-        ];
-
-        $this->attributes['content'] = json_encode($data);
     }
 
 }

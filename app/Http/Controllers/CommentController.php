@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
-use App\Http\Repositories\CommentRepository;
+use App\Repositories\CommentRepository;
 use App\Http\Requests;
 use Gate;
 use Illuminate\Http\Request;

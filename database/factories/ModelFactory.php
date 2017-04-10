@@ -46,14 +46,15 @@ $factory->define(App\Article::class, function (Faker\Generator $faker) {
         'html_content' => $faker->paragraph,
         'image'       => $faker->imageUrl(),
         'description' => $faker->sentence,
-        'is_draft'         => false,
         'published_at'     => $faker->dateTimeBetween($startDate = '-2 months', $endDate = 'now')
     ];
 });
 
 $factory->define(App\Tag::class, function (Faker\Generator $faker) {
+    $title = $faker->sentence(mt_rand(3,10));
     return [
-        'name'              => $faker->word,
+        'name'     => $title,
+        'slug'     => str_slug($title),
     ];
 });
 
