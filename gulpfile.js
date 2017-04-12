@@ -12,17 +12,10 @@ const elixir = require('laravel-elixir');
  */
 
 elixir(mix => {
-
 	mix.sass('app.scss')
 		.webpack('app.js');
-
 	mix.version([
 		'public/css/app.css',
 		'public/js/app.js',
 	]);
-
-	mix.browserSync({
-		proxy: 'macken.dev'
-	});
-
 });

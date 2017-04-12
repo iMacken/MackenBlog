@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Comment;
+use App\Notifications\CommentMentioned;
 use App\User;
 
 class Mention
@@ -67,5 +69,14 @@ class Mention
 		$this->replace();
 
 		return $this->content_parsed;
+	}
+
+	public function mentionUsers(Comment $comment, $users)
+	{
+		foreach ($users as $user) {
+			if (!isAdmin($users)) {
+				$user->notify(new CommentMentioned($comment));
+			}
+		}
 	}
 }

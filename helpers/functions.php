@@ -1,4 +1,5 @@
 <?php
+use App\User;
 
 if (!function_exists('str_cut')) {
     /**
@@ -101,4 +102,71 @@ if (!function_exists('upload_file')) {
         }
         return false;
     }
+}
+
+if (!function_exists('processImageViewUrl')) {
+
+    function processImageViewUrl($rawImageUrl, $width = null, $height = null, $mode = 1)
+    {
+        $para = '?imageView2/' . $mode;
+        if ($width)
+            $para = $para . '/w/' . $width;
+        if ($height)
+            $para = $para . '/h/' . $height;
+        return $rawImageUrl . $para;
+    }
+}
+
+if (!function_exists('getImageViewUrl')) {
+    /**
+     * @see http://developer.qiniu.com/code/v6/api/kodo-api/image/imageview2.html
+     * @param $key
+     * @param null $width
+     * @param null $height
+     * @param int $mode
+     * @return string
+     */
+    function getImageViewUrl($key, $width = null, $height = null, $mode = 1)
+    {
+        return processImageViewUrl(getUrlByFileName($key), $width, $height, $mode);
+    }
+}
+
+
+if (!function_exists('formatBytes')) {
+    function formatBytes($size, $precision = 2)
+    {
+        if ($size > 0) {
+            $size = (int)$size;
+            $base = log($size) / log(1024);
+            $suffixes = [' bytes', ' KB', ' MB', ' GB', ' TB'];
+
+            return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
+        } else {
+            return $size;
+        }
+    }
+}
+
+if (!function_exists('getMentionedUsers')) {
+    function getMentionedUsers($content)
+    {
+        preg_match_all("/(\S*)\@([^\r\n\s]*)/i", $content, $atlist_tmp);
+        $usernames = [];
+        foreach ($atlist_tmp[2] as $k => $v) {
+            if ($atlist_tmp[1][$k] || strlen($v) > 25) {
+                continue;
+            }
+            $usernames[] = $v;
+        }
+        $users = User::whereIn('name', array_unique($usernames))->get();
+        return $users;
+    }
+}
+
+if (!function_exists('isAdminById')) {
+	function isAdminById($user_id)
+	{
+		return $user_id === 1;
+	}
 }

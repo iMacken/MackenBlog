@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Facades\BlogConfig;
+use App\Navigation;
 use Illuminate\Support\ServiceProvider;
 
 class ViewComposerServiceProvider extends ServiceProvider
@@ -27,6 +29,13 @@ class ViewComposerServiceProvider extends ServiceProvider
         //
     }
 
+	public function composeGlobal()
+	{
+		view()->composer('*', function($view) {
+			$view->with('BlogConfig', BlogConfig::getArrayByTag('settings'));
+		});
+	}
+
     /**
      * compose the navigation bar
      * @return [type] [description]
@@ -34,7 +43,7 @@ class ViewComposerServiceProvider extends ServiceProvider
     public function composeNavigation()
     {
         view()->composer('partials.nav', function($view) {
-            $view->with('navList', \App\Navigation::getNavigationAll());
+            $view->with('navList', Navigation::getNavigationAll());
         });
     }
 

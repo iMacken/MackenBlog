@@ -17,7 +17,8 @@
         "league/html-to-markdown": "^4.2",
         "laravel/scout": "^3.0",
         "tamayo/laravel-scout-elastic": "^3.0",
-        "fabpot/goutte": "^3.2"
+        "fabpot/goutte": "^3.2",
+        "deployer/deployer": "^4.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
