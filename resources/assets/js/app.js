@@ -2,6 +2,7 @@ window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
 require('bootstrap-sass');
 window.moment = require('moment');
+require('autosize');
 
 window.swal = require('sweetalert');
 window.marked = require('marked');
@@ -23,4 +24,5 @@ window.toastr.options = {
 require('social-share.js/dist/js/social-share.min.js');
 
 require('./init.js');
+
 

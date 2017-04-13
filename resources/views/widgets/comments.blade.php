@@ -1,12 +1,12 @@
 <div class="panel panel-default" id="comments">
     <div class="panel-body">
-        <div id="comments-container" data-api-url="{{ route('comment.show',[$commentable->id,
+        <ul id="comments-container" class="list-group" data-api-url="{{ route('comment.show',[$commentable->id,
              'commentable_type'=>$commentable_type,
              'redirect'=>(isset($redirect) && $redirect ? $redirect:'')]) }}">
             @if(isset($comments) && !empty($comments))
                 @include('comment.show',$comments)
             @endif
-        </div>
+        </ul>
         <form id="comment-form" method="POST" action="{{ route('comment.store') }}">
             {{ csrf_field() }}
             <input type="hidden" name="commentable_id" value="{{ $commentable->id }}">
@@ -36,6 +36,8 @@
             <div class="form-group">
                 <input {{ $final_allow_comment?' ':' disabled ' }} type="submit" id="comment-submit" class="btn btn-primary" value="回复"/>
             </div>
+
+            <div class="box preview markdown-comment" id="preview-box" style="display:none;"></div>
         </form>
     </div>
 </div>

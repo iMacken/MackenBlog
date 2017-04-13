@@ -240,6 +240,10 @@ autoprefixer@^6.0.0, autoprefixer@^6.3.1:
     postcss "^5.2.8"
     postcss-value-parser "^3.2.3"
 
+autosize@^3.0.20:
+  version "3.0.20"
+  resolved "http://registry.npm.taobao.org/autosize/download/autosize-3.0.20.tgz#e343ea7c5603834738169420f0349dc953e62a9e"
+
 aws-sign2@~0.6.0:
   version "0.6.0"
   resolved "http://registry.npm.taobao.org/aws-sign2/download/aws-sign2-0.6.0.tgz#14342dd38dbcc94d0e5b87d763cd63612c0e794f"
@@ -2941,11 +2945,7 @@ modify-filename@^1.0.0, modify-filename@^1.1.0:
   version "1.1.0"
   resolved "http://registry.npm.taobao.org/modify-filename/download/modify-filename-1.1.0.tgz#9a2dec83806fbb2d975f22beec859ca26b393aa1"
 
-moment@^2.10.6, moment@^2.11.1:
-  version "2.17.1"
-  resolved "http://registry.npm.taobao.org/moment/download/moment-2.17.1.tgz#fed9506063f36b10f066c8b59a144d7faebe1d82"
-
-moment@^2.18.0:
+moment@^2.10.6, moment@^2.11.1, moment@^2.18.0:
   version "2.18.0"
   resolved "http://registry.npm.taobao.org/moment/download/moment-2.18.0.tgz#6cfec6a495eca915d02600a67020ed994937252c"
 
