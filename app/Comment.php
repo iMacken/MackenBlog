@@ -23,7 +23,7 @@ class Comment extends Model
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'created_at'];
 
     /**
      * Get the user for the discussion comment.

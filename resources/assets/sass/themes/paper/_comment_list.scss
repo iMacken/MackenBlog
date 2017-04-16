@@ -1,0 +1,35 @@
+#comment-list {
+  border: none;
+  .panel-heading {
+
+  }
+  .panel-body {
+    padding: 0;
+  }
+  .list-group-item {
+    border-left: none;
+    border-right: none;
+    margin-top: 0;
+  }
+  .meta {
+    a {
+      color: $gray-light;
+    }
+    font-size: $font-size-base;
+  }
+}
+
+#comment-form {
+  label {
+    margin-left: 0.5em;
+  }
+  textarea {
+    padding: 0.5em;
+    font-size: $font-size-normal;
+  }
+  input {
+    font-size: $font-size-normal;
+    padding: 0 0.5em;
+  }
+
+}

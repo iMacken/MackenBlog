@@ -1,6 +1,6 @@
 @forelse($comments as $comment)
     <li class="list-group-item media">
-        <div class="avatar avatar-container pull-left">
+        <div class="media-left">
             <?php
             if ($comment->user_id) {
                 $href = route('user.show', $comment->username);
@@ -15,7 +15,7 @@
                      src="{{ $imgSrc }}">
             </a>
         </div>
-        <div class="comment-info">
+        <div class="media-body comment-info">
             <div class="media-heading">
                 <span class="name">
                     <a href="{{ $href }}">{{ $comment->username }}</a>
@@ -23,31 +23,29 @@
                         <label class="role-label">博主</label>
                     @endif
                 </span>
-                <span class="comment-operation pull-right">
-                    <a href="#comment{{ $loop->index + 1 }}"
-                       style="color: #ccc;font-size: 12px">#{{ $loop->index	+ 1 }}</a>
-                </span>
-                <div class="meta">
-                    <abbr class="timeago" title="{{ $comment->created_at }}">{{ $comment->created_at }}</abbr>
-                </div>
-            </div>
-            <div class="media-body markdown-reply comment-content">
-                {!! $comment->html_content !!}
-
-                <div class="pull-right">
-                    <a class="ion-reply reply-user-btn"
+                <span class="pull-right">
+                    <a class="operation ion-reply reply-user-btn"
                        title="回复"
                        href="javascript:void (0);"
                        data-username="{{ $comment->username }}"></a>
-                    <a class="ion-edit"
+                    <a class="operation ion-edit"
                        title="编辑"
                        href="{{ route('comment.edit',[$comment->id,'redirect'=>(isset($redirect) && $redirect.'#'.$loop->index ? $redirect : '')]) }}"></a>
-                    <a class="ion-android-delete swal-dialog-target"
+                    <a class="operation ion-trash-a swal-dialog-target"
                        title="删除"
                        href="javascript:void (0)"
                        data-dialog-msg="删除这条评论？"
                        data-url="{{ route('comment.destroy',$comment->id) }}"></a>
+                </span>
+                <div class="meta">
+                    <a href="#comment{{ $loop->index + 1 }}">#{{ $loop->index	+ 1 }}</a>
+                    <span> ⋅  </span>
+                    <abbr class="comment-time popover-with-html" title="" data-content="{{ $comment->created_at }}" data-original-title="{{ $comment->created_at }}">{{ $comment->created_at->diffForHumans() }}</abbr>
+
                 </div>
+            </div>
+            <div class="markdown-reply comment-content">
+                {!! $comment->html_content !!}
             </div>
 
         </div>

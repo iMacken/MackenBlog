@@ -13257,6 +13257,78 @@ button.toast-close-button {
   content: normal;
 }
 
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+  color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+  color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+  color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+  color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+  color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+  color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+  color: #8959a8;
+}
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  background: white;
+  color: #4d4d4c;
+  padding: 0.5em;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
 body {
   -webkit-font-smoothing: antialiased;
   letter-spacing: .1px;
@@ -13710,7 +13782,7 @@ label {
   font-weight: normal;
 }
 
-input.form-control {
+textarea.form-control, input.form-control {
   box-shadow: inset 0 -1px 0 #ddd;
 }
 
@@ -13815,7 +13887,7 @@ input[type=number].input-sm,
 [contenteditable].form-control.input-sm,
 .input-group-sm > [contenteditable].form-control,
 .input-group-sm > .input-group-btn > [contenteditable].form-control.btn {
-  font-size: 12px;
+  font-size: 15px;
 }
 
 textarea.input-lg, .input-group-lg > textarea.form-control,
@@ -14121,14 +14193,38 @@ input[type="checkbox"]:disabled:checked:after,
   box-shadow: inset 0 -2px 0 #4CAF50;
 }
 
-.alert {
-  border: none;
-  color: #fff;
+.alert .close {
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=20);
+  opacity: .2;
 }
 
-.alert .close {
-  color: #fff;
-  font-weight: 700;
+.alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+}
+
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
 }
 
 .badge {
@@ -14396,6 +14492,47 @@ input[type="checkbox"]:disabled:checked:after,
 
 .article-list .article-list-meta span {
   margin-right: 0.6em;
+}
+
+#comment-list {
+  border: none;
+}
+
+#comment-list .panel-body {
+  padding: 0;
+}
+
+#comment-list .list-group-item {
+  border-left: none;
+  border-right: none;
+  margin-top: 0;
+}
+
+#comment-list .meta {
+  font-size: 13px;
+}
+
+#comment-list .meta a {
+  color: #bbb;
+}
+
+#comment-form label {
+  margin-left: 0.5em;
+}
+
+#comment-form textarea {
+  padding: 0.5em;
+  font-size: 15px;
+}
+
+#comment-form input {
+  font-size: 15px;
+  padding: 0 0.5em;
+}
+
+pre {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
 }
 
 .has-warning .input-group-addon, .has-error .input-group-addon, .has-success .input-group-addon {

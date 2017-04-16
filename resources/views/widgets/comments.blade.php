@@ -1,4 +1,11 @@
-<div class="panel panel-default" id="comments">
+<div class="panel panel-default" id="comment-list">
+    <div class="panel-heading">
+        <div class="total">回复数量: <b>23</b> </div>
+        <div class="btn-group pull-right" role="group" aria-label="comments order">
+            <a class="btn btn-default btn-sm active popover-with-html" data-content="按照时间排序" href="" type="button" data-original-title="" title="">时间</a>
+            <a class="btn btn-default btn-sm  popover-with-html" data-content="按照投票排序" href="" type="button" data-original-title="" title="">投票</a>
+        </div>
+    </div>
     <div class="panel-body">
         <ul id="comments-container" class="list-group" data-api-url="{{ route('comment.show',[$commentable->id,
              'commentable_type'=>$commentable_type,
@@ -11,32 +18,28 @@
             {{ csrf_field() }}
             <input type="hidden" name="commentable_id" value="{{ $commentable->id }}">
             <input type="hidden" name="commentable_type" value="{{ $commentable_type }}">
-            <?php $final_allow_comment = $commentable->ifAllowComment()?>
+            <?php $if_allow_comment = $commentable->ifAllowComment()?>
+            <div class="form-group">
+                <label for="comment-content"><strong>评论</strong></label>
+                <textarea placeholder="支持 Markdown" style="resize: vertical" id="comment-content" name="content" rows="5" spellcheck="false" class="form-control markdown-content autosize-target" required></textarea>
+            </div>
             @if(!auth()->check())
                 <div class="form-group">
-                    <label for="username">姓名<span class="required">*</span></label>
-                    <input {{ $final_allow_comment?' ':' disabled ' }} class="form-control" id="username" type="text" name="username" placeholder="您的大名">
+                    <label for="username">姓名</label>
+                    <input {{ $if_allow_comment?' ':' disabled ' }} class="form-control" id="username" type="text" name="username" placeholder="您的大名" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">邮箱<span class="required">*</span></label>
-                    <input {{ $final_allow_comment?' ':' disabled ' }} class="form-control" id="email" type="email" name="email" placeholder="邮箱不会公开">
+                    <label for="email">邮箱</label>
+                    <input {{ $if_allow_comment?' ':' disabled ' }} class="form-control" id="email" type="email" name="email" placeholder="邮箱不会公开" required>
                 </div>
                 <div class="form-group">
-                    <label for="site">个人网站</label>
-                    <input {{ $final_allow_comment?' ':' disabled ' }} class="form-control" id="site" type="text" name="site" placeholder="可选，填写后点击头像可以直接进入">
+                    <label for="website">个人网站</label>
+                    <input {{ $if_allow_comment?' ':' disabled ' }} class="form-control" id="website" type="text" name="website" placeholder="可不填">
                 </div>
             @endif
             <div class="form-group">
-                <label for="comment-content">评论内容<span class="required">*</span></label>
-                <textarea placeholder="支持 Markdown" style="resize: vertical" id="comment-content" name="content" rows="5" spellcheck="false" class="form-control markdown-content autosize-target"></textarea>
-                <span class="help-block required">
-                    <strong id="comment_error_msg"></strong>
-                </span>
+                <button {{ $if_allow_comment?' ':' disabled ' }} type="submit" id="comment-submit" class="btn btn-primary">发表</button>
             </div>
-            <div class="form-group">
-                <input {{ $final_allow_comment?' ':' disabled ' }} type="submit" id="comment-submit" class="btn btn-primary" value="回复"/>
-            </div>
-
             <div class="box preview markdown-comment" id="preview-box" style="display:none;"></div>
         </form>
     </div>

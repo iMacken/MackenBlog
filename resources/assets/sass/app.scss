@@ -1,13 +1,8 @@
-// Public
 @import "common";
-
-// Share.js
 @import "node_modules/social-share.js/src/css/share";
-
-// Markdown
 @import "markdown";
-
-// Theme
+@import "hljs";
 @import "themes/paper/index";
-
 @import "responsive";
+
+

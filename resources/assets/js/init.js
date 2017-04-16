@@ -1,7 +1,8 @@
 (function ($) {
     var Blog = {
         init: function () {
-            this.bootUp();
+            var self = this;
+            self.bootUp();
         },
         bootUp: function () {
             var self = this;
@@ -43,6 +44,7 @@
         },
 
         initCommentList: function (shouldMoveEnd, force) {
+            var self = this;
             var container = $('#comments-container');
             if (container && force || container.children().length <= 0) {
                 $.ajax({
@@ -63,6 +65,7 @@
         },
 
         initCommentBox: function () {
+            var self = this;
             var form = $('#comment-form');
             var submitBtn = form.find('#comment-submit');
             var commentContent = form.find('#comment-content');
@@ -98,7 +101,9 @@
                 var emailValue = email.val();
                 var siteValue = site.val();
 
-                submitBtn.val('提交中...').addClass('disabled').prop('disabled', true);
+                var errorAlert = $('<div id="comment-error-alert" class="alert alert-danger alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <p></p></div>');
+
+                submitBtn.text('提交中...').addClass('disabled').prop('disabled', true);
                 $.ajax({
                     method: 'post',
                     url: $(this).attr('action'),
@@ -124,20 +129,21 @@
                         email.val('');
                         site.val('');
                         commentContent.val('');
-                        form.find('#comment_error_msg').text('');
-                        loadComments(true, true);
+                        errorAlert.find('p').text('');
+                        self.initCommentList(true, true);
                     } else {
-                        form.find('#comment_error_msg').text(data.msg);
+                        errorAlert.find('p').text(data.msg);
+                        submitBtn.before(errorAlert);
                     }
                 }).always(function () {
-                    submitBtn.val("回复").removeClass('disabled').prop('disabled', false);
+                    submitBtn.text("发表").removeClass('disabled').prop('disabled', false);
                 });
                 return false;
             });
         },
 
         initTextareaAutoResize: function () {
-            $('textarea').autosize();
+            autosize($('textarea'));
         },
 
         initMarkdownPreview: function () {
@@ -151,7 +157,7 @@
         },
 
         _runPreview: function () {
-            var replyContent = $("#reply_content");
+            var replyContent = $("#comment_content");
             var oldContent = replyContent.val();
 
             if (oldContent) {
@@ -176,6 +182,7 @@
         },
 
         _replyUser: function (username) {
+            var self = this;
             var commentContent = $("#comment-content");
             var oldContent = commentContent.val();
             var prefix = "@" + username + " ";

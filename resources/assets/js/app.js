@@ -2,11 +2,11 @@ window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
 require('bootstrap-sass');
 window.moment = require('moment');
-require('autosize');
+window.autosize = require('autosize');
 
 window.swal = require('sweetalert');
 window.marked = require('marked');
-// window.hljs = require('../vendor/highlight/highlight.min.js');
+window.hljs = require('highlight.js');
 
 window.toastr = require('toastr/build/toastr.min.js');
 window.toastr.options = {
