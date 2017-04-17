@@ -7,11 +7,10 @@
             } else {
                 $href = $comment->site ? httpUrl($comment->site) : 'javascript:void(0);';
             }
-            $imgSrc = $comment->user ? $comment->user->avatar : config('app.avatar');
-            $imgSrc = processImageViewUrl($imgSrc, 40, 40);
+            $imgSrc = $comment->user ? $comment->user->avatar : config('app.default_avatar');
             ?>
             <a name="comment{{ $loop->index + 1 }}" href="{{ $href }}">
-                <img width="40px" height="40px" class="media-object img-thumbnail avatar avatar-middle"
+                <img class="media-object img-thumbnail avatar avatar-middle"
                      src="{{ $imgSrc }}">
             </a>
         </div>
@@ -28,9 +27,6 @@
                        title="回复"
                        href="javascript:void (0);"
                        data-username="{{ $comment->username }}"></a>
-                    <a class="operation ion-edit"
-                       title="编辑"
-                       href="{{ route('comment.edit',[$comment->id,'redirect'=>(isset($redirect) && $redirect.'#'.$loop->index ? $redirect : '')]) }}"></a>
                     <a class="operation ion-trash-a swal-dialog-target"
                        title="删除"
                        href="javascript:void (0)"

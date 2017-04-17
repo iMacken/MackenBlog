@@ -6,7 +6,7 @@ use App\Article;
 use App\Tag;
 use App\Http\Requests\ArticleRequest;
 use App\Services\MarkdownParser;
-use Model, DB;
+use DB;
 
 class ArticleRepository extends Repository
 {
@@ -114,10 +114,10 @@ class ArticleRepository extends Repository
 	 * @param int $limit
 	 * @return mixed
 	 */
-	public function achieve($limit = 12)
+	public function archive($limit = 12)
 	{
 		$articles = $this->remember('article.achieve', function () use ($limit) {
-			return Model::select(DB::raw("DATE_FORMAT(`created_at`, '%Y %m') as `archive`, count(*) as `count`"))
+			return Article::select(DB::raw("DATE_FORMAT(`created_at`, '%Y %m') as `archive`, count(*) as `count`"))
 				->where('category_id', '<>', 0)
 				->groupBy('archive')
 				->orderBy('archive', 'desc')

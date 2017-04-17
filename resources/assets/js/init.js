@@ -81,27 +81,12 @@
             }
 
             form.on('submit', function () {
-                if (username.length > 0) {
-                    if ($.trim(username.val()) == '') {
-                        username.focus();
-                        return false;
-                    }
-                    else if ($.trim(email.val()) == '') {
-                        email.focus();
-                        return false;
-                    }
-                }
-
-                if ($.trim(commentContent.val()) == '') {
-                    commentContent.focus();
-                    return false;
-                }
 
                 var usernameValue = username.val();
                 var emailValue = email.val();
                 var siteValue = site.val();
 
-                var errorAlert = $('<div id="comment-error-alert" class="alert alert-danger alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <p></p></div>');
+                var errorAlert = $('<div id="comment-error-alert" class="alert alert-danger alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><ul></ul></div>');
 
                 submitBtn.text('提交中...').addClass('disabled').prop('disabled', true);
                 $.ajax({
@@ -129,10 +114,22 @@
                         email.val('');
                         site.val('');
                         commentContent.val('');
-                        errorAlert.find('p').text('');
+                        errorAlert.find('ul').html('');
                         self.initCommentList(true, true);
                     } else {
-                        errorAlert.find('p').text(data.msg);
+                        errorAlert.remove();
+                        var errorHtml = '<li>' + data.msg + '</li>';
+                        submitBtn.before(errorAlert.find('ul').html(errorHtml));
+                    }
+                }).fail(function(xhr) {
+                    if (xhr.status === 422) {
+                        var errors = $.parseJSON(xhr.responseText);
+                        var errorsHtml = '';
+                        $.each(errors, function( key, value ) {
+                            errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                        });
+                        errorAlert.find('ul').html(errorsHtml);
+                        errorAlert.remove();
                         submitBtn.before(errorAlert);
                     }
                 }).always(function () {

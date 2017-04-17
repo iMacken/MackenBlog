@@ -62,4 +62,20 @@ class TagRepository extends Repository
 		$tag = Tag::create(['name' => $request['name']]);
 		return $tag;
 	}
+
+	/**
+	 * @param int $count
+	 * @return mixed
+	 */
+	public function hot($count = 12)
+	{
+		$tags = $this->remember('tag.hot.' . $count, function () use ($count) {
+			return Tag::select([
+				'name',
+				'slug',
+				'cited_count',
+			])->orderBy('click_count', 'desc')->limit($count)->get();
+		});
+		return $tags;
+	}
 }
