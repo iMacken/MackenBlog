@@ -42,18 +42,18 @@
     }
 
     &-success:last-child.progress-bar:before {
-      background-color: lighten($brand-success, 35%);
+      background-color: lighten($mk-green, 35%);
     }
 
     &-info:last-child.progress-bar:before {
-      background-color: lighten($brand-info, 45%);
+      background-color: lighten($mk-gray-light, 45%);
     }
     &-warning:last-child.progress-bar:before {
-      background-color: lighten($brand-warning, 35%);
+      background-color: lighten($mk-orange, 35%);
     }
 
     &-danger:last-child.progress-bar:before {
-      background-color: lighten($brand-danger, 25%);
+      background-color: lighten($mk-red, 25%);
     }
   }
 }

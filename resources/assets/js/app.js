@@ -22,6 +22,7 @@ window.toastr.options = {
 };
 
 require('social-share.js/dist/js/social-share.min.js');
+require('geopattern');
 
 require('./init.js');
 

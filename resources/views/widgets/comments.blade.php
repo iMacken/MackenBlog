@@ -1,10 +1,10 @@
 <div class="panel panel-default" id="comment-list">
-    <div class="panel-heading">
-        <div class="total">回复数量: <b>23</b> </div>
-        <div class="btn-group pull-right" role="group" aria-label="comments order">
-            <a class="btn btn-default btn-sm active popover-with-html" data-content="按照时间排序" href="" type="button" data-original-title="" title="">时间</a>
-            <a class="btn btn-default btn-sm  popover-with-html" data-content="按照投票排序" href="" type="button" data-original-title="" title="">投票</a>
-        </div>
+    <div class="panel-heading clearfix">
+        <div class="total pull-left">评论数 <span class="badge">23</span> </div>
+        {{--<div class="btn-group pull-right" role="group" aria-label="comments order">--}}
+            {{--<a class="btn btn-default btn-sm active popover-with-html" data-content="按照时间排序" href="" type="button" data-original-title="" title="">时间</a>--}}
+            {{--<a class="btn btn-default btn-sm  popover-with-html" data-content="按照投票排序" href="" type="button" data-original-title="" title="">投票</a>--}}
+        {{--</div>--}}
     </div>
     <div class="panel-body">
         <ul id="comments-container" class="list-group" data-api-url="{{ route('comment.show',[$commentable->id,

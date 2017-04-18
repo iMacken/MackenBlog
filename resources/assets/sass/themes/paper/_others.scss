@@ -14,7 +14,6 @@
   }
 }
 
-
 .share {
   margin: 20px 0;
 }
@@ -22,7 +21,41 @@
 .avatar {
   border-radius: 50%;
 }
+
 .avatar-middle {
   width: 50px;
   height: 50px;
+}
+
+.operation {
+  font-size: $font-size-large;
+  padding-right: 0.5em;
+}
+
+.text-danger {
+  color: $mk-red;
+}
+
+.text-warning {
+  color: $mk-orange;
+}
+
+.text-primary {
+  color: $mk-blue;
+}
+
+.text-success {
+  color: $mk-green;
+}
+
+.text-default {
+  color: $mk-dark;
+}
+
+.text-light {
+  color: $mk-white;
+}
+
+.text-muted {
+  color: $mk-gray-light;
 }

@@ -23,19 +23,6 @@ class CommentController extends Controller
 		return view('comment.edit', compact('comment'));
 	}
 
-	public function update(CommentRequest $request, Comment $comment)
-	{
-		$this->checkPolicy('manager', $comment);
-
-		if ($this->commentRepository->update($request->get('content'), $comment)) {
-			$redirect = request('redirect');
-			if ($redirect)
-				return redirect($redirect)->with('success', '修改成功');
-			return back()->with('success', '修改成功');
-		}
-		return back()->withErrors('修改失败');
-	}
-
 	public function store(CommentRequest $request)
 	{
 		if ($comment = $this->commentRepository->create($request)) {
@@ -56,17 +43,11 @@ class CommentController extends Controller
 
 	public function destroy($comment_id)
 	{
-		if (request('force') == 'true') {
-			$comment = Comment::withTrashed()->findOrFail($comment_id);
-		} else {
-			$comment = Comment::findOrFail($comment_id);
-		}
+		$this->authorize('delete', $this->commentRepository->getById($comment_id));
 
-		$this->checkPolicy('manager', $comment);
-
-		if ($this->commentRepository->delete($comment, request('force') == 'true')) {
-			return back()->with('success', '删除成功');
+		if ($this->commentRepository->delete($comment_id)) {
+			return response()->json(['status' => 200, 'msg' => '删除成功']);
 		}
-		return back()->withErrors('删除失败');
+		return response()->json(['status' => 500, 'msg' => '删除失败']);
 	}
 }

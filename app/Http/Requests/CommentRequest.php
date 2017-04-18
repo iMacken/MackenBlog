@@ -25,9 +25,9 @@ class CommentRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'username' => 'required',
-			'email'    => 'required|email',
-			'content'  => 'required',
+			'username' => 'nullable|max:20',
+			'email'    => 'nullable|email|max:100',
+			'content'  => 'required|max:1000',
 			'website'  => 'nullable|url'
         ];
 	}

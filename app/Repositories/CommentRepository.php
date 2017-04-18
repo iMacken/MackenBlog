@@ -49,6 +49,11 @@ class CommentRepository extends Repository
         return $comments;
     }
 
+    public function getById($id)
+    {
+        return Comment::findOrFail($id);
+    }
+
     public function getAll($page = 20)
     {
         $comments = $this->remember('comment.page.' . $page . '' . request()->get('page', 1), function () use ($page) {
@@ -100,12 +105,11 @@ class CommentRepository extends Repository
         return $result;
     }
 
-    public function delete(Comment $comment, $force = false)
+    public function delete($id)
     {
         $this->clearCache();
-        if ($force)
-            return $comment->forceDelete();
-        return $comment->delete();
+
+        return Comment::destroy($id);
     }
 
     public function tag()

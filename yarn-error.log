@@ -1,11 +1,11 @@
 Arguments: 
-  /usr/local/Cellar/node/7.3.0/bin/node /Users/liyongkang/.yarn/bin/yarn.js add autosize
+  /usr/local/Cellar/node/7.3.0/bin/node /Users/liyongkang/.yarn/bin/yarn.js add geopattern
 
 PATH: 
   /Users/liyongkang/.yarn/bin:/usr/local/sbin:/Users/liyongkang/.composer/vendor/bin:/usr/local/php5/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 Yarn version: 
-  0.21.3
+  0.23.2
 
 Node version: 
   7.3.0
@@ -32,17 +32,13 @@ npm manifest:
       "jquery": "^3.1.0",
       "laravel-elixir": "^6.0.0-9",
       "laravel-elixir-browsersync-official": "^1.0.0",
-      "laravel-elixir-vue-2": "^0.3.0",
       "laravel-elixir-webpack-official": "^1.0.2",
       "lodash": "^4.16.2",
       "particles.js": "^2.0.0",
-      "sass-loader": "^4.0.1",
-      "vue": "^2.1.6",
-      "vue-resource": "^1.0.3",
-      "vue-router": "^2.1.1",
-      "vuex": "^2.1.1"
+      "sass-loader": "^4.0.1"
     },
     "dependencies": {
+      "autosize": "^3.0.20",
       "chart.js": "^2.4.0",
       "ionicons": "^2.0.1",
       "marked": "^0.3.6",
@@ -50,10 +46,7 @@ npm manifest:
       "simplemde": "^1.11.2",
       "social-share.js": "^1.0.15",
       "sweetalert": "^1.1.3",
-      "toastr": "^2.1.2",
-      "vue-datepicker": "^1.3.0",
-      "vue-i18n": "^4.8.0",
-      "vue-multiselect": "^2.0.0-beta.13"
+      "toastr": "^2.1.2"
     }
   }
 
@@ -302,6 +295,10 @@ Lockfile:
       num2fraction "^1.2.2"
       postcss "^5.2.8"
       postcss-value-parser "^3.2.3"
+  
+  autosize@^3.0.20:
+    version "3.0.20"
+    resolved "http://registry.npm.taobao.org/autosize/download/autosize-3.0.20.tgz#e343ea7c5603834738169420f0349dc953e62a9e"
   
   aws-sign2@~0.6.0:
     version "0.6.0"
@@ -3004,11 +3001,7 @@ Lockfile:
     version "1.1.0"
     resolved "http://registry.npm.taobao.org/modify-filename/download/modify-filename-1.1.0.tgz#9a2dec83806fbb2d975f22beec859ca26b393aa1"
   
-  moment@^2.10.6, moment@^2.11.1:
-    version "2.17.1"
-    resolved "http://registry.npm.taobao.org/moment/download/moment-2.17.1.tgz#fed9506063f36b10f066c8b59a144d7faebe1d82"
-  
-  moment@^2.18.0:
+  moment@^2.10.6, moment@^2.11.1, moment@^2.18.0:
     version "2.18.0"
     resolved "http://registry.npm.taobao.org/moment/download/moment-2.18.0.tgz#6cfec6a495eca915d02600a67020ed994937252c"
   
@@ -5173,4 +5166,4 @@ Lockfile:
     resolved "http://registry.npm.taobao.org/yeast/download/yeast-0.1.2.tgz#008e06d8094320c372dbc2f8ed76a0ca6c8ac419"
 
 Trace: 
-  Error: EACCES: permission denied, mkdir '/Users/liyongkang/code/MackenBlog/node_modules/browser-sync/node_modules/qs'
+  Error: EACCES: permission denied, mkdir '/Users/liyongkang/code/MackenBlog/node_modules/less/node_modules/mime'

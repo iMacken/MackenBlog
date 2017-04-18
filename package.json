@@ -24,6 +24,8 @@
   "dependencies": {
     "autosize": "^3.0.20",
     "chart.js": "^2.4.0",
+    "geopattern": "^1.2.3",
+    "highlight.js": "^9.10.0",
     "ionicons": "^2.0.1",
     "marked": "^0.3.6",
     "moment": "^2.18.0",

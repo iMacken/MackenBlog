@@ -7,7 +7,7 @@
             } else {
                 $href = $comment->site ? httpUrl($comment->site) : 'javascript:void(0);';
             }
-            $imgSrc = $comment->user ? $comment->user->avatar : config('app.default_avatar');
+            $imgSrc = $comment->user ? $comment->user->avatar ?: config('app.default_avatar') : config('app.default_avatar');
             ?>
             <a name="comment{{ $loop->index + 1 }}" href="{{ $href }}">
                 <img class="media-object img-thumbnail avatar avatar-middle"
@@ -23,20 +23,22 @@
                     @endif
                 </span>
                 <span class="pull-right">
-                    <a class="operation ion-reply reply-user-btn"
+                    <a class="operation ion-reply reply-user-btn text-muted"
                        title="回复"
                        href="javascript:void (0);"
                        data-username="{{ $comment->username }}"></a>
-                    <a class="operation ion-trash-a swal-dialog-target"
+                    <a class="operation ion-trash-a swal-dialog-target text-muted"
                        title="删除"
                        href="javascript:void (0)"
                        data-dialog-msg="删除这条评论？"
-                       data-url="{{ route('comment.destroy',$comment->id) }}"></a>
+                       data-url="{{ route('comment.destroy',$comment->id) }}"
+                       data-enable-ajax='1'></a>
                 </span>
                 <div class="meta">
                     <a href="#comment{{ $loop->index + 1 }}">#{{ $loop->index	+ 1 }}</a>
                     <span> ⋅  </span>
-                    <abbr class="comment-time popover-with-html" title="" data-content="{{ $comment->created_at }}" data-original-title="{{ $comment->created_at }}">{{ $comment->created_at->diffForHumans() }}</abbr>
+                    <abbr class="comment-time popover-with-html" title="" data-content="{{ $comment->created_at }}"
+                          data-original-title="{{ $comment->created_at }}">{{ $comment->created_at->diffForHumans() }}</abbr>
 
                 </div>
             </div>

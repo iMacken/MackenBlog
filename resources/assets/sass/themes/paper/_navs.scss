@@ -10,20 +10,20 @@
 
     &:hover {
       background-color: transparent;
-      @include box-shadow(inset 0 -2px 0 $brand-primary);
-      color: $brand-primary;
+      @include box-shadow(inset 0 -2px 0 $mk-blue);
+      color: $mk-blue;
     }
   }
 
   & > li.active > a,
   & > li.active > a:focus {
     border: none;
-    @include box-shadow(inset 0 -2px 0 $brand-primary);
-    color: $brand-primary;
+    @include box-shadow(inset 0 -2px 0 $mk-blue);
+    color: $mk-blue;
 
     &:hover {
       border: none;
-      color: $brand-primary;
+      color: $mk-blue;
     }
   }
 

@@ -5,12 +5,12 @@
   }
 
   &-item-text {
-    color: $gray-light;
+    color: $mk-gray-light;
   }
 }
 
 .well {
-  border-radius: 0;
+  border: 0;
   @include box-shadow(none);
 }
 
