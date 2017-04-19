@@ -27,12 +27,14 @@
                        title="回复"
                        href="javascript:void (0);"
                        data-username="{{ $comment->username }}"></a>
-                    <a class="operation ion-trash-a swal-dialog-target text-muted"
-                       title="删除"
-                       href="javascript:void (0)"
-                       data-dialog-msg="删除这条评论？"
-                       data-url="{{ route('comment.destroy',$comment->id) }}"
-                       data-enable-ajax='1'></a>
+                    @can('delete', $comment)
+                        <a class="operation ion-trash-a swal-dialog-target text-muted"
+                           title="删除"
+                           href="javascript:void (0)"
+                           data-dialog-msg="删除这条评论？"
+                           data-url="{{ route('comment.destroy',$comment->id) }}"
+                           data-enable-ajax='1'></a>
+                    @endcan
                 </span>
                 <div class="meta">
                     <a href="#comment{{ $loop->index + 1 }}">#{{ $loop->index	+ 1 }}</a>

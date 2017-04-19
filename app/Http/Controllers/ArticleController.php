@@ -130,6 +130,8 @@ class ArticleController extends Controller
      */
     public function update(ArticleRequest $request, $id)
     {
+	    $this->authorize('update', $this->articleRepository->getById($id));
+
 	    $result = $this->articleRepository->update($request, $id);
 
 	    if ($result) {
@@ -147,6 +149,8 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
+	    $this->authorize('delete', $this->articleRepository->getById($id));
+
 	    $result = $this->articleRepository->delete($id);
 
         if ($result) {

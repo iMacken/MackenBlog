@@ -6,7 +6,6 @@ use App\Comment;
 use App\Repositories\CommentRepository;
 use Gate;
 use Illuminate\Http\Request;
-use XblogConfig;
 use App\Http\Requests\CommentRequest;
 
 class CommentController extends Controller

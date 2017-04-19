@@ -43,4 +43,8 @@ class User extends Authenticatable
        return $this->hasMany('App\Article', 'user_id', 'id');
     }
 
+    public function isSuperAdmin() {
+        return $this->id === 1;
+    }
+
 }

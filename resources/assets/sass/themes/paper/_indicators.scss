@@ -6,6 +6,21 @@
     filter: alpha(opacity=100);
     opacity: 1;
   }
+  &-danger {
+    background-color: $mk-red;
+  }
+  &-info {
+    background-color: $mk-purple;
+  }
+  &-primary {
+    background-color: $mk-blue;
+  }
+  &-success {
+    background-color: $mk-green;
+  }
+  &-warning {
+    background-color: $mk-orange;
+  }
 }
 
 .badge {

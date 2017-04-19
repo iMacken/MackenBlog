@@ -14142,6 +14142,26 @@ input[type="checkbox"]:disabled:checked:after,
   opacity: 1;
 }
 
+.alert-danger {
+  background-color: #f4645f;
+}
+
+.alert-info {
+  background-color: #c784a8;
+}
+
+.alert-primary {
+  background-color: #2196F3;
+}
+
+.alert-success {
+  background-color: #4CAF50;
+}
+
+.alert-warning {
+  background-color: #ff9800;
+}
+
 .badge {
   padding: 4px 6px 4px;
 }

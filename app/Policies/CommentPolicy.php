@@ -11,14 +11,14 @@ class CommentPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can delete the comment.
+     * Determine if the given comment can be deleted by the user.
      *
      * @param  \App\User  $user
      * @param  \App\Comment  $comment
-     * @return mixed
+     * @return bool
      */
     public function delete(User $user, Comment $comment)
     {
-        return $user->is_admin || $comment->user_id === $user->id;
+        return $user->is_admin || $user->id === $comment->user_id;
     }
 }
