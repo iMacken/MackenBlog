@@ -22,8 +22,13 @@
                     @endforeach
                 @endif
             </p>
+            @can('update', $article)
                 <a class="operation ion-edit text-light" href="{{ route('article.edit', ['id' => $article->id]) }}"></a>
+            @endcan
+
+            @can('delete', $article)
                 <a class="operation ion-trash-a text-light swal-dialog-target" data-url="{{ route('article.destroy', ['id' => $article->id]) }}" data-dialog-msg="确定删除这篇文章么?" data-dialog-title=" " href="javascript:void(0)"></a>
+            @endcan
             </p>
         </div>
     </div>

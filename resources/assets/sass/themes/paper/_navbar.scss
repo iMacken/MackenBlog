@@ -6,6 +6,12 @@
 
   .navbar-brand {
     color: $mk-red !important;
+    height: 57px;
+    line-height: 25px;
+  }
+
+  .navbar-nav a {
+    line-height: 27px;
   }
 
 

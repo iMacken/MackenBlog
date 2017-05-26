@@ -13,6 +13,7 @@
                 self.initDeleteTarget();
                 self.initHighLightCode();
                 self.initGeoPattern();
+                self.initToTopButton();
             },
 
 
@@ -117,6 +118,8 @@
                         url: container.data('api-url'),
                     }).done(function (data) {
                         container.html(data);
+                        $('#comment-list > .total > .badge').text(container.find('li').length);
+                        console.log(container.find('li').length);
                         self.initDeleteTarget();
                         self._highLightCodeOfChild(container);
                         if (shouldMoveEnd) {
@@ -285,6 +288,12 @@
                 $('.geopattern').each(function () {
                     $(this).geopattern($(this).data('pattern-id'))
                 });
+            },
+
+            initToTopButton: function () {
+                $('#to-top').click(function(){
+                    $('html, body').animate({scrollTop:0}, 'slow')
+                })
             }
         }
         ;

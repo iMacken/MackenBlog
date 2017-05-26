@@ -14218,6 +14218,12 @@ input[type="checkbox"]:disabled:checked:after,
 
 .navbar .navbar-brand {
   color: #f4645f !important;
+  height: 57px;
+  line-height: 25px;
+}
+
+.navbar .navbar-nav a {
+  line-height: 27px;
 }
 
 .navbar-brand {
@@ -14468,6 +14474,35 @@ input[type="checkbox"]:disabled:checked:after,
 #comment-form input {
   font-size: 17px;
   padding: 0 0.5em;
+}
+
+#site-footer {
+  position: relative;
+  margin-top: 40px;
+  padding: 40px 0;
+  font-size: 0.8em;
+  line-height: 1.5;
+  border-top: 1px solid #eee;
+}
+
+#site-footer .ion-arrow-up-a {
+  color: #f4645f;
+  font-size: 25px;
+}
+
+#site-footer .ion-social-github {
+  position: absolute;
+  top: 35px;
+  left: 50%;
+  height: 34px;
+  width: 34px;
+  margin-left: -17px;
+  font-size: 34px;
+  color: #ccc;
+}
+
+#site-footer .ion-social-github:hover {
+  color: #888;
 }
 
 .has-warning .input-group-addon, .has-error .input-group-addon, .has-success .input-group-addon {
