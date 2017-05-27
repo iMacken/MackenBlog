@@ -14,7 +14,7 @@ class BaseManager
 	protected $disk;
 
 	/**
-	 * @var PhpRepository $mimeDetect
+	 * @var $mimeDetect
 	 */
 	protected $mimeDetect;
 

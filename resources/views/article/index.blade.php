@@ -36,7 +36,7 @@
                                             href="/category/{{ $article->category->slug }}">{{ $article->category->name }}</a>
                                     &nbsp;&nbsp;<span class="ion-ios-pricetag"></span>
                                     @foreach($article->tags as $tag)
-                                        <a href="/tag/{{ $tag->name }}">{{ $tag->name }}</a>&nbsp;
+                                        <a href="/tag/{{ $tag->slug }}">{{ $tag->name }}</a>&nbsp;
                                     @endforeach
                                 </p>
 

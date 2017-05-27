@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Scopes\DraftScope;
 use App\Scopes\PublishedScope;
 use App\Traits\Commentable;
 use App\Traits\Configurable;

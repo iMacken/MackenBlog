@@ -39,8 +39,7 @@
                 <div class="meta">
                     <a href="#comment{{ $loop->index + 1 }}">#{{ $loop->index	+ 1 }}</a>
                     <span> ⋅  </span>
-                    <abbr class="comment-time popover-with-html" title="" data-content="{{ $comment->created_at }}"
-                          data-original-title="{{ $comment->created_at }}">{{ $comment->created_at->diffForHumans() }}</abbr>
+                    <span class="comment-time" data-toggle="tooltip" data-placement="right" title="{{ $comment->created_at }}">{{ $comment->created_at->diffForHumans() }}</span>
 
                 </div>
             </div>

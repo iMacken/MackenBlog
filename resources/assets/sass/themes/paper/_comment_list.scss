@@ -18,6 +18,13 @@
     }
     font-size: $font-size-base;
   }
+
+  .comment-time {
+    border-bottom: 1px dotted $mk-gray;
+    color: $mk-gray;
+    font-size: 0.9em;
+    cursor: help;
+  }
 }
 
 #comment-form {
@@ -32,5 +39,4 @@
     font-size: $font-size-normal;
     padding: 0 0.5em;
   }
-
 }

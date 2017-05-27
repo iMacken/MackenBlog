@@ -65,6 +65,7 @@ class CommentRepository extends Repository
     public function create(Request $request)
     {
         $this->clearCache();
+        $this->clearCache(ArticleRepository::$tag);
 
         $comment = new Comment();
         $commentable_id = $request->get('commentable_id');

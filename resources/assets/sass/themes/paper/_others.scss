@@ -59,3 +59,10 @@
 .text-muted {
   color: $mk-gray-light;
 }
+
+.operation-bar {
+  background-color: $mk-dark;
+  border-radius: 5px;
+  padding-left: 0.5em;
+  opacity: 0.5;
+}

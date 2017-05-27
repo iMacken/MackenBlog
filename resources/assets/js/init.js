@@ -14,6 +14,7 @@
                 self.initHighLightCode();
                 self.initGeoPattern();
                 self.initToTopButton();
+                self.initTooltip();
             },
 
 
@@ -37,7 +38,6 @@
                     var confirm_text = $(this).data('dialog-confirm-text') ? $(this).data('dialog-confirm-text') : '确定';
                     var enable_html = $(this).data('dialog-enable-html') == '1';
                     var enable_ajax = $(this).data('enable-ajax') == '1';
-                    console.log(data);
                     if (enable_ajax) {
                         swal({
                                 title: title,
@@ -119,8 +119,8 @@
                     }).done(function (data) {
                         container.html(data);
                         $('#comment-list > .total > .badge').text(container.find('li').length);
-                        console.log(container.find('li').length);
                         self.initDeleteTarget();
+                        self.initTooltip();
                         self._highLightCodeOfChild(container);
                         if (shouldMoveEnd) {
                             self._moveEnd($('#comment-submit'));
@@ -169,8 +169,8 @@
                             content: commentContent.val(),
                             username: usernameValue,
                             email: emailValue,
-                            site: siteValue,
-                        },
+                            site: siteValue
+                        }
                     }).done(function (data) {
                         if (data.status === 200) {
                             if (window.localStorage) {
@@ -293,7 +293,15 @@
             initToTopButton: function () {
                 $('#to-top').click(function(){
                     $('html, body').animate({scrollTop:0}, 'slow')
-                })
+                });
+            },
+
+            initTooltip: function() {
+                $('[data-toggle="tooltip"]').tooltip();
+            },
+
+            initCommon: function() {
+                self.initTooltip();
             }
         }
         ;
