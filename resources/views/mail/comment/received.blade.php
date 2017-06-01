@@ -3,8 +3,10 @@
 
  Hello, {{ $notifiable->name }}
 
-@component('mail::button', ['url' => {{ $url }}])
- 您发布的 {{ $type }} : {{ $comment->commentable->title }}, 收到了一条来自 {{ $comment->user->name }} 的评论。
+您发布的1 {{ $type }} : {{ $comment->commentable->title }}, 收到了一条来自 {{ $comment->user->name }} 的评论。
+
+@component('mail::button', ['url' => $url])
+ 点击查看
 @endcomponent
 
 Thanks,<br>

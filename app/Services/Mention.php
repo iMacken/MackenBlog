@@ -73,8 +73,9 @@ class Mention
 
 	public function mentionUsers(Comment $comment, $users)
 	{
+		/** @var User $user */
 		foreach ($users as $user) {
-			if (!isAdmin($users)) {
+			if (!$user->isSuperAdmin()) {
 				$user->notify(new CommentMentioned($comment));
 			}
 		}

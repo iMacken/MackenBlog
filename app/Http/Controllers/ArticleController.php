@@ -10,6 +10,7 @@ use App\Http\Requests\ArticleRequest;
 use App\Article;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Mail;
 
 class ArticleController extends Controller
 {
@@ -57,7 +58,10 @@ class ArticleController extends Controller
     public function show($slug)
     {
 	    $article = $this->articleRepository->get($slug);
-
+	    Mail::send('mail.test',['name'=>'test'],function($message){
+		    $to = '615170821@qq.com';
+		    $message ->to($to)->subject('测试邮件');
+	    });
         return view('article.show', compact('article'));
     }
 

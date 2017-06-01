@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Repositories\CommentRepository;
-use Gate;
 use Illuminate\Http\Request;
 use App\Http\Requests\CommentRequest;
+use App\Notifications\CommentReceived as Received;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class CommentController extends Controller
 {
@@ -24,11 +26,14 @@ class CommentController extends Controller
 
 	public function store(CommentRequest $request)
 	{
-		if ($comment = $this->commentRepository->create($request)) {
-			return response()->json(['status' => 200, 'msg' => '发表成功']);
+		$comment = $this->commentRepository->create($request);
+		if (!$comment) {
+			return response()->json(['status' => 500, 'msg' => '发表失败,请重试']);
 		}
 
-		return response()->json(['status' => 500, 'msg' => '发表失败,请重试']);
+		$comment->commentable->user->notify(new Received($comment));
+
+		return response()->json(['status' => 200, 'msg' => '发表成功']);
 	}
 
 
@@ -37,6 +42,7 @@ class CommentController extends Controller
 		$commentable_type = $request->get('commentable_type');
 		$comments = $this->commentRepository->getByCommentable($commentable_type, $commentable_id);
 		$redirect = $request->get('redirect');
+
 		return view('comment.show', compact('comments', 'commentable', 'redirect'));
 	}
 

@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Comment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -44,8 +45,8 @@ class CommentMentioned extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         $comment = $this->comment;
-        $type = lang(ucfirst($comment->commentable_type));
-        $url = url('article', ['slug'=>$comment->commentable->slug]);
+        $type = $comment->commentable_type;
+        $url = route('article.show', ['slug'=>$comment->commentable->slug]) . '#comment' . $comment->commentable->id;
 
         return (new MailMessage)->markdown('mail.comment.mentioned', compact('notifiable', 'type', 'comment', 'url'));
     }

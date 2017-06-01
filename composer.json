@@ -19,7 +19,8 @@
         "tamayo/laravel-scout-elastic": "^3.0",
         "fabpot/goutte": "^3.2",
         "deployer/deployer": "^4.3",
-        "barryvdh/laravel-debugbar": "^2.3"
+        "barryvdh/laravel-debugbar": "^2.3",
+        "barryvdh/laravel-ide-helper": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -57,6 +58,8 @@
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "php artisan clear-compiled",
+            "php artisan ide-helper:generate",
             "php artisan optimize"
         ]
     },
