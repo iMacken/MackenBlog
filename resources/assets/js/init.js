@@ -184,10 +184,12 @@
                             commentContent.val('');
                             errorAlert.find('ul').html('');
                             self.initCommentList(true, true);
+                            toastr.success('评论发表成功');
                         } else {
                             errorAlert.remove();
                             var errorHtml = '<li>' + data.msg + '</li>';
                             submitBtn.before(errorAlert.find('ul').html(errorHtml));
+                            toastr.error('评论发表失败');
                         }
                     }).fail(function (xhr) {
                         if (xhr.status === 422) {
@@ -205,13 +207,11 @@
                     });
                     return false;
                 });
-            }
-            ,
+            },
 
             initTextareaAutoResize: function () {
                 autosize($('textarea'));
-            }
-            ,
+            },
 
             initMarkdownPreview: function () {
                 var self = this;
@@ -221,8 +221,7 @@
                 $('#comment-content').keyup(function () {
                     self._runPreview();
                 });
-            }
-            ,
+            },
 
             _runPreview: function () {
                 var replyContent = $("#comment_content");
@@ -234,23 +233,20 @@
                         window.emojify.run(document.getElementById('preview-box'));
                     });
                 }
-            }
-            ,
+            },
 
 
             initHighLightCode: function () {
                 $('pre code').each(function (i, block) {
                     hljs.highlightBlock(block);
                 });
-            }
-            ,
+            },
 
             _highLightCodeOfChild: function (parent) {
                 $('pre code', parent).each(function (i, block) {
                     hljs.highlightBlock(block);
                 });
-            }
-            ,
+            },
 
             _replyUser: function (username) {
                 var self = this;
@@ -266,8 +262,7 @@
                 commentContent.focus();
                 commentContent.val(newContent);
                 self._moveEnd(commentContent);
-            }
-            ,
+            },
 
             _moveEnd: function (obj) {
                 obj.focus();
@@ -281,8 +276,7 @@
                 } else if (typeof obj.selectionStart == 'number' && typeof obj.selectionEnd == 'number') {
                     obj.selectionStart = obj.selectionEnd = len;
                 }
-            }
-            ,
+            },
 
             initGeoPattern: function () {
                 $('.geopattern').each(function () {
@@ -299,10 +293,7 @@
             initTooltip: function() {
                 $('[data-toggle="tooltip"]').tooltip();
             },
-
-            initCommon: function() {
-                self.initTooltip();
-            }
+        
         }
         ;
 

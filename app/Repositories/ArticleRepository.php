@@ -127,49 +127,49 @@ class ArticleRepository extends Repository
 	}
 
 	/**
-	 * @param ArticleRequest $request
+	 * @param array $data
 	 * @return mixed
 	 */
-	public function create(ArticleRequest $request)
+	public function create(array $data)
 	{
 		$this->clearAllCache();
 
 		$article = auth()->user()->articles()->create(
 			array_merge(
-				$request->all(),
+				$data,
 				[
-					'html_content' => $this->markdownParser->convertMarkdownToHtml($request->get('content'), false),
-					'description' => $this->markdownParser->convertMarkdownToHtml($request->get('description'), false),
+					'html_content' => $this->markdownParser->convertMarkdownToHtml($data['content'], false),
+					'excerpt' => $this->markdownParser->convertMarkdownToHtml($data['excerpt'], false),
 				]
 			)
 		);
 
 		$article->save(); # save it in scout
 
-		$this->syncTags($article, $request->get('tag_list'));
+		$this->syncTags($article, $data['tag_list']);
 
 		return $article;
 	}
 
 	/**
-	 * @param ArticleRequest $request
+	 * @param array
 	 * @param int $id
 	 * @return mixed
 	 */
-	public function update(ArticleRequest $request, $id)
+	public function update(array $data, $id)
 	{
 		$this->clearAllCache();
 
 		$article = $this->model()->find($id);
 
-		$this->syncTags($article, $request->get('tag_list'));
+		$this->syncTags($article, $data['tag_list']);
 
 		$result = $article->update(
 			array_merge(
-				$request->all(),
+				$data,
 				[
-					'html_content' => $this->markdownParser->convertMarkdownToHtml($request->get('content'), false),
-					'description' => $this->markdownParser->convertMarkdownToHtml($request->get('description'), false),
+					'html_content' => $this->markdownParser->convertMarkdownToHtml($data['content'], false),
+					'description' => $this->markdownParser->convertMarkdownToHtml($data['description'], false),
 				]
 			)
 		);

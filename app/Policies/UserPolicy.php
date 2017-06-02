@@ -9,6 +9,14 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
+    public function before($user, $ability)
+    {
+	    /** @var User $user */
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+    }
+
     /**
      * Determine whether the current user can update the user.
      *

@@ -25,6 +25,9 @@
                            aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{{ route('article.create') }}">写文章</a></li>
+                            @if (Auth::user()->isSuperAdmin())
+                                <li><a href="{{ route('user.index') }}">用户管理</a></li>
+                            @endif
                             <li><a href="javascript:void(0)"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">登出</a>
                             </li>

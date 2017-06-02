@@ -1,49 +1,47 @@
 @extends('app')
 
 @section('content')
-    <div class="col-md-12">
-        <div class="panel panel-default">
-            {!! Notification::showAll() !!}
-            <div class="panel-heading">用户管理</div>
+    <section class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">用户管理 <a class="btn btn-success btn-sm pull-right ion-person" href="{{ route('user.create')}}"> 创建用户</a></div>
 
-            <div class="panel-body">
-                <a class="btn btn-success" href="{{ URL::route('user.create')}}">创建用户</a>
+                    <div class="panel-body">
 
-                <table class="table table-hover table-top">
-                    <tr>
-                        <th>#</th>
-                        <th>姓名</th>
-                        <th>邮箱</th>
-                        <th>创建时间</th>
-                        <th class="text-right">操作</th>
-                    </tr>
+                        <table class="table table-hover table-top">
+                            <tr>
+                                <th>#</th>
+                                <th>姓名</th>
+                                <th>邮箱</th>
+                                <th>创建时间</th>
+                                <th class="text-right">操作</th>
+                            </tr>
 
-                    @foreach($users as $k=> $v)
-                    <tr>
-                        <th scope="row">{{ $v->id }}</th>
-                        <td>{{ $v->name }}</td>
-                        <td>{{ $v->email }}</td>
-                        <td>{{ $v->created_at->format('Y-m-d H:i') }}</td>
-                        <td class="text-right">
-                            <a href="{{ route('user.edit', ['id'=>$v->id]) }}" class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                修改
-                            </a>
-                            &nbsp;
-                            <a href="javascript:void(0)" data-target="{{ url("backend/user/{$v->id}") }}" class="btn btn-danger btn-sm op-delete">
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                            删除
-                            </a>
-                        </td>
+                            @foreach($users as $user)
+                                <tr>
+                                    <th scope="row">{{ $user->id }}</th>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $user->created_at->format('Y-m-d H:i') }}</td>
+                                    <td class="text-right">
+                                        <a href="{{ route('user.edit', ['id'=>$user->id]) }}"
+                                           class="btn btn-primary btn-sm">
+                                            <span class="ion-edit" aria-hidden="true"></span>
+                                            修改
+                                        </a>
+                                        &nbsp;
+                                        <a href="javascript:void(0)" data-url="{{ route('user.destroy', ['id'=>$user->id]) }}" data-dialog-msg="确定删除此用户么?" data-dialog-title=" " class="btn btn-danger btn-sm op-delete ion-android-delete  swal-dialog-target">删除</a>
+                                    </td>
 
-                    </tr>
-                    @endforeach
-                </table>
+                                </tr>
+                            @endforeach
+                        </table>
+                        {!! $users->links() !!}
+                    </div>
 
+                </div>
             </div>
-            {!! $users->render() !!}
         </div>
-    </div>
-
-    @include('partials.delete')
+    </section>
 @endsection

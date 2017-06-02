@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\BlogConfig;
+use App\Facades\Toastr;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
-use Illuminate\Http\Request;
+use App\Repositories\UserRepository;
 use App\Services\Registrar;
 use App\User;
-use Notification;
-use Validator;
-use URL;
-use Redirect;
+use Illuminate\Http\Response;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
+    protected $userRepository;
 
-    public function __construct()
+    public function __construct(UserRepository $userRepository)
     {
-
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -44,25 +44,18 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request  $request
+     * @param UserRequest $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $register = new Registrar();
-        $validator = $register->validator($request->all());
-        if ($validator->fails()) {
-            $this->throwValidationException(
-                $request, $validator
-            );
+        if ($this->userRepository->create($request->all())) {
+	        Toastr::success('用户创建成功');
+	        return redirect()->route('user.index');
         }
+	    Toastr::success('用户创建失败');
 
-        if ($register->create($request->all())) {
-            Notification::success('创建用户成功');
-        }
-
-        return redirect()->route('user.list');
-
+	    return redirect()->back()->withInput();
     }
 
     /**
@@ -91,33 +84,22 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  int $id
-     * @param  Request $request
+     * @param  UserRequest $request
      * @return Response
      */
-    public function update($id, Request $request)
+    public function update($id, UserRequest $request)
     {
-        $this->authorize('update', $request);
+        $this->authorize('update', $this->userRepository->getById($id));
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255',
-        ]);
-        if ($validator->fails()) {
-            $this->throwValidationException(
-                $request, $validator
-            );
-        }
-        try {
+	    $result = $this->userRepository->update($id, $request->all());
 
-            if (User::updateUserInfo($id, $request)) {
-                Notification::success('修改成功');
-            }
+	    if ($result) {
+		    Toastr::success('用户更新成功');
+		    return redirect()->route('user.edit', ['id' => $id]);
+	    }
+	    Toastr::error('用户更新失败');
 
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();
-        }
-
-        return redirect()->route('user.list');
+	    return redirect()->back()->withInput();;
     }
 
     /**
@@ -128,11 +110,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
-        if (User::destroy($id)) {
-            Notification::success('删除成功');
-        }
-        return redirect()->route('user.index');
+        $this->authorize('delete', $this->userRepository->getById($id));
+
+	    $result = $this->userRepository->delete($id);
+
+	    if ($result) {
+		    Toastr::success('用户删除成功');
+		    return redirect()->route('user.index');
+	    }
+	    Toastr::error('用户删除失败');
+
+	    return redirect()->back();
     }
 
 }

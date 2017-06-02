@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Contracts\Repository;
 use App\Services\IP;
 
 class VisitorRepository extends Repository

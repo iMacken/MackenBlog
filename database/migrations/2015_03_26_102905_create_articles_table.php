@@ -24,7 +24,7 @@ class CreateArticlesTable extends Migration {
             $table->text('content');
 	        $table->text('html_content');
             $table->string('keywords')->nullable();
-            $table->string('description')->nullable();
+            $table->string('excerpt')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->integer('view_count')->unsigned()->default(0);
             $table->timestamps();

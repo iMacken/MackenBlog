@@ -40,6 +40,11 @@
 </div>
 
 <div class="form-group">
+    <label for="editor" class="control-label">摘要</label>
+    <textarea type="text" name="excerpt" class="form-control" autofocus>{!! isset($article) ? $article->excerpt : old('excerpt') !!}</textarea>
+</div>
+
+<div class="form-group">
 	<label for="tag_list" class="control-label">标签</label>
     <select id="tag_list" name="tag_list[]" class="form-control" multiple>
         @foreach($tags as $tag)
@@ -79,7 +84,7 @@
         element: document.getElementById("editor"),
         placeholder: 'Please input the article content.',
         autoDownloadFontAwesome: true
-    })
+    });
 
     $(function () {
         $('#datetimepicker').datetimepicker({

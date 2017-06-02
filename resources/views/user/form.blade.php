@@ -1,34 +1,39 @@
+{{ csrf_field() }}
+
 <div class="form-group">
-    {!! Form::label('name', '用户名') !!}
-    {!! Form::text('name', null, ['class' => 'form-control','placeholder'=>'name']) !!}
-    <font color="red">{{ $errors->first('name') }}</font>
+    <label for="name" class="control-label">用户名</label>
+    <input type="text" name="name" id="name" class="form-control" value="{{ isset($user) ? $user->name : old('name') }}" autofocus>
 </div>
 
 <div class="form-group">
-    {!! Form::label('email', '邮箱') !!}
-    {!! Form::text('email', null, ['class' => 'form-control','placeholder'=>'Email']) !!}
-    <font color="red">{{ $errors->first('email') }}</font>
+    <label for="email" class="control-label">邮箱</label>
+    <input type="text" name="email" id="email" class="form-control" value="{{ isset($user) ? $user->email : old('email') }}" autofocus>
 </div>
 
 <div class="form-group">
-    {!! Form::label('password', '密码') !!}
-    {!! Form::text('password', '', ['class' => 'form-control','placeholder'=>'password']) !!}
-    <font color="red">{{ $errors->first('password') }}</font>
-    <font>为空则不修改</font>
-</div>
-
-<div class="form-group">
-    {!! Form::label('photo', '头像') !!}
-    {!! Form::file('photo') !!}
-    <font color="red">{{ $errors->first('photo') }}</font>
-    <br />
+    <label for="avatar" class="control-label">头像</label>
+    <input type="file" name="avatar" id="avatar" class="form-control">
+    <br>
     <div>
-        @if(!empty($user->photo))
-            <img class="thumbnail" src="{{ asset($user->photo) }}" width="300"/>
+        @if(!empty($user->avatar))
+            <img class="thumbnail" src="{{ asset($user->avatar) }}" width="300">
         @endif
     </div>
 </div>
 
 <div class="form-group">
-    {!! Form::submit($submitBtnTxt, ['class' => 'btn btn-success col-md-12']) !!}
+    <label for="password" class="control-label">密码</label>
+    <input type="password" name="password" id="password" class="form-control" autofocus>
+    <span class="help-block">
+        (必须同时包含字母和数字以及特殊符号!?~#$%^&-_+=,并且 8 位以上)
+    </span>
+</div>
+
+<div class="form-group">
+    <label for="password_confirmation" class="control-label">确认密码</label>
+    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" autofocus>
+</div>
+
+<div class="form-group">
+    <button type="submit" class="btn btn-success form-control">{{ $submitBtnTxt }}</button>
 </div>

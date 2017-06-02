@@ -10,7 +10,7 @@ window.hljs = require('highlight.js');
 
 window.toastr = require('toastr/build/toastr.min.js');
 window.toastr.options = {
-    positionClass: "toast-bottom-right",
+    positionClass: "toast-top-right",
     showDuration: "300",
     hideDuration: "1000",
     timeOut: "5000",

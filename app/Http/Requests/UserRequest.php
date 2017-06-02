@@ -24,11 +24,18 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name'     => 'required|unique:users',
-            'email'    => 'required|email|unique:users',
-            'password' => 'required|confirmed',
-            'password_confirmation' => 'required',
+        $id = $this->route('user');
+        $rules =  [
+            'name'     => 'required|unique:users,name,' . $id,
+            'email'    => 'required|email|unique:users,email,' . $id,
+            'password' => 'confirmed|regex:/^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!~#\$%\^&\-_+=\?])(.{6,})$/',
+            'password_confirmation' => '',
         ];
+	    if ($this->method() === 'POST') {
+		    $rules['password'] .= '|required';
+		    $rules['password_confirmation'] .= 'required';
+	    }
+
+	    return $rules;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\Toastr;
 use App\Repositories\CategoryRepository;
 use App\Repositories\ArticleRepository;
 use App\Repositories\TagRepository;
@@ -58,10 +59,7 @@ class ArticleController extends Controller
     public function show($slug)
     {
 	    $article = $this->articleRepository->get($slug);
-	    Mail::send('mail.test',['name'=>'test'],function($message){
-		    $to = '615170821@qq.com';
-		    $message ->to($to)->subject('测试邮件');
-	    });
+
         return view('article.show', compact('article'));
     }
 
@@ -69,11 +67,11 @@ class ArticleController extends Controller
      * display the articles archived by month
      * @param  [type] $year  [description]
      * @param  [type] $month [description]
-     * @return [type]        [description]
+     * @return Response
      */
     public function archive($year, $month)
     {
-        $articles = Article::getArchivedArticleList($year, $month, 8);
+        $articles = $this->articleRepository->archive(12);
 
         $jumbotron = [];
         $jumbotron['title'] = '归档：'.$year.'年 '.$month.'月';
@@ -103,13 +101,18 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-	    $article = $this->articleRepository->create($request);
+	    $this->authorize('create');
 
-	    if (!$article) {
-		    return redirect()->back()->withErrors('创建失败')->withInput();
+	    $article = $this->articleRepository->create($request->all());
+
+	    if ($article) {
+		    Toastr::success('文章创建成功');
+		    return redirect()->route('article.show', ['slug' => $article->slug]);
+
 	    }
+	    Toastr::error('文章创建失败');
 
-	    return redirect()->route('article.show', ['slug' => $request->input('slug')])->with('success', '创建成功');
+	    return redirect()->back()->withInput();
     }
 
 
@@ -137,13 +140,15 @@ class ArticleController extends Controller
     {
 	    $this->authorize('update', $this->articleRepository->getById($id));
 
-	    $result = $this->articleRepository->update($request, $id);
+	    $result = $this->articleRepository->update($request->all(), $id);
 
 	    if ($result) {
-		    return redirect()->route('article.show', ['slug' => $request->input('slug')])->with('success', '更新成功');
+		    Toastr::success('文章更新成功');
+		    return redirect()->route('article.show', ['slug' => $request->input('slug')]);
 	    }
+	    Toastr::error('文章更新失败');
 
-	    return redirect()->back()->withErrors('更新失败')->withInput();
+	    return redirect()->back()->withInput();
     }
 
     /**
@@ -159,10 +164,12 @@ class ArticleController extends Controller
 	    $result = $this->articleRepository->delete($id);
 
         if ($result) {
-	        return redirect()->route('article.index')->with('success', '更新成功');
-        } else {
-	        return redirect()->back()->withErrors('删除失败');
+	        Toastr::success('文章删除成功');
+	        return redirect()->route('article.index');
         }
+	    Toastr::success('文章删除失败');
+
+	    return redirect()->back();
     }
 
 	public function search(Request $request)

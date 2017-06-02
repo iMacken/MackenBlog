@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Repositories\MapRepository;
+use App\Services\Toastr;
 use Illuminate\Support\ServiceProvider;
 use Carbon\Carbon;
 
@@ -28,6 +29,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton('BlogConfig', function ($app) {
             return new MapRepository();
+        });
+        $this->app->singleton('Toastr', function ($app) {
+            return new Toastr($this->app->make('session'));
         });
     }
 }

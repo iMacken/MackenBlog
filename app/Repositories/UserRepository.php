@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use Auth;
+use App\User;
 
 class UserRepository extends Repository
 {
@@ -13,37 +13,38 @@ class UserRepository extends Repository
 		return UserRepository::$tag;
 	}
 
+	/**
+	 * @return User
+	 */
 	public function model()
 	{
 		return app(User::class);
 	}
-
-	/**
-	 * Change the user password.
-	 *
-	 * @param  App\User $user
-	 * @param  string $password
-	 * @return boolean
-	 */
-	public function changePassword($user, $password)
+	
+	public function getById($id)
 	{
-		return $user->update(['password' => bcrypt($password)]);
+		return $this->model()->find($id);
 	}
 
-	/**
-	 * Save the user avatar path.
-	 *
-	 * @param  int $id
-	 * @param  string $photo
-	 * @return boolean
-	 */
-	public function saveAvatar($id, $photo)
+	public function create(array $data)
+	{
+		return $this->model()->create($data);
+	}
+
+	public function update($id, array $data)
 	{
 		$user = $this->getById($id);
 
-		$user->avatar = $photo;
+		return $user->update($data);
+	}
 
-		return $user->save();
+	public function delete($id)
+	{
+		/** @var User $user */
+		$user = self::getById($id);
+		$result = $user->destroy($id);
+
+		return $result;
 	}
 
 }

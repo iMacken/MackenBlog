@@ -10,6 +10,14 @@ class CommentPolicy
 {
     use HandlesAuthorization;
 
+    public function before($user, $ability)
+    {
+        /** @var User $user */
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+    }
+
     /**
      * Determine if the given comment can be deleted by the user.
      *

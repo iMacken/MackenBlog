@@ -3,6 +3,7 @@
 /public/storage
 /public/uploads
 _ide_helper.php
+_ide_helper_models.php
 Homestead.yaml
 Homestead.json
 .env

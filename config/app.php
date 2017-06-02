@@ -234,6 +234,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+	    'BlogConfig' => \App\Facades\BlogConfig::class,
+	    'Toastr' => \App\Facades\Toastr::class
 
     ],
 
