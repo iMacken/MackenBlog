@@ -55,6 +55,11 @@ class CategoryRepository extends Repository
 		return $category;
 	}
 
+	public function getById($id)
+	{
+		return $this->model()->findOrFail($id);
+	}
+
 	/**
 	 * @param Category $category
 	 * @param int $limit
@@ -75,26 +80,43 @@ class CategoryRepository extends Repository
 	}
 
 	/**
-	 * @param CategoryRequest $request
+	 * @param  array $data
 	 * @return Category
 	 */
-	public function create(CategoryRequest $request)
+	public function create(array $data)
 	{
 		$this->clearCache();
 
-		$category = Category::create($request->all());
+		$category = Category::create($data);
 
 		return $category;
 	}
 
 	/**
-	 * @param Request $request
-	 * @param Category $category
+	 * @param array $data
+	 * @param int $id
 	 * @return bool|int
 	 */
-	public function update(Request $request, Category $category)
+	public function update(array $data, $id)
 	{
 		$this->clearCache();
-		return $category->update($request->all());
+
+		/** @var Category $category */
+		$category = $this->model()->find($id);
+
+		return $category->update($data);
+	}
+	
+	public function delete($id)
+	{
+		$this->clearCache();
+		/** @var Category $category */
+		$category = $this->model()->find($id);
+
+		if (Article::where(['category_id' => $id])->count()) {
+			
+		}
+
+		return $category->destroy($id);
 	}
 }

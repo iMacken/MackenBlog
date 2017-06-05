@@ -1,39 +1,21 @@
-<div class="form-group">
-    {!! Form::label('parent_id', '上级分类') !!}
-    {!! Form::select('parent_id', App\Models\Category::getCategoryTree() , null , ['class' => 'form-control']) !!}
-    <font color="red">{{ $errors->first('parent_id') }}</font>
-</div>
+{{ csrf_field() }}
 
 <div class="form-group">
-    {!! Form::label('name', '分类名称') !!}
-    {!! Form::text('name', null, ['class' => 'form-control','placeholder'=>'category_name']) !!}
-    <font color="red">{{ $errors->first('cate_name') }}</font>
+    <label for="name" class="control-label">分类名</label>
+    <input type="text" name="name" id="name" class="form-control" value="{{ isset($category) ? $category->name : old('name') }}" autofocus>
 </div>
-
 <div class="form-group">
-    {!! Form::label('slug', '别名') !!}
-    {!! Form::text('slug', null, ['class' => 'form-control','placeholder'=>'slug']) !!}
-    <font color="red">{{ $errors->first('slug') }}</font>
+    <label for="slug" class="control-label">别名</label>
+    <input type="text" name="slug" id="slug" class="form-control" value="{{ isset($category) ? $category->slug : old('slug') }}" autofocus>
 </div>
-
 <div class="form-group">
-    {!! Form::label('seo_title', 'SEO 标题') !!}
-    {!! Form::text('seo_title', null, ['class' => 'form-control','placeholder'=>'seo_title']) !!}
-    <font color="red">{{ $errors->first('seo_title') }}</font>
+    <label for="description" class="control-label">描述</label>
+    <textarea type="text" name="description" id="description" class="form-control" autofocus>{!! isset($category) ? $category->description : old('description') !!}</textarea>
 </div>
-
 <div class="form-group">
-    {!! Form::label('seo_key', 'SEO 关键字') !!}
-    {!! Form::text('seo_key', null, ['class' => 'form-control','placeholder'=>'seo_key']) !!}
-    <font color="red">{{ $errors->first('seo_key') }}</font>
+    <label for="sort" class="control-label">排序</label>
+    <input type="text" name="sort" id="sort" class="form-control" value="{{ isset($category) ? $category->sort : old('sort') }}" autofocus>
 </div>
-
 <div class="form-group">
-    {!! Form::label('seo_key', 'SEO 描述') !!}
-    {!! Form::textarea('seo_desc', null, ['class' => 'form-control','placeholder'=>'seo_desc']) !!}
-    <font color="red">{{ $errors->first('seo_desc') }}</font>
+    <button type="submit" class="btn btn-success form-control">{{ $submitBtnTxt }}</button>
 </div>
-
-<div class="form-group">
-    {!! Form::submit($submitBtnTxt, ['class' => 'btn btn-success col-md-12']) !!}
-</div>  

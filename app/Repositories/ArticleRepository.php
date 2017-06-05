@@ -160,6 +160,7 @@ class ArticleRepository extends Repository
 	{
 		$this->clearAllCache();
 
+		/** @var Article $article */
 		$article = $this->model()->find($id);
 
 		$this->syncTags($article, $data['tag_list']);
@@ -178,14 +179,11 @@ class ArticleRepository extends Repository
 
 		return $result;
 	}
-
-	/**
-	 * @param $id
-	 */
+	
 	public function delete($id)
 	{
 		$this->clearAllCache();
-
+		/** @var Article $article */
 		$article = $this->model()->find($id);
 		$result = $article->destroy($id);
 

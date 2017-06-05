@@ -40,8 +40,8 @@
 </div>
 
 <div class="form-group">
-    <label for="editor" class="control-label">摘要</label>
-    <textarea type="text" name="excerpt" class="form-control" autofocus>{!! isset($article) ? $article->excerpt : old('excerpt') !!}</textarea>
+    <label for="excerpt" class="control-label">摘要</label>
+    <textarea type="text" name="excerpt" id="excerpt" class="form-control" autofocus>{!! isset($article) ? $article->excerpt : old('excerpt') !!}</textarea>
 </div>
 
 <div class="form-group">

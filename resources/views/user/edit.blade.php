@@ -18,7 +18,3 @@
         </div>
     </section>
 @endsection
-
-@section('scripts')
-    {!! Toastr::message() !!}
-@endsection

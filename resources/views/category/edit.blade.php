@@ -1,27 +1,20 @@
 @extends('app')
 
 @section('content')
+    <section class="container">
+        <div class="row">
+            <br>
+            @include('partials.errors')
+            <div class="panel panel-default">
+                <div class="panel-heading">修改分类</div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">修改分类</div>
-
-        @if ($errors->has('error'))
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span></button>
-            <strong>Error!</strong>
-            {{ $errors->first('error', ':message') }}
-            <br />
+                <div class="panel-body">
+                    <form role="form" action="{{ route('category.update',$category->id) }}" method="POST">
+                        {{ method_field('patch') }}
+                        @include('category.form', ['submitBtnTxt'=>'更新'])
+                    </form>
+                </div>
+            </div>
         </div>
-        @endif
-
-        <div class="panel-body">
-            {!! Form::model($category, ['route' => ['category.update', $category->id], 'method' => 'PATCH']) !!}
-            
-            @include('category.form', ['submitBtnTxt'=>'更新'])
-            
-            {!! Form::close() !!}
-        </div>
-    </div>
-
+    </section>
 @endsection

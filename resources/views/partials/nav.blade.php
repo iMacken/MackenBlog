@@ -24,7 +24,9 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
+                            @can('create', App\Article::class)
                             <li><a href="{{ route('article.create') }}">写文章</a></li>
+                            @endcan
                             @if (Auth::user()->isSuperAdmin())
                                 <li><a href="{{ route('user.index') }}">用户管理</a></li>
                             @endif

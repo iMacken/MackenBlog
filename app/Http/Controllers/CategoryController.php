@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Category;
+use App\Facades\Toastr;
 use App\Repositories\CategoryRepository;
+use Illuminate\Http\Response;
 use Illuminate\Pagination\BootstrapThreePresenter;
+use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -42,8 +44,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category = Category::getCategoryDataModel();
-        return view('category.index', compact('category'));
+        $categories = $this->categoryRepository->getAll();
+        return view('category.index', compact('categories'));
     }
 
     /**
@@ -53,8 +55,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $categoryTree = Category::getCategoryTree();
-        return view('category.create', compact('categoryTree'));
+        return view('category.create');
     }
 
     /**
@@ -65,45 +66,44 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        try {
+	    $article = $this->categoryRepository->create($request->all());
 
-            if (Category::create($request->all())) {
-                Notification::success('添加成功');
-                return redirect()->route('category.index');
-            }
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();
-        }
+	    if ($article) {
+		    Toastr::success('分类创建成功');
+		    return redirect()->route('category.index');
+
+	    }
+	    Toastr::error('分类创建失败');
+
+	    return redirect()->back()->withInput();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  Category $category
-     * @return Response
-     */
-    public function edit(Category $category)
+    public function edit($id)
     {
+	    $category = $this->categoryRepository->getById($id);
+
         return view('category.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  Category $category
+     * @param  CategoryRequest $request
+     * @param int $id
      * @return Response
      */
-    public function update(Category $category, CategoryRequest $request)
+    public function update(CategoryRequest $request, $id)
     {
-        try {
-            $updateData = $request->all();
-            if ($category->update($updateData)) {
-                Notification::success('更新成功');
-                return redirect()->route('category.index');
-            }
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(array('error' => $e->getMessage()))->withInput();
-        }
+	    $result = $this->categoryRepository->update($request->all(), $id);
+
+	    if ($result) {
+		    Toastr::success('分类修改成功');
+		    return redirect()->route('category.index');
+
+	    }
+	    Toastr::error('分类修改失败');
+
+	    return redirect()->back()->withInput();
     }
 
     /**
@@ -114,15 +114,14 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $son = Category::where('parent_id', '=', $id)->get()->toArray();
-        if (!empty($son)) {
-            Notification::error('请先删除下级分类');
-            return redirect()->route('category.index');
-        }
-        if (Category::destroy($id)) {
-            Notification::success('删除成功');
-            return redirect()->route('category.index');
-        }
+	    $result = $this->categoryRepository->delete($id);
+
+	    if ($result) {
+		    Toastr::success('分类删除成功');
+		    return redirect()->route('category.index');
+	    }
+	    Toastr::success('分类删除失败');
+
+	    return redirect()->back();
     }
 }

@@ -87,6 +87,8 @@ class ArticleController extends Controller
      */
     public function create()
     {
+	    $this->authorize('create', Article::class);
+
 	    return view('article.create', [
 		    'categories' => $this->categoryRepository->getAll(),
 		    'tags' => $this->tagRepository->getAll(),
@@ -101,7 +103,7 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-	    $this->authorize('create');
+	    $this->authorize('create', Article::class);
 
 	    $article = $this->articleRepository->create($request->all());
 
