@@ -8,7 +8,7 @@
 
 @section('content')
 
-    <div class="jumbotron home-jumbotron">
+    <div class="jumbotron home-jumbotron" >
         <div class="container article-banner">
             <h1 class="jumbotron-title">{{ $jumbotron['title'] }}</h1>
             <p class="jumbotron-desc">{{ $jumbotron['description'] }}</p>
@@ -28,7 +28,7 @@
                                     </a>
                                 </h3>
                                 <p class="article-list-description">
-                                    {{ str_cut(convert_markdown($article->content),80) }}
+                                    {{ $article->excerpt }}
                                 </p>
                                 <p class="article-list-meta">
                                     <span class="ion-calendar"></span>{{ $article->published_at->diffForHumans() }}

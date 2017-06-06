@@ -1,16 +1,13 @@
+{{ csrf_field() }}
 <div class="form-group">
-    {!! Form::label('name', '标签名') !!}
-    {!! Form::text('name', null, ['class' => 'form-control','placeholder'=>'name']) !!}
-    <font color="red">{{ $errors->first('name') }}</font>
+    <label for="name" class="control-label">标签名</label>
+    <input type="text" name="name" id="name" class="form-control" value="{{ isset($tag) ? $tag->name : old('name') }}" autofocus>
 </div>
-
 <div class="form-group">
-    {!! Form::label('slug', '别名') !!}
-    {!! Form::text('slug', null, ['class' => 'form-control','placeholder'=>'slug']) !!}
-    <font color="red">{{ $errors->first('slug') }}</font>
+    <label for="slug" class="control-label">别名</label>
+    <input type="text" name="slug" id="slug" class="form-control" value="{{ isset($tag) ? $tag->slug : old('slug') }}" autofocus>
 </div>
-
 <div class="form-group">
-    {!! Form::submit($submitBtnTxt, ['class' => 'btn btn-success col-md-12']) !!}
+    <button type="submit" class="btn btn-success form-control">{{ $submitBtnTxt }}</button>
 </div>
             

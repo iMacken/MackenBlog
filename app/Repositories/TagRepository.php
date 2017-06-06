@@ -2,8 +2,8 @@
 namespace App\Repositories;
 
 use App\Article;
-use App\Http\Requests\TagRequest;
 use App\Tag;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Class TagRepository
@@ -47,20 +47,42 @@ class TagRepository extends Repository
 		return $articles;
 	}
 
-	public function create(TagRequest $request)
+	public function create($data)
 	{
 		$this->clearCache();
 
-		$tag = Tag::create(['name' => $request['name']]);
+		$tag = Tag::create($data);
+
 		return $tag;
 	}
 
-	public function update(TagRequest $request)
+	public function update(array $data, $id)
 	{
 		$this->clearCache();
 
-		$tag = Tag::create(['name' => $request['name']]);
+		/** @var Tag $tag */
+		$tag = $this->model()->findOrFail($id);
+		$tag = $tag->update($data);
+
 		return $tag;
+	}
+
+	public function getById($id)
+	{
+		return $this->model()->findOrFail($id);
+	}
+
+	public function delete($id)
+	{
+		$this->clearCache();
+		/** @var Tag $tag */
+		$tag = $this->model()->find($id);
+
+		if ($tag->articles()->withoutGlobalScopes()->count() > 0) {
+			throw new AccessDeniedHttpException('该标签下有文章,不能删除');
+		}
+
+		return $tag->destroy($id);
 	}
 
 	/**

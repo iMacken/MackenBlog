@@ -14196,7 +14196,7 @@ input[type="checkbox"]:disabled:checked:after,
 }
 
 .jumbotron .jumbotron-title {
-  font-size: 2em;
+  font-size: 1.8em;
 }
 
 .jumbotron .jumbotron-desc {
@@ -14246,7 +14246,7 @@ input[type="checkbox"]:disabled:checked:after,
     font-size: 1em !important;
   }
   .jumbotron .jumbotron-title {
-    font-size: 1.8em !important;
+    font-size: 1.6em !important;
   }
   .jumbotron .jumbotron-desc {
     font-size: 1.2em !important;
@@ -14265,13 +14265,13 @@ input[type="checkbox"]:disabled:checked:after,
     padding-bottom: 20px;
   }
   .jumbotron .jumbotron-title {
-    font-size: 1.6em !important;
+    font-size: 1.4em !important;
   }
   .jumbotron .jumbotron-desc {
     font-size: 1em !important;
   }
   .home-jumbotron .jumbotron-title {
-    font-size: 2.1em !important;
+    font-size: 2em !important;
   }
 }
 

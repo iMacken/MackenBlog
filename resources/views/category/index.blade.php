@@ -27,7 +27,7 @@
                                             修改
                                         </a>
                                         &nbsp;
-                                        <a href="javascript:void(0)" data-url="{{ route('category.destroy', ['id' => $category->id]) }}" data-dialog-msg="确定删除此分类?" data-dialog-title=" " class="btn btn-danger btn-sm swal-dialog-target">
+                                        <a href="javascript:void(0)" data-url="{{ route('category.destroy', ['id' => $category->id]) }}" data-dialog-msg="确定删除此分类?" data-dialog-title=" " data-enable-ajax="1"  class="btn btn-danger btn-sm swal-dialog-target">
                                             删除
                                         </a>
                                     </td>

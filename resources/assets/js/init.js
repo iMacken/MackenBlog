@@ -59,6 +59,7 @@
                                     url: url,
                                     type: method,
                                     data: data,
+                                    dataType: 'json',
                                     success: function (res) {
                                         if (res.status == 200) {
                                             swal({
@@ -69,20 +70,22 @@
                                                 confirmButtonText: "OK"
                                             });
                                             self.initCommentList(false, true);
+                                            location.reload();
                                         } else {
                                             swal({
                                                 title: 'Fail',
-                                                text: "操作失败",
+                                                text:  res.msg ? res.msg : "操作失败",
                                                 type: "error",
                                                 timer: 1000,
                                                 confirmButtonText: "OK"
                                             });
                                         }
                                     },
-                                    error: function (res) {
+                                    error: function (XMLHttpRequest) {
+                                        var res = JSON.parse(XMLHttpRequest.responseText);
                                         swal({
                                             title: 'Failed',
-                                            text: "操作失败",
+                                            text: res.message || '操作失败',
                                             type: "error",
                                             timer: 1000,
                                             confirmButtonText: "OK"
@@ -118,14 +121,14 @@
                         url: container.data('api-url'),
                     }).done(function (data) {
                         container.html(data);
-                        $('#comment-list > .total > .badge').text(container.find('li').length);
+                        $('#comment-count').text(container.find('li').length);
                         self.initDeleteTarget();
                         self.initTooltip();
                         self._highLightCodeOfChild(container);
                         if (shouldMoveEnd) {
                             self._moveEnd($('#comment-submit'));
                         }
-                        $(document).on('click', '.reply-user-btn', function () {
+                        $('.reply-user-btn').unbind('click').click(function () {
                             self._replyUser($(this).data('username'));
                         })
                     });
@@ -252,15 +255,19 @@
                 var self = this;
                 var commentContent = $("#comment-content");
                 var oldContent = commentContent.val();
-                var prefix = "@" + username + " ";
+                var prefix = "@" + username;
                 var newContent = '';
                 if (oldContent.length > 0) {
-                    newContent = oldContent + "\n" + prefix;
+                    if (oldContent.indexOf(prefix) !== -1) {
+                        newContent = _.trim(oldContent.replace(prefix, '') + " " + prefix);
+                    } else {
+                        newContent = _.trim(oldContent + " " + prefix);
+                    }
                 } else {
                     newContent = prefix
                 }
                 commentContent.focus();
-                commentContent.val(newContent);
+                commentContent.val(newContent + ' ');
                 self._moveEnd(commentContent);
             },
 
@@ -293,7 +300,7 @@
             initTooltip: function() {
                 $('[data-toggle="tooltip"]').tooltip();
             },
-        
+
         }
         ;
 

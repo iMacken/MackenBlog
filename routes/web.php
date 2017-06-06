@@ -27,6 +27,8 @@ Route::resource('tag','TagController');
 Route::resource('navigation','NavigationController');
 Route::resource('link','LinkController');
 Route::resource('article', 'ArticleController');
+Route::get('settings', 'SettingController@index')->name('settings');
+Route::post('settings', 'SettingController@save')->name('settings.save');
 Route::get('/commentable/{commentable_id}/comments', ['uses' => 'CommentController@show', 'as' => 'comment.show']);
 Route::resource('comment', 'CommentController', ['only' => ['store', 'destroy', 'edit', 'update']]);
 Route::get('search', 'ArticleController@search')->name('search');

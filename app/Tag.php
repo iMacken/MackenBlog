@@ -24,12 +24,12 @@ class Tag extends Model
      *
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'slug'];
 
 	/**
 	 * Get all of the articles that are assigned this tag.
 	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\MorpheByMany
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
 	 */
 	public function articles()
 	{

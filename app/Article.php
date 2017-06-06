@@ -36,7 +36,7 @@ class Article extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'category_id', 'title', 'slug', 'image', 'content', 'html_content', 'description', 'published_at'];
+    protected $fillable = ['user_id', 'category_id', 'title', 'slug', 'image', 'content', 'html_content', 'excerpt', 'published_at'];
 
     const INDEX_FIELDS = [
 	    'id',
@@ -45,7 +45,7 @@ class Article extends Model
 	    'image',
 	    'title',
 	    'slug',
-	    'description',
+	    'excerpt',
 	    'created_at',
 	    'deleted_at',
 	    'published_at'
@@ -58,9 +58,9 @@ class Article extends Model
      */
     public static function boot()
     {
-        parent::boot();
+            parent::boot();
 
-	    static::addGlobalScope(new PublishedScope());
+            static::addGlobalScope(new PublishedScope());
     }
 
     /**
@@ -102,7 +102,7 @@ class Article extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
-	
+
     /**
      * get a list of tag ids associated with the current article
      * @return array

@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Article;
 use App\Http\Requests\CategoryRequest;
 use App\Category;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Class CategoryRepository
@@ -106,7 +107,7 @@ class CategoryRepository extends Repository
 
 		return $category->update($data);
 	}
-	
+
 	public function delete($id)
 	{
 		$this->clearCache();
@@ -114,7 +115,7 @@ class CategoryRepository extends Repository
 		$category = $this->model()->find($id);
 
 		if (Article::where(['category_id' => $id])->count()) {
-			
+			throw new AccessDeniedHttpException('该分类下有文章,不能删除');
 		}
 
 		return $category->destroy($id);

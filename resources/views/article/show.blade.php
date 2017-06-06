@@ -10,8 +10,8 @@
     <section class="jumbotron geopattern" data-pattern-id="{{ $article->slug }}">
         <div class="container article-banner">
             <h1 class="jumbotron-title">{{ $article->title }}</h1>
-            <p class="jumbotron-desc">{{ $article->descrition }}</p>
-            <p class="jumbotron-meta">
+            <p class="jumbotron-desc">{{ $article->excerpt }}</p>
+            <p class="jumbotron-meta pull-left">
                 <span class="ion-calendar"></span> {{ $article->published_at->diffForHumans() }}
                 &nbsp;&nbsp;<span class="ion-ios-folder"></span>
                 <a href="/category/{{ $article->category->slug }}">{{ $article->category->name }}</a>

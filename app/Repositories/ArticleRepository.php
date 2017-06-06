@@ -166,13 +166,9 @@ class ArticleRepository extends Repository
 		$this->syncTags($article, $data['tag_list']);
 
 		$result = $article->update(
-			array_merge(
-				$data,
-				[
-					'html_content' => $this->markdownParser->convertMarkdownToHtml($data['content'], false),
-					'description' => $this->markdownParser->convertMarkdownToHtml($data['description'], false),
-				]
-			)
+			array_merge($data, [
+			    'html_content' => $this->markdownParser->convertMarkdownToHtml($data['content'], false)
+            ])
 		);
 
 		$result && $article->save(); # update it in scout

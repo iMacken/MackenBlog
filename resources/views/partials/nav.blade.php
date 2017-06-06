@@ -29,6 +29,9 @@
                             @endcan
                             @if (Auth::user()->isSuperAdmin())
                                 <li><a href="{{ route('user.index') }}">用户管理</a></li>
+                                    <li><a href="{{ route('category.index') }}">分类管理</a></li>
+                                    <li><a href="{{ route('tag.index') }}">标签管理</a></li>
+                                    <li><a href="{{ route('settings') }}">站点设置</a></li>
                             @endif
                             <li><a href="javascript:void(0)"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">登出</a>

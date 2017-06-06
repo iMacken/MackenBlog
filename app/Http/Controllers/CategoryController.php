@@ -117,11 +117,9 @@ class CategoryController extends Controller
 	    $result = $this->categoryRepository->delete($id);
 
 	    if ($result) {
-		    Toastr::success('分类删除成功');
-		    return redirect()->route('category.index');
+		    return response()->json(['status' => 200, 'msg' => '分类删除成功']);
 	    }
-	    Toastr::success('分类删除失败');
 
-	    return redirect()->back();
+	    return response()->json(['status' => 500, 'msg' => '分类删除失败']);
     }
 }

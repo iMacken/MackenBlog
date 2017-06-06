@@ -1,6 +1,6 @@
 <div class="panel panel-default" id="comment-list">
     <div class="panel-heading clearfix">
-        <div class="total pull-left">评论数 <span class="badge">{{ $article->comments_count }}</span> </div>
+        <div class="total pull-left">评论数 <span class="badge" id="comment-count">{{ $article->comments_count }}</span> </div>
         {{--<div class="btn-group pull-right" role="group" aria-label="comments order">--}}
             {{--<a class="btn btn-default btn-sm active popover-with-html" data-content="按照时间排序" href="" type="button" data-original-title="" title="">时间</a>--}}
             {{--<a class="btn btn-default btn-sm  popover-with-html" data-content="按照投票排序" href="" type="button" data-original-title="" title="">投票</a>--}}

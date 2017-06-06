@@ -57,9 +57,10 @@ class Handler extends ExceptionHandler
             {
                 // Add the exception class name, message and stack trace to response
                 $response['exception'] = get_class($exception); // Reflection might be better here
-                $response['message'] = $exception->getMessage();
                 $response['trace'] = $exception->getTrace();
             }
+
+	        $response['message'] = $exception->getMessage();
 
             // Default response of 400
             $status = 400;

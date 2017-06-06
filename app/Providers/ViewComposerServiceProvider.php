@@ -30,6 +30,7 @@ class ViewComposerServiceProvider extends ServiceProvider
 		$this->articleRepository = $articleRepository;
 		$this->linkRepository    = $linkRepository;
 
+		$this->composeGlobal();
 		$this->composeNavigation();
 		$this->composeRight($articleRepository, $tagRepository, $linkRepository);
 	}
@@ -47,28 +48,23 @@ class ViewComposerServiceProvider extends ServiceProvider
 	public function composeGlobal()
 	{
 		view()->composer('*', function ($view) {
-			$view->with('BlogConfig', BlogConfig::getArrayByTag('settings'));
+		    /** @var \Illuminate\View\View $view */
+            $view->with(BlogConfig::getArrayByTag('setting'));
 		});
 	}
 
-	/**
-	 * compose the navigation bar
-	 * @return [type] [description]
-	 */
 	public function composeNavigation()
 	{
 		view()->composer('partials.nav', function ($view) {
+            /** @var \Illuminate\View\View $view */
 			$view->with('navList', Navigation::getNavigationAll());
 		});
 	}
 
-
-	/**
-	 * compose the right column
-	 */
 	public function composeRight()
 	{
 		view()->composer('partials.right', function ($view) {
+            /** @var \Illuminate\View\View $view */
 			$view->with('hotArticleList', $this->articleRepository->hot(5));
 			$view->with('tagList', $this->tagRepository->hot(12));
 			$view->with('archiveList', $this->articleRepository->archive(12));

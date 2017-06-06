@@ -1,47 +1,53 @@
 @extends('app')
 
 @section('content')
-    <div class="col-md-12">
-    {!! Notification::showAll() !!}
-        <div class="panel panel-default">
-            
-            <div class="panel-heading">标签管理</div>
+    <section class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
 
-            <div class="panel-body">
-                <a class="btn btn-success" href="{{ URL::route('tag.create')}}">创建标签</a>
+                    <div class="panel-heading">标签管理 <a class="btn btn-success btn-sm pull-right"
+                                                       href="{{ route('tag.create')}}">创建标签</a></div>
 
-                <table class="table table-hover table-top">
-                    <tr>
-                        <th>#</th>
-                        <th>标签名</th>
-                        <th>引用次数</th>
-                        <th class="text-right">操作</th>
-                    </tr>
+                    <div class="panel-body">
+                        <table class="table table-hover table-top">
+                            <tr>
+                                <th>#</th>
+                                <th>标签名</th>
+                                <th>引用次数</th>
+                                <th class="text-right">操作</th>
+                            </tr>
 
-                    @foreach($tags as $k=> $v)
-                    <tr>
-                        <th scope="row">{{ $v->id }}</th>
-                        <td>{{ $v->name }}</td>
-                        <td>{{ $v->number }}</td>
-                        <td class="text-right">
-                            <a href="{{ route('tag.edit', ['id'=>$v->id]) }}" class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                修改
-                            </a>
-                            &nbsp;
-                            <a href="javascript:void(0)" data-target="{{ url("backend/tag/{$v->id}") }}" class="btn btn-danger btn-sm op-delete">
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                            删除
-                            </a>
-                        </td>
-                    </tr>
-                    @endforeach
-                </table>
+                            @foreach($tags as $tag)
+                                <tr>
+                                    <th scope="row">{{ $tag->id }}</th>
+                                    <td>{{ $tag->name }}</td>
+                                    <td>{{ $tag->number }}</td>
+                                    <td class="text-right">
+                                        <a href="{{ route('tag.edit', ['id'=>$tag->id]) }}"
+                                           class="btn btn-primary btn-sm">
+                                            修改
+                                        </a>
+                                        &nbsp;
+                                        <a href="javascript:void(0)"
+                                           data-url="{{ route('tag.destroy', ['id' => $tag->id]) }}"
+                                           data-dialog-msg="确定删除此标签?" data-dialog-title=" " data-enable-ajax="1"
+                                           class="btn btn-danger btn-sm swal-dialog-target">
+                                            删除
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </table>
 
+                    </div>
+                </div>
             </div>
-            {!! $tags->render() !!}
         </div>
-    </div>
+    </section>
 
-    @include('partials.delete')
+@endsection
+
+@section('scripts')
+    {!! Toastr::message() !!}
 @endsection

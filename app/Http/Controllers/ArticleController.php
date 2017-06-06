@@ -80,11 +80,6 @@ class ArticleController extends Controller
         return view('pages.list', compact('articles', 'jumbotron'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
 	    $this->authorize('create', Article::class);
@@ -95,12 +90,6 @@ class ArticleController extends Controller
 	    ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  ArticleRequest $request
-     * @return Response
-     */
     public function store(ArticleRequest $request)
     {
 	    $this->authorize('create', Article::class);
@@ -117,11 +106,6 @@ class ArticleController extends Controller
 	    return redirect()->back()->withInput();
     }
 
-
-    /**
-     * @param  int $id
-     * @return Response
-     */
     public function edit($id)
     {
 	    return view('article.edit', [
@@ -131,13 +115,6 @@ class ArticleController extends Controller
 	    ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  ArticleRequest $request
-     * @param  int $id
-     * @return Response
-     */
     public function update(ArticleRequest $request, $id)
     {
 	    $this->authorize('update', $this->articleRepository->getById($id));
@@ -153,12 +130,6 @@ class ArticleController extends Controller
 	    return redirect()->back()->withInput();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
     public function destroy($id)
     {
 	    $this->authorize('delete', $this->articleRepository->getById($id));
@@ -183,10 +154,6 @@ class ArticleController extends Controller
 
 		$articles = $this->articleRepository->search($keyword);
 
-		$jumbotron = [];
-		$jumbotron['title'] = '关键词：' . $keyword;
-		$jumbotron['desc'] = '';
-
-		return view('article.search', compact('keyword', 'articles', 'jumbotron'));
+		return view('article.search', compact('keyword', 'articles'));
 	}
 }

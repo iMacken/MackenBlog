@@ -1,5 +1,4 @@
 {{ csrf_field() }}
-
 <div class="form-group">
     <label for="name" class="control-label">分类名</label>
     <input type="text" name="name" id="name" class="form-control" value="{{ isset($category) ? $category->name : old('name') }}" autofocus>
