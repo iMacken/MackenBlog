@@ -46,11 +46,9 @@
 #links {
   border: none;
   li {
-    float: left;
     height: 2em;
     line-height: 2em;
     font-size: 1em;
-    padding: 0.3em 0.8em;
     list-style: none;
   }
 }
@@ -60,5 +58,41 @@
   li {
     font-size: 0.9em;
     padding: 10px 15px;
+  }
+}
+
+#loading {
+  background-color : transparent;
+  height: 70px;
+  width : 150px;
+  margin: 0 auto;
+  position : relative;
+  .loading-text {
+    color : $mk-orange;
+    font-family : calibri;
+    text-align : center;
+    margin-top : 10px;
+  }
+  .loading-bubble {
+    height: 10px;
+    width: 10px;
+    position: absolute;
+    top: 36px;
+    left: 10px;
+    background-color: $mk-orange;
+    border-radius: 50%;
+    animation: bubble  2s infinite;
+    -webkit-animation: bubble  2s infinite;
+  }
+  @keyframes bubble {
+    0% {left : 10px;opacity : 0;}
+    50% {height : 20px; width : 20px; opacity : 1;}
+    100% {left : 120px; opacity : 0; height : 10px; width : 10px;}
+  }
+
+  @-webkit-keyframes bubble {
+    0% {left : 10px;opacity : 0;}
+    50% {height : 20px; width : 20px; opacity : 1;}
+    100% {left : 120px; opacity : 0; height : 10px; width : 10px;}
   }
 }

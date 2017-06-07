@@ -80,10 +80,6 @@ class CategoryRepository extends Repository
 		return $articles;
 	}
 
-	/**
-	 * @param  array $data
-	 * @return Category
-	 */
 	public function create(array $data)
 	{
 		$this->clearCache();
@@ -93,11 +89,6 @@ class CategoryRepository extends Repository
 		return $category;
 	}
 
-	/**
-	 * @param array $data
-	 * @param int $id
-	 * @return bool|int
-	 */
 	public function update(array $data, $id)
 	{
 		$this->clearCache();

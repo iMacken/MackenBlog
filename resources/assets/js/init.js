@@ -115,11 +115,14 @@
             initCommentList: function (shouldMoveEnd, force) {
                 var self = this;
                 var container = $('#comments-container');
+                var loading = $('#loading');
+                loading.show();
                 if (container && force || container.children().length <= 0) {
                     $.ajax({
                         method: 'get',
                         url: container.data('api-url'),
                     }).done(function (data) {
+                        loading.hide();
                         container.html(data);
                         $('#comment-count').text(container.find('li').length);
                         self.initDeleteTarget();
@@ -259,9 +262,9 @@
                 var newContent = '';
                 if (oldContent.length > 0) {
                     if (oldContent.indexOf(prefix) !== -1) {
-                        newContent = _.trim(oldContent.replace(prefix, '') + " " + prefix);
+                        newContent = _.trim(oldContent.replace(prefix, '')) + ' ' + prefix;
                     } else {
-                        newContent = _.trim(oldContent + " " + prefix);
+                        newContent = _.trim(oldContent) + " " + prefix;
                     }
                 } else {
                     newContent = prefix

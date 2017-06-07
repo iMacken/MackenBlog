@@ -1,13 +1,9 @@
 <?php
 namespace App\Repositories;
 
-use App\Http\Requests\LinkRequest;
 use App\Link;
 
-/**
- * Class LinkRepository
- * @package App\Http\Repository
- */
+
 class LinkRepository extends Repository
 {
 	static $tag = 'link';
@@ -22,6 +18,11 @@ class LinkRepository extends Repository
 		return app(Link::class);
 	}
 
+    public function getById($id)
+    {
+        return $this->model()->findOrFail($id);
+    }
+
 	public function getAll()
 	{
 		$links = $this->remember('link.all', function () {
@@ -30,19 +31,29 @@ class LinkRepository extends Repository
 		return $links;
 	}
 	
-	public function create(LinkRequest $request)
+	public function create(array $data)
 	{
 		$this->clearCache();
 
-		$link = Link::create($request->all());
+		$link = Link::create($data);
+
 		return $link;
 	}
 
-	public function update(LinkRequest $request)
-	{
-		$this->clearCache();
+    public function update(array $data, $id)
+    {
+        $this->clearCache();
 
-		$result = Link::update($request->all);
-		return $result;
-	}
+        /** @var Link $link */
+        $link = $this->model()->find($id);
+
+        return $link->update($data);
+    }
+
+    public function delete($id)
+    {
+        $this->clearCache();
+
+        return Link::destroy($id);
+    }
 }

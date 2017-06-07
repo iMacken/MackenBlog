@@ -8,12 +8,12 @@
     </div>
     <div class="panel-body">
         <ul id="comments-container" class="list-group" data-api-url="{{ route('comment.show',[$commentable->id,
-             'commentable_type'=>$commentable_type,
-             'redirect'=>(isset($redirect) && $redirect ? $redirect:'')]) }}">
+             'commentable_type'=>$commentable_type, 'redirect'=>(isset($redirect) && $redirect ? $redirect:'')]) }}">
             @if(isset($comments) && !empty($comments))
                 @include('comment.show',$comments)
             @endif
         </ul>
+        @include('partials.loading')
         <form id="comment-form" method="POST" action="{{ route('comment.store') }}">
             {{ csrf_field() }}
             <input type="hidden" name="commentable_id" value="{{ $commentable->id }}">

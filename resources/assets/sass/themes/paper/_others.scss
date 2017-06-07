@@ -66,3 +66,11 @@
   padding-left: 0.5em;
   opacity: 0.5;
 }
+
+.text-center {
+  text-align: center;
+}
+
+.pad-base {
+  padding: $padding-base-horizontal $padding-base-vertical;
+}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="{{ config('app.locale') }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +7,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @yield('header')
+    <link rel="shortcut icon" href="{{ config('blog.default_icon') }}">
+
+    <title>@yield('head_title') - {{ $site_title or 'MackenStack' }}</title>
+    <meta name="keywords" content="@yield('head_keywords') {{ $site_keywords }}">
+    <meta name="description" content="@yield('head_description') {{ $site_description }}">
 
     <link rel="stylesheet" type="text/css" href="{{ elixir('css/app.css') }}">
 

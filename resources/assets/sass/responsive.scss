@@ -3,9 +3,9 @@
 }
 
 .jumbotron {
-    padding-top: 28px;
-    padding-bottom: 28px;
-    background-color: $mk-blue;
+    padding-top: 1.2em;
+    padding-bottom: 1.2em;
+    background-color: $mk-white;
 
     .jumbotron-title,.jumbotron-desc,.jumbotron-meta {
         color:$mk-white;
@@ -17,7 +17,7 @@
         font-size:1.2em;
     }
     .jumbotron-meta{
-        font-size:1em;
+        font-size:0.9em;
         a {
             color:$mk-white;
             &:hover {
@@ -62,7 +62,7 @@
             font-size:1.2em !important;
         }
         .jumbotron-meta{
-            font-size:0.9em !important;
+            font-size:0.8em !important;
         }
     }
 

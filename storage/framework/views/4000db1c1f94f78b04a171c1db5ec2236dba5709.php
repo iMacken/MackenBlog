@@ -51,5 +51,5 @@
         </div>
     </li>
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-    <p class="meta-item center-block" style="padding:10px">暂无评论~~</p>
+    <p class="text-center pad-base">暂无评论~~</p>
 <?php endif; ?>

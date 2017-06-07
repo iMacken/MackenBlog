@@ -1,14 +1,11 @@
 @extends('app')
 
-@section('header')
-    <title>{{ $jumbotron['title'] }}</title>
-    <meta name="keywords" content=""/>
-    <meta name="description" content="">
-@endsection
+@section('head_title', $jumbotron['title'])
+@section('head_description', $jumbotron['description'])
 
 @section('content')
 
-    <div class="jumbotron home-jumbotron" >
+    <div class="jumbotron geopattern" data-pattern-id="{{ $jumbotron['title'] }}">
         <div class="container article-banner">
             <h1 class="jumbotron-title">{{ $jumbotron['title'] }}</h1>
             <p class="jumbotron-desc">{{ $jumbotron['description'] }}</p>

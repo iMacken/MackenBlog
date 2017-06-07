@@ -44,7 +44,7 @@ class ArticleController extends Controller
 
         $jumbotron = [];
         $jumbotron['title'] = config('blog.default_owner');
-        $jumbotron['description']  = config('blog.default_motto');
+        $jumbotron['description'] = config('blog.default_motto');
 
         return view('article.index', compact('articles', 'jumbotron'));
     }

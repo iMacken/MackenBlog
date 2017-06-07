@@ -1,10 +1,8 @@
 @extends('app')
 
-@section('header')
-    <title>{{ $article->title }}</title>
-    <meta name="keywords" content="{{ $article->title }}"/>
-    <meta name="description" content="{{ $article->description }}">
-@endsection
+@section('head_title', $article->title)
+@section('head_keywords', $article->tags->pluck('name')->implode(',') . ',')
+@section('head_description', $article->excerpt)
 
 @section('content')
     <section class="jumbotron geopattern" data-pattern-id="{{ $article->slug }}">
@@ -55,15 +53,17 @@
                 <div class="share-bar"></div>
             </div>
 
-            @include('widgets.comments',
-            [
-                'comment_key'      => $article->slug,
-                'comment_title'    => $article->title,
-                'comment_url'      => route('article.show',$article->slug),
-                'commentable'      => $article,
-                'comments'         => isset($comments) ? $comments:[],
-                'redirect'         => request()->fullUrl(),
-                'commentable_type' => 'App\Article'
-            ])
+            @if($article->ifShowComments())
+                @include('widgets.comments',
+                [
+                    'comment_key'      => $article->slug,
+                    'comment_title'    => $article->title,
+                    'comment_url'      => route('article.show',$article->slug),
+                    'commentable'      => $article,
+                    'comments'         => isset($comments) ? $comments:[],
+                    'redirect'         => request()->fullUrl(),
+                    'commentable_type' => 'App\Article'
+                ])
+            @endif
         </div>
 @endsection

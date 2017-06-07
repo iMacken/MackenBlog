@@ -1,21 +1,17 @@
+{{ csrf_field() }}
 <div class="form-group">
-    {!! Form::label('sort', '排序') !!}
-    {!! Form::text('sort', null, ['class' => 'form-control','placeholder'=>'sort']) !!}
-    <font color="red">{{ $errors->first('sort') }}</font>
+    <label for="name" class="control-label">友链名称</label>
+    <input type="text" name="name" id="name" class="form-control" value="{{ isset($link) ? $link->name : old('name') }}" autofocus>
 </div>
-
 <div class="form-group">
-    {!! Form::label('name', '链接名称') !!}
-    {!! Form::text('name', null, ['class' => 'form-control','placeholder'=>'name']) !!}
-    <font color="red">{{ $errors->first('name') }}</font>
+    <label for="url" class="control-label">友链地址</label>
+    <input type="text" name="url" id="url" class="form-control" value="{{ isset($link) ? $link->url : old('url') }}" autofocus>
 </div>
-
 <div class="form-group">
-    {!! Form::label('url', '链接地址') !!}
-    {!! Form::text('url', null, ['class' => 'form-control','placeholder'=>'url']) !!}
-    <font color="red">{{ $errors->first('url') }}</font>
+    <label for="sort" class="control-label">排序</label>
+    <input type="text" name="sort" id="sort" class="form-control" value="{{ isset($link) ? $link->sort : old('sort') }}" autofocus>
 </div>
-
 <div class="form-group">
-    {!! Form::submit($submitBtnTxt, ['class' => 'btn btn-success col-md-12']) !!}
+    <button type="submit" class="btn btn-success form-control">{{ $submitBtnTxt }}</button>
 </div>
+            

@@ -7,8 +7,6 @@ use App\Repositories\CommentRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests\CommentRequest;
 use App\Notifications\CommentReceived as Received;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class CommentController extends Controller
 {

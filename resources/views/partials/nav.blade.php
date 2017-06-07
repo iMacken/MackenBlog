@@ -31,6 +31,7 @@
                                 <li><a href="{{ route('user.index') }}">用户管理</a></li>
                                     <li><a href="{{ route('category.index') }}">分类管理</a></li>
                                     <li><a href="{{ route('tag.index') }}">标签管理</a></li>
+                                    <li><a href="{{ route('link.index') }}">友链管理</a></li>
                                     <li><a href="{{ route('settings') }}">站点设置</a></li>
                             @endif
                             <li><a href="javascript:void(0)"

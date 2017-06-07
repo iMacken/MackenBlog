@@ -45,6 +45,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = $this->categoryRepository->getAll();
+
         return view('category.index', compact('categories'));
     }
 
@@ -85,13 +86,6 @@ class CategoryController extends Controller
         return view('category.edit', compact('category'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  CategoryRequest $request
-     * @param int $id
-     * @return Response
-     */
     public function update(CategoryRequest $request, $id)
     {
 	    $result = $this->categoryRepository->update($request->all(), $id);
@@ -106,12 +100,6 @@ class CategoryController extends Controller
 	    return redirect()->back()->withInput();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
     public function destroy($id)
     {
 	    $result = $this->categoryRepository->delete($id);

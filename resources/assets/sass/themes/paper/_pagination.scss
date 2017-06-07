@@ -1,0 +1,15 @@
+.pagination {
+  .active a, .active span {
+    background-color: $mk-blue !important;
+    border-color: $mk-blue !important;
+    &:focus, &:hover {
+      background-color: $mk-blue !important;
+      border-color: $mk-blue !important;
+    }
+  }
+  li:first-child, li:last-child {
+    a, span {
+      border-radius: 0;
+    }
+  }
+}
