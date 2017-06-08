@@ -14222,32 +14222,32 @@ input[type="checkbox"]:disabled:checked:after,
   padding-right: 0.5em;
 }
 
-.text-danger {
-  color: #f4645f;
+.bg-danger {
+  background-color: #f4645f;
 }
 
-.text-warning {
-  color: #ff9800;
+.bg-warning {
+  background-color: #ff9800;
 }
 
-.text-primary {
-  color: #2196F3;
+.bg-primary {
+  background-color: #2196F3;
 }
 
-.text-success {
-  color: #4CAF50;
+.bg-success {
+  background-color: #4CAF50;
 }
 
-.text-default {
-  color: #212121;
+.bg-default {
+  background-color: #212121;
 }
 
-.text-light {
-  color: #fefefe;
+.bg-light {
+  background-color: #fefefe;
 }
 
-.text-muted {
-  color: #ccc;
+.bg-muted {
+  background-color: #ccc;
 }
 
 .operation-bar {

@@ -18,7 +18,7 @@
             <div class="media-heading">
                 <span class="name">
                     <a href="<?php echo e($href); ?>"><?php echo e($comment->username); ?></a>
-                    <?php if(isAdminById($comment->user_id)): ?>
+                    <?php if($comment->user_id === 1): ?>
                         <label class="role-label">博主</label>
                     <?php endif; ?>
                 </span>

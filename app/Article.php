@@ -51,11 +51,6 @@ class Article extends Model
 	    'published_at'
     ];
 
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
     public static function boot()
     {
             parent::boot();
@@ -63,58 +58,36 @@ class Article extends Model
             static::addGlobalScope(new PublishedScope());
     }
 
-    /**
-     * Get the user for the blog article.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Get the category for the blog article.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    /**
-     * Get the tags for the blog article.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\morphToMany
-     */
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
-    /**
-     * Get the comments for the discussion.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\morphMany
-     */
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    /**
-     * get a list of tag ids associated with the current article
-     * @return array
-     */
     public function getTagListAttribute()
     {
         return $this->tags->pluck('id')->all();
     }
 
-	/**
-	 * @return array
-	 */
+    public function configuration()
+    {
+        return $this->morphOne(Configuration::class, 'configurable');
+    }
+
 	public function getConfigKeys()
 	{
 		return ['if_allow_comment', 'if_show_comments', 'is_draft', 'is_original'];

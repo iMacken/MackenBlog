@@ -40,7 +40,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-	    $articles = $this->articleRepository->pagedArticles();
+        $method = isAdmin() ? 'pagedArticlesWithoutGlobalScopes' : 'pagedArticles';
+	    $articles = $this->articleRepository->{$method}();
 
         $jumbotron = [];
         $jumbotron['title'] = config('blog.default_owner');

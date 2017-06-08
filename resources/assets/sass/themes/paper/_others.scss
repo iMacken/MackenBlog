@@ -32,32 +32,32 @@
   padding-right: 0.5em;
 }
 
-.text-danger {
-  color: $mk-red;
+.bg-danger {
+  background-color: $mk-red;
 }
 
-.text-warning {
-  color: $mk-orange;
+.bg-warning {
+  background-color: $mk-orange;
 }
 
-.text-primary {
-  color: $mk-blue;
+.bg-primary {
+  background-color: $mk-blue;
 }
 
-.text-success {
-  color: $mk-green;
+.bg-success {
+  background-color: $mk-green;
 }
 
-.text-default {
-  color: $mk-dark;
+.bg-default {
+  background-color: $mk-dark;
 }
 
-.text-light {
-  color: $mk-white;
+.bg-light {
+  background-color: $mk-white;
 }
 
-.text-muted {
-  color: $mk-gray-light;
+.bg-muted {
+  background-color: $mk-gray-light;
 }
 
 .operation-bar {
@@ -74,3 +74,4 @@
 .pad-base {
   padding: $padding-base-horizontal $padding-base-vertical;
 }
+

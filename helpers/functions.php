@@ -164,11 +164,13 @@ if (!function_exists('getMentionedUsers')) {
     }
 }
 
-if (!function_exists('isAdminById')) {
-	function isAdminById($user_id)
-	{
-		return $user_id === 1;
-	}
+if (!function_exists('isAdmin')) {
+    function isAdmin()
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        return $user != null && $user->is_admin === 1;
+    }
 }
 
 if (!function_exists('get_gravatar')) {

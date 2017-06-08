@@ -35,7 +35,7 @@
                                     <li><a href="{{ route('settings') }}">站点设置</a></li>
                             @endif
                             <li><a href="javascript:void(0)"
-                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">登出</a>
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">注销</a>
                             </li>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                   style="display: none;">

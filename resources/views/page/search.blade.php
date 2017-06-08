@@ -1,14 +1,16 @@
 @extends('app')
 
-@section('head_title', $jumbotron['title'])
-@section('head_description', $jumbotron['description'])
+@section('header')
+    <title></title>
+    <meta name="keywords" content=",{{ setting_config('seo_key') }}" />
+    <meta name="description" content=",{{ setting_config('seo_desc') }}">
+@endsection
 
 @section('content')
 
-    <div class="jumbotron geopattern" data-pattern-id="{{ $jumbotron['title'] }}">
+    <div class="jumbotron geopattern" data-pattern-id="{{ $keyword }}">
         <div class="container article-banner">
-            <h1 class="jumbotron-title">{{ $jumbotron['title'] }}</h1>
-            <p class="jumbotron-desc">{{ $jumbotron['description'] }}</p>
+            <h1 class="jumbotron-title">关键词：{{ $keyword }}</h1>
         </div>
     </div>
     <section class="container">
@@ -23,16 +25,12 @@
                                        title="{{ $article->title }}">
                                         {{ $article->title }}
                                     </a>
-                                    @if((bool)$article->getConfig('is_draft')) <span class="badge bg-warning">草稿</span> @endif
-                                    @if((bool)$article->getConfig('is_original')) <span class="badge bg-success">原创</span> @endif
                                 </h3>
                                 <p class="article-list-description">
                                     {{ $article->excerpt }}
                                 </p>
                                 <p class="article-list-meta">
-                                    @if(!(bool)$article->getConfig('is_draft'))
-                                        <span class="ion-calendar"></span>{{ $article->published_at->diffForHumans() }}
-                                    @endif
+                                    <span class="ion-calendar"></span>{{ $article->published_at->diffForHumans() }}
                                     &nbsp;&nbsp;<span class="ion-ios-folder"></span><a
                                             href="/category/{{ $article->category->slug }}">{{ $article->category->name }}</a>
                                     &nbsp;&nbsp;<span class="ion-ios-pricetag"></span>

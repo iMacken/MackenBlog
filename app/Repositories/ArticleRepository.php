@@ -4,9 +4,7 @@ namespace App\Repositories;
 
 use App\Article;
 use App\Tag;
-use App\Http\Requests\ArticleRequest;
 use App\Services\MarkdownParser;
-use DB;
 
 class ArticleRepository extends Repository
 {
@@ -134,12 +132,12 @@ class ArticleRepository extends Repository
 	{
 		$this->clearAllCache();
 
+		/** @var Article $article */
 		$article = auth()->user()->articles()->create(
 			array_merge(
 				$data,
 				[
 					'html_content' => $this->markdownParser->convertMarkdownToHtml($data['content'], false),
-					'excerpt' => $this->markdownParser->convertMarkdownToHtml($data['excerpt'], false),
 				]
 			)
 		);
@@ -147,6 +145,8 @@ class ArticleRepository extends Repository
 		$article->save(); # save it in scout
 
 		$this->syncTags($article, $data['tag_list']);
+
+		$article->saveConfig($data);
 
 		return $article;
 	}
@@ -164,6 +164,8 @@ class ArticleRepository extends Repository
 		$article = $this->model()->find($id);
 
 		$this->syncTags($article, $data['tag_list']);
+
+		$article->saveConfig($data);
 
 		$result = $article->update(
 			array_merge($data, [

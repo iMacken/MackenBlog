@@ -18,7 +18,7 @@
             <div class="media-heading">
                 <span class="name">
                     <a href="{{ $href }}">{{ $comment->username }}</a>
-                    @if(isAdminById($comment->user_id))
+                    @if($comment->user_id === 1)
                         <label class="role-label">博主</label>
                     @endif
                 </span>
