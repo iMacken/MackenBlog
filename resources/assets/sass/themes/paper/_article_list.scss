@@ -34,10 +34,15 @@
         margin-top: 8px;
         margin-bottom: 0;
         font-size: 13px;
-        color: $mk-gray;
+        color: $mk-gray-light;
 
         span {
             margin-right: 0.6em;
+        }
+
+        .article-date {
+            color: $mk-gray;
+            cursor: help;
         }
     }
 }

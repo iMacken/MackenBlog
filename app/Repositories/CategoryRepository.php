@@ -7,32 +7,21 @@ use App\Http\Requests\CategoryRequest;
 use App\Category;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-/**
- * Class CategoryRepository
- */
+
 class CategoryRepository extends Repository
 {
 	static $tag = 'category';
 
-	/**
-	 * @return string
-	 */
 	public function tag()
 	{
 		return CategoryRepository::$tag;
 	}
 
-	/**
-	 * @return \Illuminate\Foundation\Application|mixed
-	 */
 	public function model()
 	{
 		return app(Category::class);
 	}
 
-	/**
-	 * @return mixed
-	 */
 	public function getAll()
 	{
 		$categories = $this->remember('category.all', function () {
@@ -41,10 +30,6 @@ class CategoryRepository extends Repository
 		return $categories;
 	}
 
-	/**
-	 * @param $slug
-	 * @return mixed
-	 */
 	public function get($slug)
 	{
 		$category = $this->remember('category.one.' . $slug, function () use ($slug) {
@@ -61,11 +46,6 @@ class CategoryRepository extends Repository
 		return $this->model()->findOrFail($id);
 	}
 
-	/**
-	 * @param Category $category
-	 * @param int $limit
-	 * @return mixed
-	 */
 	public function pagedArticlesByCategory(Category $category, $limit = Category::PAGE_LIMIT)
 	{
 		$cacheKey = 'articles.category.' . $category->slug . '.page.' . $limit . request()->get('page', 1);

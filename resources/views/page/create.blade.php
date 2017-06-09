@@ -6,10 +6,10 @@
             <br>
             @include('partials.errors')
             <div class="panel panel-default">
-                <div class="panel-heading">撰写文章</div>
+                <div class="panel-heading">创建单页</div>
                 <div class="panel-body">
-                    <form role="form" action="{{ route('article.store') }}" method="POST">
-                        @include('article.form', ['submitBtnTxt'=>'提交'])
+                    <form role="form" action="{{ route('page.store') }}" method="POST">
+                        @include('page.form', ['submitBtnTxt'=>'提交'])
                     </form>
                 </div>
             </div>

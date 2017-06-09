@@ -29,6 +29,7 @@
                             @endcan
                             @if (Auth::user()->isSuperAdmin())
                                 <li><a href="{{ route('user.index') }}">用户管理</a></li>
+                                    <li><a href="{{ route('page.index') }}">单页管理</a></li>
                                     <li><a href="{{ route('category.index') }}">分类管理</a></li>
                                     <li><a href="{{ route('tag.index') }}">标签管理</a></li>
                                     <li><a href="{{ route('link.index') }}">友链管理</a></li>

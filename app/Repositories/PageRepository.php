@@ -3,7 +3,10 @@
 namespace App\Repositories;
 
 use App\Page;
+use App\Scopes\PublishedScope;
 use App\Services\MarkdownParser;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class PageRepository extends Repository
 {
@@ -36,68 +39,52 @@ class PageRepository extends Repository
 		return PageRepository::$tag;
 	}
 
-	/**
-	 * @return mixed
-	 */
 	public function count()
 	{
 		$count = $this->remember($this->tag() . '.count', function () {
-			return $this->model()->withoutGlobalScopes()->count();
+			return $this->model()->withoutGlobalScopes([PublishedScope::class])->count();
 		});
+
 		return $count;
 	}
 
-	/**
-	 * @param int $limit
-	 * @return mixed
-	 */
-	public function pagedPagesWithoutGlobalScopes($limit = 15)
-	{
-		$pages = $this->remember('pages.withoutContent.page.' . $limit . '' . request()->get('page', 1), function () use ($limit) {
-			return Page::select(['title', 'id', 'created_at'])->withoutGlobalScopes()->withCount('comments')->orderBy('created_at', 'desc')->paginate($limit);
-		});
-		return $pages;
-	}
+    public function getAll()
+    {
+        $isAdmin = isAdmin();
+        $cacheKey = $isAdmin ? 'page.admin.all' : 'page.all';
+        $pages = $this->remember($cacheKey, function () use ($isAdmin) {
+            if ($isAdmin) {
+                return Page::withoutGlobalScopes([PublishedScope::class])->withCount('comments')->get();
+            } else {
+                return Page::withCount('comments')->get();
+            }
+        });
 
-	/**
-	 * @param int $limit
-	 * @return mixed
-	 */
-	public function pagedPages($limit = 10)
-	{
-		$pages = $this->remember('pages.page.' . $limit . '' . request()->get('page', 1), function () use ($limit) {
-			return Page::select(['title', 'id', 'created_at'])->withCount('comments')->orderBy('published_at', 'desc')->paginate($limit);
-		});
-		return $pages;
-	}
+        return $pages;
+    }
 
-	/**
-	 * @param $slug string
-	 * @return Page
-	 */
 	public function get($slug)
 	{
 		$page = $this->remember('page.one.' . $slug, function () use ($slug) {
 			return Page::where('slug', $slug)->withCount('comments')->firstOrFail();
 		});
+
+		$page = $this->incrementViewCount($page, $slug);
+
 		return $page;
 	}
 
 	public function getById($id)
 	{
-		return Page::withCount('comments')->findOrFail($id);
+		return Page::withoutGlobalScopes([PublishedScope::class])->withCount('comments')->findOrFail($id);
 	}
 
-	/**
-	 * @param array $data
-	 * @return mixed
-	 */
 	public function create(array $data)
 	{
 		$this->clearCache();
 
 		/** @var Page $page */
-		$page = auth()->user()->pages()->create(
+		$page = Page::create(
 			array_merge(
 				$data,
 				[
@@ -111,17 +98,12 @@ class PageRepository extends Repository
 		return $page;
 	}
 
-	/**
-	 * @param array
-	 * @param int $id
-	 * @return mixed
-	 */
 	public function update(array $data, $id)
 	{
 		$this->clearCache();
 
 		/** @var Page $page */
-		$page = $this->model()->find($id);
+		$page = $this->getById($id);
 
 		$page->saveConfig($data);
 
@@ -133,16 +115,26 @@ class PageRepository extends Repository
 
 		return $result;
 	}
-	
-	public function delete($id)
-	{
-		$this->clearCache();
-		/** @var Page $page */
-		$page = $this->model()->find($id);
-		$result = $page->destroy($id);
 
-		$result && $page->delete(); # delete from scout
+    public function delete($id)
+    {
+        $this->clearCache();
 
-		return $result;
+        return Page::destroy($id);
+    }
+
+    private function incrementViewCount(Page $page, $slug)
+    {
+        $viewCountKey = 'page.' . $slug . 'viewCount';
+        if (Cache::has($viewCountKey)) {
+            $page->view_count = Cache::get($viewCountKey) + 1;
+            Cache::put($viewCountKey, $page->view_count, $this->cacheTime());
+        } else {
+            $page->view_count  = $page->view_count + 1;
+            Cache::add($viewCountKey, $page->view_count, $this->cacheTime());
+        }
+        DB::table('pages')->where('id', $page->id)->increment('view_count');
+
+        return $page;
 	}
 }

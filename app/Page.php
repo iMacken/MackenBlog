@@ -2,11 +2,37 @@
 
 namespace App;
 
+use App\Scopes\PublishedScope;
+use App\Traits\Commentable;
+use App\Traits\Configurable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 
 class Page extends Model
 {
-	protected $fillable = ['slug', 'title', 'content', 'html_content'];
+    use SoftDeletes, Searchable, Configurable, Commentable;
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['published_at', 'created_at', 'deleted_at'];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+	protected $fillable = ['slug', 'title', 'content', 'html_content', 'published_at'];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new PublishedScope());
+    }
 
 	public function comments()
 	{

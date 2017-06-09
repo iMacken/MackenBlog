@@ -53,9 +53,8 @@ class Article extends Model
 
     public static function boot()
     {
-            parent::boot();
-
-            static::addGlobalScope(new PublishedScope());
+        parent::boot();
+        static::addGlobalScope(new PublishedScope());
     }
 
     public function user()

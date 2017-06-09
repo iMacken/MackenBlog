@@ -75,7 +75,20 @@
     </select>
 </div>
 
-<div class="form-group date">
+<div class="form-group">
+    <label>
+        @php $is_draft = isset($article) ? $article->getConfig('is_draft', 'false') : 'false'; @endphp
+        <input type="hidden" name="is_draft" value="false">
+        <input type="checkbox" name="is_draft" id="is_draft" value="true" {{ $is_draft === 'true'? 'checked' : '' }}>草稿
+    </label>
+    <label>
+        @php $is_original = isset($article) ? $article->getConfig('is_original', 'false') : 'false'; @endphp
+        <input type="hidden" name="is_original" value="false">
+        <input type="checkbox" name="is_original" id="is_original" value="true" {{ $is_original === 'true'? 'checked' : '' }}>原创
+    </label>
+</div>
+
+<div class="form-group date" style="display:none">
     <div class="row">
         <div class="col-sm-12">
 	        <label for="image" class="control-label">发布时间</label>
@@ -85,18 +98,7 @@
     </div>
 </div>
 
-<div class="form-group">
-    <label>
-        @php $is_draft = isset($article) ? $article->getConfig('is_draft', 'false') : 'false'; @endphp
-        <input type="hidden" name="is_draft" value="false">
-        <input type="checkbox" name="is_draft" id="is_draft" value="{{ $is_draft }}" {{ $is_draft === 'true'? 'checked' : '' }}>草稿
-    </label>
-    <label>
-        @php $is_original = isset($article) ? $article->getConfig('is_original', 'false') : 'false'; @endphp
-        <input type="hidden" name="is_original" value="false">
-        <input type="checkbox" name="is_original" id="is_original" value="{{ $is_original }}" {{ $is_original === 'true'? 'checked' : '' }}>原创
-    </label>
-</div>
+
 
 <div class="form-group">
     <button type="submit" class="btn btn-success form-control">{{ $submitBtnTxt }}</button>
@@ -118,6 +120,7 @@
         autoDownloadFontAwesome: true
     });
 
+
     $(function () {
         $('#published_at').datetimepicker({
             locale: 'zh-CN',
@@ -132,15 +135,21 @@
             }
         });
 
-        $('#is_draft').click(function() {
+        function setPublishedAtStatus()
+        {
             var $publishedAt = $('#published_at').closest('.form-group');
-            if ($(this).prop('checked')) {
+            if ($('#is_draft').prop('checked')) {
                 $publishedAt.hide().find('#published_at').attr('disabled', 'disabled');
             } else {
                 $publishedAt.show().find('#published_at').removeAttr('disabled');
             }
+        }
+        setPublishedAtStatus();
+        $('#is_draft').click(function() {
+            setPublishedAtStatus();
         });
     });
+
 
 </script>
 @endsection

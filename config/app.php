@@ -186,6 +186,7 @@ return [
 	    ScoutEngines\Elasticsearch\ElasticsearchProvider::class,
 	    Barryvdh\Debugbar\ServiceProvider::class,
 	    Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Laravel\Tinker\TinkerServiceProvider::class,
     ],
 
     /*

@@ -21,6 +21,8 @@
                         <a href="/tag/{{ $tag->name }}">{{ $tag->name }}</a>&nbsp;
                     @endforeach
                 @endif
+                    <span class="ion-eye"></span>
+                {{ $article->view_count }}
             </p>
             <p class="pull-right operation-bar">
                 @can('update', $article)

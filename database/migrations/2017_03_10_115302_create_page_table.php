@@ -20,6 +20,8 @@ class CreatePageTable extends Migration
 			$table->string('slug')->unique();
 			$table->longText('content');
 			$table->longText('html_content');
+            $table->timestamp('published_at')->nullable();
+            $table->integer('view_count')->unsigned()->default(0);
 			$table->timestamps();
 		});
 	}

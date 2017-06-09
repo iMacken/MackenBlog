@@ -1,35 +1,19 @@
 @extends('app')
 
-@section('head_title', $article->title)
-@section('head_keywords', $article->tags->pluck('name')->implode(',') . ',')
-@section('head_description', $article->excerpt)
+@section('head_title', $page->title)
 
 @section('content')
-    <section class="jumbotron geopattern" data-pattern-id="{{ $article->slug }}">
-        <div class="container article-banner">
-            <h1 class="jumbotron-title">{{ $article->title }}</h1>
-            <p class="jumbotron-desc">{{ $article->excerpt }}</p>
-            <p class="jumbotron-meta pull-left">
-                @if(!(bool)$article->getConfig('is_draft'))
-                    <span class="ion-calendar"></span> {{ $article->published_at->diffForHumans() }}
-                @endif
-                &nbsp;&nbsp;<span class="ion-ios-folder"></span>
-                <a href="/category/{{ $article->category->slug }}">{{ $article->category->name }}</a>
-                &nbsp;&nbsp;<span class="ion-ios-pricetag"></span>
-                @if ($article->tags)
-                    @foreach($article->tags as $tag)
-                        <a href="/tag/{{ $tag->name }}">{{ $tag->name }}</a>&nbsp;
-                    @endforeach
-                @endif
-            </p>
+    <section class="jumbotron geopattern" data-pattern-id="{{ $page->slug }}">
+        <div class="container page-banner">
+            <h1 class="jumbotron-title">{{ $page->title }}</h1>
             <p class="pull-right operation-bar">
-                @can('update', $article)
+                @can('update', $page)
                     <a class="operation ion-edit text-light"
-                       href="{{ route('article.edit', ['id' => $article->id]) }}"></a>
+                       href="{{ route('page.edit', ['id' => $page->id]) }}"></a>
                 @endcan
-                @can('delete', $article)
+                @can('delete', $page)
                     <a class="operation ion-trash-a text-light swal-dialog-target"
-                       data-url="{{ route('article.destroy', ['id' => $article->id]) }}" data-dialog-msg="确定删除这篇文章么?"
+                       data-url="{{ route('page.destroy', ['id' => $page->id]) }}" data-dialog-msg="确定删除这个单页么?"
                        data-dialog-title=" " href="javascript:void(0)"></a>
                 @endcan
             </p>
@@ -37,31 +21,25 @@
     </section>
     <section class="container">
         <div class="row">
-            <article class="article-content markdown-body">
-                {!! $article->html_content !!}
+            <page class="page-content markdown-body">
+                {!! $page->html_content !!}
                 <br>
                 <p>本文链接:
-                    <a href="{{ route('article.show',array('id'=>$article->slug ? $article->slug : $article->id)) }}">{{ route('article.show',array('id'=>$article->slug ? $article->slug : $article->id)) }}</a>
+                    <a href="{{ route('page.show',array('id'=>$page->slug ? $page->slug : $page->id)) }}">{{ route('page.show',array('id'=>$page->slug ? $page->slug : $page->id)) }}</a>
                 </p>
-                <p class="well">
-                    <b class="text-danger">声明</b>
-                    <br>
-                    <br>
-                    在转载或修改本文后发布的文章中注明原文来源信息的前提下，允许进行转载该篇文章或经修改后发布且不用告知本文作者。
-                </p>
-            </article>
+            </page>
 
             <div class="share">
                 <div class="share-bar"></div>
             </div>
 
-            @if($article->ifShowComments())
+            @if($page->ifShowComments())
                 @include('widgets.comments',
                 [
-                    'comment_key'      => $article->slug,
-                    'comment_title'    => $article->title,
-                    'comment_url'      => route('article.show',$article->slug),
-                    'commentable'      => $article,
+                    'comment_key'      => $page->slug,
+                    'comment_title'    => $page->title,
+                    'comment_url'      => route('page.show',$page->slug),
+                    'commentable'      => $page,
                     'comments'         => isset($comments) ? $comments:[],
                     'redirect'         => request()->fullUrl(),
                     'commentable_type' => 'App\Article'

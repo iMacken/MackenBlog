@@ -13211,10 +13211,6 @@ a:hover, a:active {
   box-shadow: none;
 }
 
-.panel {
-  margin-top: 2em;
-}
-
 .panel-heading {
   border-bottom: none;
 }
@@ -13743,7 +13739,7 @@ input[type="checkbox"]:disabled:checked:after,
 .navbar {
   border: none;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  margin-bottom: 0;
+  margin-bottom: 2em;
 }
 
 .navbar .navbar-brand {
@@ -14033,11 +14029,16 @@ input[type="checkbox"]:disabled:checked:after,
   margin-top: 8px;
   margin-bottom: 0;
   font-size: 13px;
-  color: #888;
+  color: #ccc;
 }
 
 .article-list .article-list-meta span {
   margin-right: 0.6em;
+}
+
+.article-list .article-list-meta .article-date {
+  color: #888;
+  cursor: help;
 }
 
 #comment-list {
@@ -14272,6 +14273,7 @@ input[type="checkbox"]:disabled:checked:after,
 .jumbotron {
   padding-top: 1.2em;
   padding-bottom: 1.2em;
+  margin-top: -2em;
   background-color: #fefefe;
 }
 

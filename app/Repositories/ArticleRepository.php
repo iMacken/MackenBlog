@@ -3,8 +3,11 @@
 namespace App\Repositories;
 
 use App\Article;
+use App\Scopes\PublishedScope;
 use App\Tag;
 use App\Services\MarkdownParser;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class ArticleRepository extends Repository
 {
@@ -46,7 +49,7 @@ class ArticleRepository extends Repository
 	public function count()
 	{
 		$count = $this->remember($this->tag() . '.count', function () {
-			return $this->model()->withoutGlobalScopes()->count();
+			return $this->model()->withoutGlobalScopes([PublishedScope::class])->count();
 		});
 		return $count;
 	}
@@ -55,41 +58,57 @@ class ArticleRepository extends Repository
 	 * @param int $limit
 	 * @return mixed
 	 */
-	public function pagedArticlesWithoutGlobalScopes($limit = 15)
-	{
-		$articles = $this->remember('articles.withoutContent.page.' . $limit . '' . request()->get('page', 1), function () use ($limit) {
-			return Article::withoutGlobalScopes()->withCount('comments')->orderBy('created_at', 'desc')->select(Article::INDEX_FIELDS)->with(['tags', 'category'])->paginate($limit);
-		});
-		return $articles;
-	}
-
-	/**
-	 * @param int $limit
-	 * @return mixed
-	 */
 	public function pagedArticles($limit = 10)
 	{
-		$articles = $this->remember('articles.page.' . $limit . '' . request()->get('page', 1), function () use ($limit) {
-			return Article::select(Article::INDEX_FIELDS)->with(['tags', 'category'])->withCount('comments')->orderBy('published_at', 'desc')->paginate($limit);
+	    $isAdmin = isAdmin();
+        $cacheKey = $isAdmin ? 'articles.admin.page.' : 'articles.page.';
+		$articles = $this->remember($cacheKey . $limit . '' . request()->get('page', 1), function () use ($limit, $isAdmin) {
+		    if ($isAdmin) {
+                return Article::withoutGlobalScopes([PublishedScope::class])->withCount('comments')->orderBy('created_at', 'desc')->select(Article::INDEX_FIELDS)->with(['tags', 'category'])->paginate($limit);
+            } else {
+                return Article::select(Article::INDEX_FIELDS)->with(['tags', 'category'])->withCount('comments')->orderBy('published_at', 'desc')->paginate($limit);
+            }
 		});
+
 		return $articles;
 	}
 
-	/**
-	 * @param $slug string
-	 * @return Article
-	 */
 	public function get($slug)
-	{
-		$article = $this->remember('article.one.' . $slug, function () use ($slug) {
-			return Article::where('slug', $slug)->with(['tags', 'category'])->withCount('comments')->firstOrFail();
+    {
+        $isAdmin = isAdmin();
+        $cacheKey = $isAdmin ? 'article.admin.one.' : 'article.one.';
+        /** @var Article $article */
+		$article = $this->remember($cacheKey . $slug, function () use ($slug, $isAdmin) {
+            if ($isAdmin) {
+                return Article::withoutGlobalScopes([PublishedScope::class])->where('slug', $slug)->with(['tags', 'category'])->withCount('comments')->firstOrFail();
+            } else {
+                return Article::where('slug', $slug)->with(['tags', 'category'])->withCount('comments')->firstOrFail();
+            }
 		});
+
+        $article = $this->incrementViewCount($article, $slug);
+
 		return $article;
 	}
 
+    private function incrementViewCount(Article $article, $slug)
+    {
+        $viewCountKey = 'article.' . $slug . 'viewCount';
+        if (Cache::has($viewCountKey)) {
+            $article->view_count = Cache::get($viewCountKey) + 1;
+            Cache::put($viewCountKey, $article->view_count, $this->cacheTime());
+        } else {
+            $article->view_count  = $article->view_count + 1;
+            Cache::add($viewCountKey, $article->view_count, $this->cacheTime());
+        }
+        DB::table('articles')->where('id', $article->id)->increment('view_count');
+
+        return $article;
+    }
+
 	public function getById($id)
 	{
-		return Article::with(['tags', 'category'])->withCount('comments')->findOrFail($id);
+		return Article::withoutGlobalScopes()->with(['tags', 'category'])->withCount('comments')->findOrFail($id);
 	}
 
 	/**
@@ -161,7 +180,7 @@ class ArticleRepository extends Repository
 		$this->clearAllCache();
 
 		/** @var Article $article */
-		$article = $this->model()->find($id);
+		$article = $this->getById($id);
 
 		$this->syncTags($article, $data['tag_list']);
 
@@ -182,7 +201,7 @@ class ArticleRepository extends Repository
 	{
 		$this->clearAllCache();
 		/** @var Article $article */
-		$article = $this->model()->find($id);
+		$article = $this->getById($id);
 		$result = $article->destroy($id);
 
 		$result && $article->delete(); # delete from scout

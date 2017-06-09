@@ -18,6 +18,6 @@ class PublishedScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where('published_at', '<=', Carbon::now());
+        $builder->where('published_at', '<=', Carbon::now())->whereNotNull('published_at');
     }
 }

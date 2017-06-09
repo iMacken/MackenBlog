@@ -1,58 +1,46 @@
 @extends('app')
 
-@section('head_title', $jumbotron['title'])
-@section('head_description', $jumbotron['description'])
-
 @section('content')
-
-    <div class="jumbotron geopattern" data-pattern-id="{{ $jumbotron['title'] }}">
-        <div class="container article-banner">
-            <h1 class="jumbotron-title">{{ $jumbotron['title'] }}</h1>
-            <p class="jumbotron-desc">{{ $jumbotron['description'] }}</p>
-        </div>
-    </div>
     <section class="container">
         <div class="row">
-            <div class="col-sm-8">
-                <ol class="article-list">
-                    @if(!empty($articles))
-                        @foreach($articles as $article)
-                            <li class="article-list-item">
-                                <h3 class="article-list-name">
-                                    <a href="{{ route('article.show',array('id'=>$article->slug ? $article->slug : $article->id)) }}"
-                                       title="{{ $article->title }}">
-                                        {{ $article->title }}
-                                    </a>
-                                    @if((bool)$article->getConfig('is_draft')) <span class="badge bg-warning">草稿</span> @endif
-                                    @if((bool)$article->getConfig('is_original')) <span class="badge bg-success">原创</span> @endif
-                                </h3>
-                                <p class="article-list-description">
-                                    {{ $article->excerpt }}
-                                </p>
-                                <p class="article-list-meta">
-                                    @if(!(bool)$article->getConfig('is_draft'))
-                                        <span class="ion-calendar"></span>{{ $article->published_at->diffForHumans() }}
-                                    @endif
-                                    &nbsp;&nbsp;<span class="ion-ios-folder"></span><a
-                                            href="/category/{{ $article->category->slug }}">{{ $article->category->name }}</a>
-                                    &nbsp;&nbsp;<span class="ion-ios-pricetag"></span>
-                                    @foreach($article->tags as $tag)
-                                        <a href="/tag/{{ $tag->slug }}">{{ $tag->name }}</a>&nbsp;
-                                    @endforeach
-                                </p>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">单页管理 <a class="btn btn-success btn-sm pull-right" href="{{ route('page.create')}}">创建单页</a></div>
 
-                            </li>
-                        @endforeach
-                    @endif
-                </ol>
-                <div class="pagination text-align">
-                    <nav>
-                        {!! $articles->links() !!}
-                    </nav>
+                    <div class="panel-body">
+                        <table class="table table-hover table-top">
+                            <tr>
+                                <th>#</th>
+                                <th>单页名称</th>
+                                <th>创建时间</th>
+                                <th class="text-right">操作</th>
+                            </tr>
+
+                            @foreach($pages as $page)
+                                <tr>
+                                    <th scope="row">{{ $page->id }}</th>
+                                    <td>{{ $page->title }}</td>
+                                    <td>{{ $page->created_at }}</td>
+                                    <td class="text-right">
+                                        <a href="{{ route('page.edit', ['id'=>$page->id]) }}"
+                                           class="btn btn-primary btn-sm">
+                                            修改
+                                        </a>
+                                        &nbsp;
+                                        <a href="javascript:void(0)" data-url="{{ route('page.destroy', ['id' => $page->id]) }}" data-dialog-msg="确定删除此单页?" data-dialog-title=" " data-enable-ajax="1"  class="btn btn-danger btn-sm swal-dialog-target">
+                                            删除
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-4">
-                @include('partials.right')
-            </div>
         </div>
+    </section>
+@endsection
+
+@section('scripts')
+    {!! Toastr::message() !!}
 @endsection
