@@ -29,6 +29,7 @@ class PageRequest extends FormRequest
             'title' => 'required|unique:pages,title,' . $id,
             'slug' => 'required|regex:/^[a-z0-9\-]+$/',
             'content' => 'required',
+            'published_at' => 'required_unless:is_draft,true|date'
         ];
 
     }

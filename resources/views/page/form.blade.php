@@ -42,7 +42,6 @@
     <div class="row">
         <div class="col-sm-12">
 	        <label for="image" class="control-label">发布时间</label>
-            <input type="hidden" name="published_at" value="2029-01-01 00:00:00">
             <input type="text" name="published_at" class="form-control" id='published_at' value="{{ isset($page) ? $page->published_at : old('published_at') }}" autofocus>
         </div>
     </div>
@@ -52,7 +51,7 @@
     <label>
         @php $is_draft = isset($page) ? $page->getConfig('is_draft', 'false') : 'false'; @endphp
         <input type="hidden" name="is_draft" value="false">
-        <input type="checkbox" name="is_draft" id="is_draft" value="{{ $is_draft }}" {{ $is_draft === 'true'? 'checked' : '' }}>草稿
+        <input type="checkbox" name="is_draft" id="is_draft" value="true" {{ $is_draft === 'true'? 'checked' : '' }}>草稿
     </label>
 </div>
 

@@ -32,7 +32,7 @@ class ArticleRequest extends FormRequest
             'slug' => 'required|regex:/^[a-z0-9\-]+$/',
             'content' => 'required',
             'tag_list' => 'required',
-            'published_at' => 'date'
+            'published_at' => 'required_unless:is_draft,true|date'
         ];
 
     }

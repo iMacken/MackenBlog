@@ -33,5 +33,47 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('Toastr', function ($app) {
             return new Toastr($this->app->make('session'));
         });
+
+        $this->loadHelpers();
+        $this->registerFormFields();
+    }
+
+    protected function loadHelpers()
+    {
+        foreach (glob(__DIR__.'/../Helpers/*.php') as $filename) {
+            require_once $filename;
+        }
+    }
+
+    protected function registerFormFields()
+    {
+        $formFields = [
+            'checkbox',
+            'date',
+            'file',
+            'image',
+            'multiple_images',
+            'number',
+            'password',
+            'radio_btn',
+            'rich_text_box',
+            'select_dropdown',
+            'select_multiple',
+            'text',
+            'text_area',
+            'timestamp',
+            'hidden',
+            'code_editor',
+        ];
+
+        foreach ($formFields as $formField) {
+            $class = studly_case("{$formField}_handler");
+
+            AdminFacade::addFormField("App\\FormFields\\{$class}");
+        }
+
+        AdminFacade::addAfterFormField(DescriptionHandler::class);
+
+        event('macken.form-fields.registered');
     }
 }
