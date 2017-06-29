@@ -35,7 +35,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->loadHelpers();
-        $this->registerFormFields();
     }
 
     protected function loadHelpers()
@@ -45,35 +44,4 @@ class AppServiceProvider extends ServiceProvider
         }
     }
 
-    protected function registerFormFields()
-    {
-        $formFields = [
-            'checkbox',
-            'date',
-            'file',
-            'image',
-            'multiple_images',
-            'number',
-            'password',
-            'radio_btn',
-            'rich_text_box',
-            'select_dropdown',
-            'select_multiple',
-            'text',
-            'text_area',
-            'timestamp',
-            'hidden',
-            'code_editor',
-        ];
-
-        foreach ($formFields as $formField) {
-            $class = studly_case("{$formField}_handler");
-
-            AdminFacade::addFormField("App\\FormFields\\{$class}");
-        }
-
-        AdminFacade::addAfterFormField(DescriptionHandler::class);
-
-        event('macken.form-fields.registered');
-    }
 }

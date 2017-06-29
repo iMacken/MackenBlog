@@ -2,7 +2,6 @@
 
 return [
 
-	'default_avatar' => env('DEFAULT_AVATAR'),
     /*
     |--------------------------------------------------------------------------
     | Application Name
