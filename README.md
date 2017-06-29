@@ -39,12 +39,6 @@
  ```
  默认用户为 admin@admin.com  密码为 asdasd
  
-#### 6. 配置 hosts 文件
- 
- 主机里:
- 
-     echo "192.168.10.10   phphub5.app" | sudo tee -a /etc/hosts
- 
 ### 前端工具集安装
  
  1). 安装 node.js
