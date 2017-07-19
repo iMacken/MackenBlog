@@ -27,9 +27,6 @@ class ArticleRepository extends Repository
 		$this->tagRepository = $tagRepository;
 	}
 
-	/**
-	 * @return \Illuminate\Foundation\Application|mixed
-	 */
 	public function model()
 	{
 		return app(Article::class);
@@ -43,34 +40,9 @@ class ArticleRepository extends Repository
 		return ArticleRepository::$tag;
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function count()
+	public function pagedArticles($status = 'all')
 	{
-		$count = $this->remember($this->tag() . '.count', function () {
-			return $this->model()->withoutGlobalScopes([PublishedScope::class])->count();
-		});
-		return $count;
-	}
-
-	/**
-	 * @param int $limit
-	 * @return mixed
-	 */
-	public function pagedArticles($limit = 10)
-	{
-	    $isAdmin = isAdmin();
-        $cacheKey = $isAdmin ? 'articles.admin.page.' : 'articles.page.';
-		$articles = $this->remember($cacheKey . $limit . '' . request()->get('page', 1), function () use ($limit, $isAdmin) {
-		    if ($isAdmin) {
-                return Article::withoutGlobalScopes([PublishedScope::class])->withCount('comments')->orderBy('created_at', 'desc')->select(Article::INDEX_FIELDS)->with(['tags', 'category'])->paginate($limit);
-            } else {
-                return Article::select(Article::INDEX_FIELDS)->with(['tags', 'category'])->withCount('comments')->orderBy('published_at', 'desc')->paginate($limit);
-            }
-		});
-
-		return $articles;
+        return Article::query()->select(Article::INDEX_FIELDS)->with(['tags', 'category'])->withCount('comments')->orderBy('published_at', 'desc')->paginate(Article::PAGE_LIMIT);
 	}
 
 	public function get($slug)

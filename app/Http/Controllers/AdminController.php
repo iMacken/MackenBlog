@@ -5,15 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Repositories\CategoryRepository;
 use App\Repositories\CommentRepository;
-use App\Repositories\ImageRepository;
 use App\Repositories\MapRepository;
 use App\Repositories\PageRepository;
 use App\Repositories\ArticleRepository;
 use App\Repositories\TagRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\VisitorRepository;
-use App\Http\Requests;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller

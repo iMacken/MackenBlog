@@ -27,9 +27,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('BlogConfig', function ($app) {
-            return new MapRepository();
-        });
         $this->app->singleton('Toastr', function ($app) {
             return new Toastr($this->app->make('session'));
         });

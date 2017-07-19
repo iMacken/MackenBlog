@@ -5,6 +5,7 @@ namespace App;
 use App\Scopes\PublishedScope;
 use App\Traits\Commentable;
 use App\Traits\Configurable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
@@ -80,6 +81,11 @@ class Article extends Model
     public function getTagListAttribute()
     {
         return $this->tags->pluck('id')->all();
+    }
+
+    public function scopePublished($query)
+    {
+
     }
 
     public function configuration()

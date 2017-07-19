@@ -2,9 +2,6 @@
 
 namespace App\Traits;
 
-use App\Facades\BlogConfig;
-use XblogConfig;
-
 trait Commentable
 {
 	/**
@@ -12,7 +9,7 @@ trait Commentable
 	 */
 	public function ifShowComments()
 	{
-		return BlogConfig::getValue('if_show_comments', true) && $this->getConfig('if_show_comments', true);
+		return setting('if_show_comments', true) && $this->getConfig('if_show_comments', true);
 	}
 
 	/**
@@ -20,6 +17,6 @@ trait Commentable
 	 */
 	public function ifAllowComment()
 	{
-		return BlogConfig::getValue('if_allow_comment', true) && $this->getConfig('if_allow_comment', true);
+		return setting('if_allow_comment', true) && $this->getConfig('if_allow_comment', true);
 	}
 }

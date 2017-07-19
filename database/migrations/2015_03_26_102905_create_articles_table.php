@@ -29,7 +29,6 @@ class CreateArticlesTable extends Migration {
             $table->integer('view_count')->unsigned()->default(0);
             $table->timestamps();
             $table->softDeletes();
-
         });
 	}
 
