@@ -2,81 +2,34 @@
 
 namespace App\Repositories;
 
-use App\Article;
-use App\Scopes\PublishedScope;
-use App\Tag;
+use App\Models\Article;
+use App\Models\Tag;
 use App\Services\MarkdownParser;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-class ArticleRepository extends Repository
+class ArticleRepository
 {
+	use BaseRepositoryTrait, PaginateRepositoryTrait;
+
 	protected $markdownParser;
 	protected $tagRepository;
 
-	static $tag = 'article';
+	protected $model;
 
-	/**
-	 * ArticleRepository constructor.
-	 * @param MarkdownParser $markdownParser
-	 * @param TagRepository $tagRepository
-	 */
-	public function __construct(MarkdownParser $markdownParser, TagRepository $tagRepository)
+	public function __construct(Article $model, MarkdownParser $markdownParser, TagRepository $tagRepository)
 	{
-		$this->markdownParser    = $markdownParser;
+		$this->model = $model;
+		$this->markdownParser = $markdownParser;
 		$this->tagRepository = $tagRepository;
-	}
-
-	public function model()
-	{
-		return app(Article::class);
-	}
-
-	/**
-	 * @return string
-	 */
-	public function tag()
-	{
-		return ArticleRepository::$tag;
-	}
-
-	public function pagedArticles($status = 'all')
-	{
-        return Article::query()->select(Article::INDEX_FIELDS)->with(['tags', 'category'])->withCount('comments')->orderBy('published_at', 'desc')->paginate(Article::PAGE_LIMIT);
 	}
 
 	public function get($slug)
     {
-        $isAdmin = isAdmin();
-        $cacheKey = $isAdmin ? 'article.admin.one.' : 'article.one.';
-        /** @var Article $article */
-		$article = $this->remember($cacheKey . $slug, function () use ($slug, $isAdmin) {
-            if ($isAdmin) {
-                return Article::withoutGlobalScopes([PublishedScope::class])->where('slug', $slug)->with(['tags', 'category'])->withCount('comments')->firstOrFail();
-            } else {
-                return Article::where('slug', $slug)->with(['tags', 'category'])->withCount('comments')->firstOrFail();
-            }
-		});
-
-        $article = $this->incrementViewCount($article, $slug);
+		$article = Article::where('slug', $slug)->with(['tags', 'category'])->withCount('comments')->firstOrFail();
+		DB::table('articles')->where('id', $article->id)->increment('view_count');
 
 		return $article;
 	}
-
-    private function incrementViewCount(Article $article, $slug)
-    {
-        $viewCountKey = 'article.' . $slug . 'viewCount';
-        if (Cache::has($viewCountKey)) {
-            $article->view_count = Cache::get($viewCountKey) + 1;
-            Cache::put($viewCountKey, $article->view_count, $this->cacheTime());
-        } else {
-            $article->view_count  = $article->view_count + 1;
-            Cache::add($viewCountKey, $article->view_count, $this->cacheTime());
-        }
-        DB::table('articles')->where('id', $article->id)->increment('view_count');
-
-        return $article;
-    }
 
 	public function getById($id)
 	{

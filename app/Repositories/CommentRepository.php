@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Comment;
+use App\Models\Comment;
 use App\Services\MarkdownParser;
 use App\Services\Mention;
 use Illuminate\Http\Request;

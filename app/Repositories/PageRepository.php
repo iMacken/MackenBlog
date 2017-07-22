@@ -2,8 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Page;
-use App\Scopes\PublishedScope;
+use App\Models\Page;
 use App\Services\MarkdownParser;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;

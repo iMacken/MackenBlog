@@ -2,25 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Article;
-use App\Http\Requests\MenuRequest;
-use App\Menu;
+use App\Models\Menu;
 
-
-class MenuRepository extends Repository
+class MenuRepository
 {
-	static $tag = 'menu';
-
-	public function tag()
-	{
-		return MenuRepository::$tag;
-	}
-
-	public function model()
-	{
-		return app(Menu::class);
-	}
-
 	public function getAll()
 	{
 		$categories = $this->remember('menu.all', function () {

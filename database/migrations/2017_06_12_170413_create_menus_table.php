@@ -21,6 +21,7 @@ class CreateMenusTable extends Migration
         Schema::create('menu_items', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('menu_id')->nullable();
+            $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
             $table->string('title');
             $table->string('url');
             $table->string('target')->default('_self');
@@ -29,10 +30,6 @@ class CreateMenusTable extends Migration
             $table->integer('parent_id')->nullable();
             $table->integer('order');
             $table->timestamps();
-        });
-
-        Schema::table('menu_items', function (Blueprint $table) {
-            $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
         });
     }
 

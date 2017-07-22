@@ -1,6 +1,5 @@
 <?php
 
-use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -12,73 +11,49 @@ use Carbon\Carbon;
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
-    static $password;
+$factory->define(App\Models\Article::class, function (Faker\Generator $faker) {
+    $userId     = \App\Models\User::query()->pluck('id')->random();
+    $categoryId = \App\Models\Category::query()->pluck('id')->random();
+    $title      = $faker->unique()->realText(mt_rand(10, 30), 5);
 
     return [
-        'name'           => $faker->name,
-        'email'          => $faker->safeEmail,
-        'status'         => true,
-        'confirm_code'   => str_random(64),
-        'password'       => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
+        'title'        => $title,
+        'user_id'      => $userId,
+        'category_id'  => $categoryId,
+        'excerpt'      => $faker->realText(mt_rand(50, 100), 5),
+        'content'      => $faker->realText(mt_rand(300, 500), 5),
+        'html_content' => $faker->realText(mt_rand(300, 500), 5),
+        'image'        => $faker->imageUrl(),
+        'slug'         => str_slug($title),
     ];
 });
 
-$factory->define(App\Category::class, function (Faker\Generator $faker) {
-    return [
-        'name'      => $faker->name,
-        'slug'      => str_slug($faker->name),
-    ];
-});
-
-$factory->define(App\Article::class, function (Faker\Generator $faker) {
-    $userId = \App\User::pluck('id')->random();
-    $categoryId = \App\Category::pluck('id')->random();
-    $title = $faker->sentence(mt_rand(3,10));
+$factory->define(App\Models\Page::class, function (Faker\Generator $faker) {
+    $userId = \App\Models\User::pluck('id')->random();
+    $title  = $faker->unique()->realText(mt_rand(10, 30), 5);
 
     return [
         'user_id'      => $userId,
-        'category_id'  => $categoryId,
-        'slug'     => str_slug($title),
-        'title'    => $title,
-        'content'  => $faker->paragraph,
-        'html_content' => $faker->paragraph,
-        'image'       => $faker->imageUrl(),
-        'description' => $faker->sentence,
-        'published_at'     => $faker->dateTimeBetween($startDate = '-2 months', $endDate = 'now')
+        'title'        => $title,
+        'slug'         => str_slug($title),
+        'content'      => $faker->realText(mt_rand(300, 500), 5),
+        'html_content' => $faker->realText(mt_rand(300, 500), 5),
+        'image'        => $faker->imageUrl(),
     ];
 });
 
-$factory->define(App\Tag::class, function (Faker\Generator $faker) {
-    $title = $faker->sentence(mt_rand(3,10));
+$factory->define(App\Models\Category::class, function (Faker\Generator $faker) {
+    $name = $faker->unique()->randomElement(['分类一', '分类二']);
     return [
-        'name'     => $title,
-        'slug'     => str_slug($title),
+        'name' => $name,
+        'slug' => str_slug($name)
     ];
 });
 
-$factory->define(App\Link::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Tag::class, function (Faker\Generator $faker) {
+    $name = $faker->unique()->randomElement(['php', 'life', 'technology', 'food', 'laravel']);
     return [
-        'name'  => $faker->name,
-        'url'  => $faker->url,
-        'sort' => $faker->numberBetween(1, 100),
-        'image' => $faker->imageUrl()
-    ];
-});
-
-$factory->define(App\Visitor::class, function (Faker\Generator $faker) {
-    $article_id = \App\Article::pluck('id')->random();
-    $num = $faker->numberBetween(1, 100);
-
-    $article = App\Article::find($article_id);
-    $article->view_count = $num;
-    $article->save();
-
-    return [
-        'article_id' => $article_id,
-        'ip'         => $faker->ipv4,
-        'country'    => 'CN',
-        'clicks'     => $num
+        'name' => $name,
+        'slug' => str_slug($name)
     ];
 });

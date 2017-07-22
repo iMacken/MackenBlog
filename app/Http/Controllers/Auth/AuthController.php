@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Socialite;
-use App\User;
-use Validator;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+use Illuminate\Validation\Validator;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
 

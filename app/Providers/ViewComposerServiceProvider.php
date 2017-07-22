@@ -2,10 +2,7 @@
 
 namespace App\Providers;
 
-use App\Facades\BlogConfig;
-use App\Navigation;
 use App\Repositories\ArticleRepository;
-use App\Repositories\LinkRepository;
 use App\Repositories\TagRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,26 +10,21 @@ class ViewComposerServiceProvider extends ServiceProvider
 {
 	protected $articleRepository;
 	protected $tagRepository;
-	protected $linkRepository;
 
 
 	/**
 	 * Bootstrap the application services.
 	 * @param ArticleRepository $articleRepository
 	 * @param TagRepository $tagRepository
-	 * @param LinkRepository $linkRepository
 	 */
 	public function boot(ArticleRepository $articleRepository,
-	                     TagRepository $tagRepository,
-	                     LinkRepository $linkRepository)
+	                     TagRepository $tagRepository)
 	{
 		$this->tagRepository     = $tagRepository;
 		$this->articleRepository = $articleRepository;
-		$this->linkRepository    = $linkRepository;
 
 		$this->composeGlobal();
-		$this->composeNavigation();
-		$this->composeRight($articleRepository, $tagRepository, $linkRepository);
+		$this->composeRight();
 	}
 
 	/**
@@ -47,17 +39,9 @@ class ViewComposerServiceProvider extends ServiceProvider
 
 	public function composeGlobal()
 	{
-		view()->composer('*', function ($view) {
+		view()->composer('app', function ($view) {
 		    /** @var \Illuminate\View\View $view */
-            $view->with(BlogConfig::getArrayByTag('setting'));
-		});
-	}
-
-	public function composeNavigation()
-	{
-		view()->composer('partials.nav', function ($view) {
-            /** @var \Illuminate\View\View $view */
-			$view->with('navList', Navigation::getNavigationAll());
+//            $view->with(BlogConfig::getArrayByTag('setting'));
 		});
 	}
 
@@ -65,10 +49,9 @@ class ViewComposerServiceProvider extends ServiceProvider
 	{
 		view()->composer('partials.right', function ($view) {
             /** @var \Illuminate\View\View $view */
-			$view->with('hotArticleList', $this->articleRepository->hot(5));
-			$view->with('tagList', $this->tagRepository->hot(12));
-			$view->with('archiveList', $this->articleRepository->archive(12));
-			$view->with('linkList', $this->linkRepository->getAll());
+//			$view->with('hotArticleList', $this->articleRepository->hot(5));
+//			$view->with('tagList', $this->tagRepository->hot(12));
+//			$view->with('archiveList', $this->articleRepository->archive(12));
 		});
 	}
 }

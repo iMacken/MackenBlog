@@ -9,9 +9,9 @@
 
     <link rel="shortcut icon" href="{{ config('blog.default_icon') }}">
 
-    <title>@yield('head_title') - {{ $site_title or 'MackenStack' }}</title>
-    <meta name="keywords" content="@yield('head_keywords') {{ $site_keywords }}">
-    <meta name="description" content="@yield('head_description') {{ $site_description }}">
+    <title>@yield('head_title') - {{ setting('site_title') }}</title>
+    <meta name="keywords" content="@yield('head_keywords') {{ setting('site_keywords') }}">
+    <meta name="description" content="@yield('head_description') {{ setting('site_description') }}">
 
     <link rel="stylesheet" type="text/css" href="{{ elixir('css/app.css') }}">
 

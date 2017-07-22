@@ -8,10 +8,9 @@ use App\Repositories\ArticleRepository;
 use App\Repositories\TagRepository;
 use App\Http\Requests\ArticleRequest;
 
-use App\Article;
+use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Mail;
 
 class ArticleController extends Controller
 {
@@ -19,12 +18,10 @@ class ArticleController extends Controller
     protected $articleRepository;
     protected $categoryRepository;
     protected $tagRepository;
-    protected $model;
 
     public function __construct(ArticleRepository $articleRepository,
                                 CategoryRepository $categoryRepository,
-                                TagRepository $tagRepository,
-								Article $article)
+                                TagRepository $tagRepository)
     {
         $this->articleRepository  = $articleRepository;
         $this->categoryRepository = $categoryRepository;
@@ -40,7 +37,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-	    $articles = $this->articleRepository->pagedArticles();
+	    $articles = $this->articleRepository->paginate();
 
         $jumbotron = [];
         $jumbotron['title'] = config('blog.default_owner');
