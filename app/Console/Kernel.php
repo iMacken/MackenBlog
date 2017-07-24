@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Console\Commands\ImportArticles;
+use App\Console\Commands\ImportPosts;
 use App\Console\Commands\InitEs;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;

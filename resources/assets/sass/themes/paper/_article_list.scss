@@ -1,8 +1,8 @@
-.article-list {
+.post-list {
     position: relative;
     padding-left: 0;
 
-    .article-list-item {
+    .post-list-item {
         position: relative;
         padding-top: 30px;
         padding-bottom: 15px;
@@ -10,7 +10,7 @@
         border-bottom: 1px solid $mk-gray-lighter;
     }
 
-    .article-list-name {
+    .post-list-name {
         font-weight: 400;
         margin: 0 0 8px;
         font-size: 20px;
@@ -21,7 +21,7 @@
         }
     }
 
-    .article-list-description {
+    .post-list-description {
         max-width: 550px;
         margin-top: 8px;
         margin-bottom: 0;
@@ -29,7 +29,7 @@
         color: $mk-gray;
     }
 
-    .article-list-meta {
+    .post-list-meta {
         display: block;
         margin-top: 8px;
         margin-bottom: 0;
@@ -40,7 +40,7 @@
             margin-right: 0.6em;
         }
 
-        .article-date {
+        .post-date {
             color: $mk-gray;
             cursor: help;
         }

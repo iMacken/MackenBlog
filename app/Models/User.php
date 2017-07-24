@@ -39,8 +39,8 @@ class User extends Authenticatable
 
     static $users = [];
 
-    public function articles() {
-       return $this->hasMany('App\Article', 'user_id', 'id');
+    public function posts() {
+       return $this->hasMany('App\Post', 'user_id', 'id');
     }
 
     public function isSuperAdmin() {

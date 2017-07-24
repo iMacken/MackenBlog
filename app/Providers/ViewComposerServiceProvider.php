@@ -2,26 +2,26 @@
 
 namespace App\Providers;
 
-use App\Repositories\ArticleRepository;
+use App\Repositories\PostRepository;
 use App\Repositories\TagRepository;
 use Illuminate\Support\ServiceProvider;
 
 class ViewComposerServiceProvider extends ServiceProvider
 {
-	protected $articleRepository;
+	protected $postRepository;
 	protected $tagRepository;
 
 
 	/**
 	 * Bootstrap the application services.
-	 * @param ArticleRepository $articleRepository
+	 * @param PostRepository $postRepository
 	 * @param TagRepository $tagRepository
 	 */
-	public function boot(ArticleRepository $articleRepository,
+	public function boot(PostRepository $postRepository,
 	                     TagRepository $tagRepository)
 	{
 		$this->tagRepository     = $tagRepository;
-		$this->articleRepository = $articleRepository;
+		$this->postRepository = $postRepository;
 
 		$this->composeGlobal();
 		$this->composeRight();
@@ -49,9 +49,9 @@ class ViewComposerServiceProvider extends ServiceProvider
 	{
 		view()->composer('partials.right', function ($view) {
             /** @var \Illuminate\View\View $view */
-//			$view->with('hotArticleList', $this->articleRepository->hot(5));
+//			$view->with('hotPostList', $this->postRepository->hot(5));
 //			$view->with('tagList', $this->tagRepository->hot(12));
-//			$view->with('archiveList', $this->articleRepository->archive(12));
+//			$view->with('archiveList', $this->postRepository->archive(12));
 		});
 	}
 }

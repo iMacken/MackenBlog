@@ -46,7 +46,7 @@ class CommentMentioned extends Notification implements ShouldQueue
     {
         $comment = $this->comment;
         $type = $comment->commentable_type;
-        $url = route('article.show', ['slug'=>$comment->commentable->slug]) . '#comment' . $comment->commentable->id;
+        $url = route('post.show', ['slug'=>$comment->commentable->slug]) . '#comment' . $comment->commentable->id;
 
         return (new MailMessage)->markdown('mail.comment.mentioned', compact('notifiable', 'type', 'comment', 'url'));
     }

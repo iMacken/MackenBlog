@@ -2,12 +2,12 @@
 
 namespace App\Repositories;
 
-use App\Models\Article;
+use App\Models\Post;
 use App\Models\Tag;
 use App\Services\MarkdownParser;
 use Illuminate\Support\Facades\DB;
 
-class ArticleRepository
+class PostRepository
 {
 	use BaseRepositoryTrait, PaginateRepositoryTrait;
 
@@ -16,7 +16,7 @@ class ArticleRepository
 
 	protected $model;
 
-	public function __construct(Article $model, MarkdownParser $markdownParser, TagRepository $tagRepository)
+	public function __construct(Post $model, MarkdownParser $markdownParser, TagRepository $tagRepository)
 	{
 		$this->model = $model;
 		$this->markdownParser = $markdownParser;
@@ -25,15 +25,15 @@ class ArticleRepository
 
 	public function get($slug)
     {
-		$article = Article::where('slug', $slug)->with(['tags', 'category'])->withCount('comments')->firstOrFail();
-		DB::table('articles')->where('id', $article->id)->increment('view_count');
+		$post = Post::where('slug', $slug)->with(['tags', 'category'])->withCount('comments')->firstOrFail();
+		DB::table('posts')->where('id', $post->id)->increment('view_count');
 
-		return $article;
+		return $post;
 	}
 
 	public function getById($id)
 	{
-		return Article::withoutGlobalScopes()->with(['tags', 'category'])->withCount('comments')->findOrFail($id);
+		return Post::withoutGlobalScopes()->with(['tags', 'category'])->withCount('comments')->findOrFail($id);
 	}
 
 	/**
@@ -42,14 +42,14 @@ class ArticleRepository
 	 */
 	public function hot($count = 5)
 	{
-		$articles = $this->remember('article.hot.' . $count, function () use ($count) {
-			return Article::select([
+		$posts = $this->remember('post.hot.' . $count, function () use ($count) {
+			return Post::select([
 				'title',
 				'slug',
 				'view_count',
 			])->withCount('comments')->orderBy('view_count', 'desc')->limit($count)->get();
 		});
-		return $articles;
+		return $posts;
 	}
 
 	/**
@@ -58,14 +58,14 @@ class ArticleRepository
 	 */
 	public function archive($limit = 12)
 	{
-		$articles = $this->remember('article.achieve', function () use ($limit) {
+		$posts = $this->remember('post.achieve', function () use ($limit) {
 			return self::select(['id','title','slug','content','created_at','category_id'])
                 			->where(DB::raw("DATE_FORMAT(`created_at`, '%Y %c')"), '=', "$year $month")
                 			->where('category_id', '<>', 0)
                 			->latest()
                 			->paginate($limit);
 		});
-		return $articles;
+		return $posts;
 	}
 
 	/**
@@ -76,8 +76,8 @@ class ArticleRepository
 	{
 		$this->clearAllCache();
 
-		/** @var Article $article */
-		$article = auth()->user()->articles()->create(
+		/** @var Post $post */
+		$post = auth()->user()->posts()->create(
 			array_merge(
 				$data,
 				[
@@ -86,13 +86,13 @@ class ArticleRepository
 			)
 		);
 
-		$article->save(); # save it in scout
+		$post->save(); # save it in scout
 
-		$this->syncTags($article, $data['tag_list']);
+		$this->syncTags($post, $data['tag_list']);
 
-		$article->saveConfig($data);
+		$post->saveConfig($data);
 
-		return $article;
+		return $post;
 	}
 
 	/**
@@ -104,20 +104,20 @@ class ArticleRepository
 	{
 		$this->clearAllCache();
 
-		/** @var Article $article */
-		$article = $this->getById($id);
+		/** @var Post $post */
+		$post = $this->getById($id);
 
-		$this->syncTags($article, $data['tag_list']);
+		$this->syncTags($post, $data['tag_list']);
 
-		$article->saveConfig($data);
+		$post->saveConfig($data);
 
-		$result = $article->update(
+		$result = $post->update(
 			array_merge($data, [
 			    'html_content' => $this->markdownParser->convertMarkdownToHtml($data['content'], false)
             ])
 		);
 
-		$result && $article->save(); # update it in scout
+		$result && $post->save(); # update it in scout
 
 		return $result;
 	}
@@ -125,11 +125,11 @@ class ArticleRepository
 	public function delete($id)
 	{
 		$this->clearAllCache();
-		/** @var Article $article */
-		$article = $this->getById($id);
-		$result = $article->destroy($id);
+		/** @var Post $post */
+		$post = $this->getById($id);
+		$result = $post->destroy($id);
 
-		$result && $article->delete(); # delete from scout
+		$result && $post->delete(); # delete from scout
 
 		return $result;
 	}
@@ -154,11 +154,11 @@ class ArticleRepository
     }
 
 	/**
-	 * sync tags of the given article
-	 * @param  Article $article [description]
+	 * sync tags of the given post
+	 * @param  Post $post [description]
 	 * @param  array   $tags    [description]
 	 */
-	private function syncTags(Article $article, array $tags)
+	private function syncTags(Post $post, array $tags)
 	{
 		#extract the input into separate numeric and string arrays
 		$currentTags = array_filter($tags, 'is_numeric'); # ["1", "3", "5"]
@@ -173,14 +173,14 @@ class ArticleRepository
 			}
 		}
 
-		#recalculate the cited number of the tags related to the given article
-		$oldTags = $article->tags()->get()->keyBy('id')->keys()->toArray();
+		#recalculate the cited number of the tags related to the given post
+		$oldTags = $post->tags()->get()->keyBy('id')->keys()->toArray();
 		$decTags = array_diff($oldTags, $currentTags);
 		$incTags = array_diff($currentTags, $oldTags);
 		DB::table('tags')->whereIn('id', $incTags)->increment('cited_count');
 		DB::table('tags')->whereIn('id', $decTags)->decrement('cited_count');
 
-		#sync the pivot table of article_tag
-		$article->tags()->sync($currentTags);
+		#sync the pivot table of post_tag
+		$post->tags()->sync($currentTags);
 	}
 }

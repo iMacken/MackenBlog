@@ -25,19 +25,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($articles as $article)
+                                @foreach($posts as $post)
                                 <tr>
                                     <td>
-                                        <span>{{ $article->{$row->field} }}</span>
+                                        <span>{{ $post->{$row->field} }}</span>
                                     </td>
                                     <td class="no-sort no-click">
-                                        <div class="btn-sm btn-danger pull-right delete" data-id="{{ $article->id }}">
+                                        <div class="btn-sm btn-danger pull-right delete" data-id="{{ $post->id }}">
                                             <i class="voyager-trash"></i> @lang('action.delete')
                                         </div>
-                                        <a href="{{ route('admin.'.$articleType->slug.'.edit', $article->id) }}" class="btn-sm btn-primary pull-right edit">
+                                        <a href="{{ route('admin.post.edit', $post->id) }}" class="btn-sm btn-primary pull-right edit">
                                             <i class="voyager-edit"></i> @lang('action.edit')
                                         </a>
-                                        <a href="{{ route('admin.'.$articleType->slug.'.show', $article->id) }}" class="btn-sm btn-warning pull-right">
+                                        <a href="{{ route('admin.post.show', $post->id) }}" class="btn-sm btn-warning pull-right">
                                             <i class="voyager-eye"></i> @lang('action.view')
                                         </a>
                                     </td>
@@ -46,10 +46,10 @@
                             </tbody>
                         </table>
                             <div class="pull-left">
-                                <div role="status" class="show-res" aria-live="polite">显示 第{{ $articles->firstItem() }} 到 第{{ $articles->lastItem() }}条， 共 {{ $articles->total() }} 条记录</div>
+                                <div role="status" class="show-res" aria-live="polite">显示 第{{ $posts->firstItem() }} 到 第{{ $posts->lastItem() }}条， 共 {{ $posts->total() }} 条记录</div>
                             </div>
                             <div class="pull-right">
-                                {{ $articles->links() }}
+                                {{ $posts->links() }}
                             </div>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                     </h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('admin.'.$articleType->slug.'.destroy', ['id' => '__id']) }}" id="delete_form" method="POST">
+                    <form action="{{ route('admin.'.$postType->slug.'.destroy', ['id' => '__id']) }}" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm" value="确定">

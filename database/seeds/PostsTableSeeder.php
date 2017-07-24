@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Article;
+use App\Models\Post;
 use Illuminate\Database\Seeder;
 
-class ArticlesTableSeeder extends Seeder
+class PostsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class ArticlesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Article::class, 20)->create();
+        factory(Post::class, 20)->create();
     }
 }

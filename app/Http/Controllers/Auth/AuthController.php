@@ -54,7 +54,7 @@ class AuthController extends Controller
         } else {
             if ($user) {
                 auth()->loginUsingId($user->id);
-                return redirect()->to('article');
+                return redirect()->to('post');
             } else {
                 $this->registerUser($githubUser);
                 return redirect()->to('auth/github/register');
@@ -137,7 +137,7 @@ class AuthController extends Controller
 
         session()->forget('oauthData');
 
-        return redirect()->to('article');
+        return redirect()->to('post');
     }
 
     /**

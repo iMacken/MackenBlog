@@ -19,7 +19,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * display the articles of the given category
+     * display the posts of the given category
      *
      * @param  string $slug
      * @return Response
@@ -28,13 +28,13 @@ class CategoryController extends Controller
     {
         $category = $this->categoryRepository->get($slug);
 
-        $articles = $this->categoryRepository->pagedArticlesByCategory($category);
+        $posts = $this->categoryRepository->pagedPostsByCategory($category);
 
         $jumbotron = [];
         $jumbotron['title'] = '分类：'.$category->name;
         $jumbotron['description'] = $category->description;
 
-        return view('article.index', compact('category', 'articles', 'jumbotron'));
+        return view('post.index', compact('category', 'posts', 'jumbotron'));
     }
 
     /**
@@ -67,9 +67,9 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-	    $article = $this->categoryRepository->create($request->all());
+	    $post = $this->categoryRepository->create($request->all());
 
-	    if ($article) {
+	    if ($post) {
 		    Toastr::success('分类创建成功');
 		    return redirect()->route('category.index');
 

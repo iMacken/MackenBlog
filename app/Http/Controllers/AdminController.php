@@ -7,7 +7,7 @@ use App\Repositories\CategoryRepository;
 use App\Repositories\CommentRepository;
 use App\Repositories\MapRepository;
 use App\Repositories\PageRepository;
-use App\Repositories\ArticleRepository;
+use App\Repositories\PostRepository;
 use App\Repositories\TagRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\VisitorRepository;
@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-	protected $articleRepository;
+	protected $postRepository;
 	protected $commentRepository;
 	protected $userRepository;
 	protected $tagRepository;
@@ -28,7 +28,7 @@ class AdminController extends Controller
 
 	/**
 	 * AdminController constructor.
-	 * @param ArticleRepository $articleRepository
+	 * @param PostRepository $postRepository
 	 * @param CommentRepository $commentRepository
 	 * @param UserRepository $userRepository
 	 * @param CategoryRepository $categoryRepository
@@ -39,7 +39,7 @@ class AdminController extends Controller
 	 * @param visitorRepository $visitorRepository
 	 * @internal param MapRepository $mapRepository
 	 */
-	public function __construct(ArticleRepository $articleRepository,
+	public function __construct(PostRepository $postRepository,
 	                            CommentRepository $commentRepository,
 	                            UserRepository $userRepository,
 	                            CategoryRepository $categoryRepository,
@@ -49,7 +49,7 @@ class AdminController extends Controller
 	                            MapRepository $mapRepository,
 	                            VisitorRepository $visitorRepository)
 	{
-		$this->articleRepository  = $articleRepository;
+		$this->postRepository  = $postRepository;
 		$this->commentRepository  = $commentRepository;
 		$this->userRepository     = $userRepository;
 		$this->categoryRepository = $categoryRepository;
@@ -63,7 +63,7 @@ class AdminController extends Controller
 	public function index()
 	{
 		$info                   = [];
-		$info['article_count']  = $this->articleRepository->count();
+		$info['post_count']  = $this->postRepository->count();
 		$info['comment_count']  = $this->commentRepository->count();
 		$info['user_count']     = $this->userRepository->count();
 		$info['category_count'] = $this->categoryRepository->count();

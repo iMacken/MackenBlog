@@ -20,7 +20,7 @@
 					            <a href="{{ route('admin.category.index') }}">分类管理</a>
 					        </li>
 					        <li>
-					            <a href="{{ route('admin.article.index') }}">文章管理</a>
+					            <a href="{{ route('admin.post.index') }}">文章管理</a>
 					        </li>
 					        <li>
 					            <a href="{{ route('admin.tag.index') }}">标签管理</a>

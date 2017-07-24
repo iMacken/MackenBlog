@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\User;
-use App\Article;
+use App\Post;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ArticlePolicy
+class PostPolicy
 {
     use HandlesAuthorization;
 
@@ -23,13 +23,13 @@ class ArticlePolicy
 		return $user->isAdmin();
 	}
 
-    public function update(User $user, Article $article)
+    public function update(User $user, Post $post)
     {
-	    return $user->id === $article->user_id;
+	    return $user->id === $post->user_id;
     }
 
-    public function delete(User $user, Article $article)
+    public function delete(User $user, Post $post)
     {
-	    return $user->id === $article->user_id;
+	    return $user->id === $post->user_id;
     }
 }

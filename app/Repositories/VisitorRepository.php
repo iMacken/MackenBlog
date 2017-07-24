@@ -36,22 +36,22 @@ class VisitorRepository extends Repository
     /**
      * Update or create the record of visitors table
      *
-     * @param $article_id
+     * @param $post_id
      */
-    public function log($article_id)
+    public function log($post_id)
     {
         $ip = $this->ip->get();
 
-        if ($this->hasArticleIp($article_id, $ip)) {
+        if ($this->hasPostIp($post_id, $ip)) {
 
-            $this->model->where('article_id', $article_id)
+            $this->model->where('post_id', $post_id)
                         ->where('ip', $ip)
                         ->increment('clicks');
 
         } else {
             $data = [
                 'ip'		    => $ip,
-                'article_id'    => $article_id,
+                'post_id'    => $post_id,
                 'clicks' 	    => 1
             ];
             $this->model->firstOrCreate( $data );

@@ -4,26 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Facades\Toastr;
 use App\Repositories\CategoryRepository;
-use App\Repositories\ArticleRepository;
+use App\Repositories\PostRepository;
 use App\Repositories\TagRepository;
-use App\Http\Requests\ArticleRequest;
+use App\Http\Requests\PostRequest;
 
-use App\Models\Article;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class ArticleController extends Controller
+class PostController extends Controller
 {
 
-    protected $articleRepository;
+    protected $postRepository;
     protected $categoryRepository;
     protected $tagRepository;
 
-    public function __construct(ArticleRepository $articleRepository,
+    public function __construct(PostRepository $postRepository,
                                 CategoryRepository $categoryRepository,
                                 TagRepository $tagRepository)
     {
-        $this->articleRepository  = $articleRepository;
+        $this->postRepository  = $postRepository;
         $this->categoryRepository = $categoryRepository;
         $this->tagRepository      = $tagRepository;
 
@@ -37,13 +37,13 @@ class ArticleController extends Controller
      */
     public function index()
     {
-	    $articles = $this->articleRepository->paginate();
+	    $posts = $this->postRepository->paginate();
 
         $jumbotron = [];
         $jumbotron['title'] = config('blog.default_owner');
         $jumbotron['description'] = config('blog.default_motto');
 
-        return view('article.index', compact('articles', 'jumbotron'));
+        return view('post.index', compact('posts', 'jumbotron'));
     }
 
 
@@ -55,47 +55,47 @@ class ArticleController extends Controller
      */
     public function show($slug)
     {
-	    $article = $this->articleRepository->get($slug);
+	    $post = $this->postRepository->get($slug);
 
-        return view('article.show', compact('article'));
+        return view('post.show', compact('post'));
     }
 
     /**
-     * display the articles archived by month
+     * display the posts archived by month
      * @param  [type] $year  [description]
      * @param  [type] $month [description]
      * @return Response
      */
     public function archive($year, $month)
     {
-        $articles = $this->articleRepository->archive(12);
+        $posts = $this->postRepository->archive(12);
 
         $jumbotron = [];
         $jumbotron['title'] = '归档：'.$year.'年 '.$month.'月';
         $jumbotron['desc'] = '陈列在时光里的记忆，拂去轻尘，依旧如新。';
 
-        return view('pages.list', compact('articles', 'jumbotron'));
+        return view('pages.list', compact('posts', 'jumbotron'));
     }
 
     public function create()
     {
-	    $this->authorize('create', Article::class);
+	    $this->authorize('create', Post::class);
 
-	    return view('article.create', [
+	    return view('post.create', [
 		    'categories' => $this->categoryRepository->getAll(),
 		    'tags' => $this->tagRepository->getAll(),
 	    ]);
     }
 
-    public function store(ArticleRequest $request)
+    public function store(PostRequest $request)
     {
-	    $this->authorize('create', Article::class);
+	    $this->authorize('create', Post::class);
 
-	    $article = $this->articleRepository->create($request->all());
+	    $post = $this->postRepository->create($request->all());
 
-	    if ($article) {
+	    if ($post) {
 		    Toastr::success('文章创建成功');
-		    return redirect()->route('article.show', ['slug' => $article->slug]);
+		    return redirect()->route('post.show', ['slug' => $post->slug]);
 
 	    }
 	    Toastr::error('文章创建失败');
@@ -105,22 +105,22 @@ class ArticleController extends Controller
 
     public function edit($id)
     {
-	    return view('article.edit', [
-		    'article' => $this->articleRepository->getById($id),
+	    return view('post.edit', [
+		    'post' => $this->postRepository->getById($id),
 		    'categories' => $this->categoryRepository->getAll(),
 		    'tags' => $this->tagRepository->getAll(),
 	    ]);
     }
 
-    public function update(ArticleRequest $request, $id)
+    public function update(PostRequest $request, $id)
     {
-	    $this->authorize('update', $this->articleRepository->getById($id));
+	    $this->authorize('update', $this->postRepository->getById($id));
 
-	    $result = $this->articleRepository->update($request->all(), $id);
+	    $result = $this->postRepository->update($request->all(), $id);
 
 	    if ($result) {
 		    Toastr::success('文章更新成功');
-		    return redirect()->route('article.show', ['slug' => $request->input('slug')]);
+		    return redirect()->route('post.show', ['slug' => $request->input('slug')]);
 	    }
 	    Toastr::error('文章更新失败');
 
@@ -129,13 +129,13 @@ class ArticleController extends Controller
 
     public function destroy($id)
     {
-	    $this->authorize('delete', $this->articleRepository->getById($id));
+	    $this->authorize('delete', $this->postRepository->getById($id));
 
-	    $result = $this->articleRepository->delete($id);
+	    $result = $this->postRepository->delete($id);
 
         if ($result) {
 	        Toastr::success('文章删除成功');
-	        return redirect()->route('article.index');
+	        return redirect()->route('post.index');
         }
 	    Toastr::success('文章删除失败');
 
@@ -146,11 +146,11 @@ class ArticleController extends Controller
 	{
 		$keyword = trim($request->input('keyword'));
 		if (! $keyword) {
-			return redirect()->route('article.index');
+			return redirect()->route('post.index');
 		}
 
-		$articles = $this->articleRepository->search($keyword);
+		$posts = $this->postRepository->search($keyword);
 
-		return view('article.search', compact('keyword', 'articles'));
+		return view('post.search', compact('keyword', 'posts'));
 	}
 }

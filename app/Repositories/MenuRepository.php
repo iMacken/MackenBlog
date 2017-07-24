@@ -9,7 +9,7 @@ class MenuRepository
 	public function getAll()
 	{
 		$categories = $this->remember('menu.all', function () {
-			return Menu::withCount('articles')->get();
+			return Menu::withCount('posts')->get();
 		});
 		return $categories;
 	}

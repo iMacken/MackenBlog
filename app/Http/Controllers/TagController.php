@@ -18,9 +18,9 @@ class TagController extends Controller
     public function show($slug)
     {
         $tag = $this->tagRepository->get($slug);
-        $articles = $this->tagRepository->pagedArticlesByTag($tag);
+        $posts = $this->tagRepository->pagedPostsByTag($tag);
 
-        return view('article.index', compact('articles'));
+        return view('post.index', compact('posts'));
     }
 
     public function index()

@@ -32,7 +32,7 @@ class TagRepository
 	    /** @var Tag $tag */
         $tag = $this->find($id);
 
-		if ($tag->articles()->count() > 0) {
+		if ($tag->posts()->count() > 0) {
 			throw new AccessDeniedHttpException('该标签下有文章,不能删除');
 		}
 

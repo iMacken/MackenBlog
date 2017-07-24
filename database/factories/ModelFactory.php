@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(App\Models\Article::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Post::class, function (Faker\Generator $faker) {
     $userId     = \App\Models\User::query()->pluck('id')->random();
     $categoryId = \App\Models\Category::query()->pluck('id')->random();
     $title      = $faker->unique()->realText(mt_rand(10, 30), 5);

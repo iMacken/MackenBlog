@@ -5,7 +5,7 @@
     <ul class="list-group" >
         @if(!empty($archiveList))
             @foreach($archiveList as $v)
-                <a href="{{ route('article-archive-list', sscanf($v->archive, "%d %d")) }}">
+                <a href="{{ route('post-archive-list', sscanf($v->archive, "%d %d")) }}">
                     <li class="list-group-item">
                         <span class="badge">{{ $v->count }}</span>
                         <span>

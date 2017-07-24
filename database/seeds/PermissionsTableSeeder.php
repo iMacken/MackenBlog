@@ -11,9 +11,7 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
         $keys = [
-            'browse_admin',
-            'browse_database',
-            'browse_media',
+            'browse_dashboard',
             'browse_settings',
         ];
 
@@ -35,8 +33,5 @@ class PermissionsTableSeeder extends Seeder
         Permission::generateFor('posts');
 
         Permission::generateFor('pages');
-
-        Permission::generateFor('pictures');
-
     }
 }

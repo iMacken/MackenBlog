@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Response;
 
-class ArticleRequest extends FormRequest
+class PostRequest extends FormRequest
 {
 
     /**
@@ -25,10 +25,10 @@ class ArticleRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->route('article');
+        $id = $this->route('post');
         return [
             'category_id' => 'required',
-            'title' => 'required|unique:articles,title,' . $id,
+            'title' => 'required|unique:posts,title,' . $id,
             'slug' => 'required|regex:/^[a-z0-9\-]+$/',
             'content' => 'required',
             'tag_list' => 'required',

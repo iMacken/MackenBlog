@@ -42,7 +42,7 @@
                     'commentable'      => $page,
                     'comments'         => isset($comments) ? $comments:[],
                     'redirect'         => request()->fullUrl(),
-                    'commentable_type' => 'App\Article'
+                    'commentable_type' => 'App\Post'
                 ])
             @endif
         </div>

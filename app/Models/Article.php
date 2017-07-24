@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
 
-class Article extends Model
+class Post extends Model
 {
     use SoftDeletes, Searchable, Configurable, Commentable;
 

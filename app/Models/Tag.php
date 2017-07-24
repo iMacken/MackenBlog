@@ -27,13 +27,13 @@ class Tag extends Model
     protected $fillable = ['name', 'slug'];
 
 	/**
-	 * Get all of the articles that are assigned this tag.
+	 * Get all of the posts that are assigned this tag.
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
 	 */
-	public function articles()
+	public function posts()
 	{
-		return $this->morphedByMany(Article::class, 'taggable');
+		return $this->morphedByMany(Post::class, 'taggable');
 	}
 
     /**
