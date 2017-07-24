@@ -30,26 +30,9 @@ class Post extends Model
         'published_at'
     ];
 
-    /**
-     * The max groups per page when displaying a paginated index.
-     *
-     * @var int
-     */
     public static $paginate = 10;
-
-    /**
-     * The columns to order by when displaying an index.
-     *
-     * @var string
-     */
     public static $order = 'published_at';
-
-    /**
-     * The direction to order by when displaying an index.
-     *
-     * @var string
-     */
-    public static $sort = 'asc';
+    public static $sort = 'desc';
 
 	public function toSearchableArray()
 	{

@@ -57,3 +57,16 @@ $factory->define(App\Models\Tag::class, function (Faker\Generator $faker) {
         'slug' => str_slug($name)
     ];
 });
+
+$factory->define(App\Models\UploadedFile::class, function (Faker\Generator $faker) {
+    $title = $faker->unique()->realText(mt_rand(10, 30), 5);
+
+    return [
+        'category_id' => null,
+        'title'       => $title,
+        'description' => $faker->realText(mt_rand(50, 100), 5),
+        'path'        => $faker->imageUrl(),
+        'link'        => 'http://' . $faker->domainName(),
+        'order'       => 1,
+    ];
+});

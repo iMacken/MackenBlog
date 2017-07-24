@@ -5,6 +5,7 @@ namespace App\Commands;
 use Barryvdh\Debugbar\ServiceProvider;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Process\Process;
 use App\Traits\Seedable;
@@ -69,6 +70,7 @@ class InstallCommand extends Command
 
         $this->info('Publishing some files...');
         $this->call('vendor:publish', ['--provider' => ServiceProvider::class]);
+        $this->call('vendor:publish', ['--provider' => LaravelLogViewerServiceProvider::class, '--tag' => 'views']);
 
         $this->info('Migrating the database tables into your application');
         $this->call('migrate');
@@ -78,8 +80,10 @@ class InstallCommand extends Command
         $process = new Process($composer.' dump-autoload');
         $process->setWorkingDirectory(base_path())->run();
 
-        $this->info('Seeding data into the database');
-        $this->seed('DatabaseSeeder');
+        if ($this->option('with-data')) {
+            $this->info('Seeding data into the database');
+            $this->seed('DatabaseSeeder');
+        }
 
         if (!$filesystem->exists(public_path('storage'))) {
             $this->info('Adding the storage symlink to your public folder');

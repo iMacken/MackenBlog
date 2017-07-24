@@ -142,12 +142,12 @@ class MenuItemsTableSeeder extends Seeder
             $menuItem = MenuItem::query()->firstOrNew([
                 'menu_id'    => $menu->id,
                 'title'      => '文件',
-                'url'        => route('files.index', [], false),
+                'url'        => route('uploaded-files.index', [], false),
             ]);
             if (!$menuItem->exists) {
                 $menuItem->fill([
                     'target'     => '_self',
-                    'icon_class' => 'voyager-photos',
+                    'icon_class' => 'voyager-archive',
                     'color'      => null,
                     'parent_id'  => $contentMenuItem->id,
                     'order'      => 20,

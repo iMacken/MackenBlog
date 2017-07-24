@@ -32,3 +32,6 @@ Route::get('/commentable/{commentable_id}/comments', ['uses' => 'CommentControll
 Route::resource('comments', 'CommentController', ['only' => ['store', 'destroy', 'edit', 'update']]);
 Route::get('search', 'PostController@search')->name('search');
 Route::get('archives/{year}/{month}', ['as' => 'post-archive-list', 'uses' => 'PostController@archive']);
+
+
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
