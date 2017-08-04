@@ -42,14 +42,6 @@ $factory->define(App\Models\Page::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Models\Category::class, function (Faker\Generator $faker) {
-    $name = $faker->unique()->randomElement(['分类一', '分类二']);
-    return [
-        'name' => $name,
-        'slug' => str_slug($name)
-    ];
-});
-
 $factory->define(App\Models\Tag::class, function (Faker\Generator $faker) {
     $name = $faker->unique()->randomElement(['php', 'life', 'technology', 'food', 'laravel']);
     return [

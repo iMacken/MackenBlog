@@ -18,7 +18,6 @@ class CreateUploadedFilesTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->integer('category_id')->nullable();
-            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('set null');
             $table->text('description')->nullable();
             $table->string('path')->nullable();
             $table->string('link')->nullable();

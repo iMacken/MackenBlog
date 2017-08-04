@@ -30,18 +30,17 @@ class PostController extends Controller
 	    $this->middleware(['auth', 'admin'], ['except' => ['show', 'index']]);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
+    public function index(Request $request)
     {
 	    $posts = $this->postRepository->paginate();
 
         $jumbotron = [];
         $jumbotron['title'] = config('blog.default_owner');
         $jumbotron['description'] = config('blog.default_motto');
+
+        if ($request->get('type') === 'browse') {
+            return view('post.browse', compact('posts'));
+        }
 
         return view('post.index', compact('posts', 'jumbotron'));
     }

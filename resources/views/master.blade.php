@@ -85,8 +85,8 @@ if ($user = Auth::user()) {
 <div class="app-container">
     <div class="fadetoblack visible-xs"></div>
     <div class="row content-container">
-    @include('admin.dashboard.navbar')
-    @include('admin.dashboard.sidebar')
+    @include('dashboard.navbar')
+    @include('dashboard.sidebar')
     <!-- Main Content -->
         <div class="container-fluid">
             <div class="side-body padding-top">

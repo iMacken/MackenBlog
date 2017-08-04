@@ -37,7 +37,7 @@ class MenuItemsTableSeeder extends Seeder
             $menuItem = MenuItem::query()->firstOrNew([
                 'menu_id'    => $menu->id,
                 'title'      => '分类',
-                'url'        => route('categories.index', ['type' => 'admin']),
+                'url'        => route('categories.index'),
             ]);
             if (!$menuItem->exists) {
                 $menuItem->fill([
@@ -157,7 +157,7 @@ class MenuItemsTableSeeder extends Seeder
             $menuItem = MenuItem::query()->firstOrNew([
                 'menu_id'    => $menu->id,
                 'title'      => 'Settings',
-                'url'        => route('admin.settings.index', [], false),
+                'url'        => route('settings.index', [], false),
             ]);
             if (!$menuItem->exists) {
                 $menuItem->fill([

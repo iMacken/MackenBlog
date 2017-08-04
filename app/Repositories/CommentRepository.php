@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
  * Class CommentRepository
  * @package App\Http\Repository
  */
-class CommentRepository extends Repository
+class CommentRepository
 {
 
     static $tag = 'comment';

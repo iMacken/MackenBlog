@@ -7,7 +7,7 @@ use App\Services\MarkdownParser;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-class PageRepository extends Repository
+class PageRepository
 {
 	protected $markdownParser;
 

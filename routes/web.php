@@ -26,12 +26,19 @@ Route::resource('categories','CategoryController');
 Route::resource('tags','TagController');
 Route::resource('posts', 'PostController');
 Route::resource('pages', 'PageController');
-Route::get('settings', 'SettingController@index')->name('settings');
+Route::resource('uploaded-files', 'UploadedFileController');
+Route::resource('menus', 'MenuController');
+Route::get('settings', 'SettingController@index')->name('settings.index');
 Route::post('settings', 'SettingController@save')->name('settings.save');
 Route::get('/commentable/{commentable_id}/comments', ['uses' => 'CommentController@show', 'as' => 'comment.show']);
 Route::resource('comments', 'CommentController', ['only' => ['store', 'destroy', 'edit', 'update']]);
 Route::get('search', 'PostController@search')->name('search');
 Route::get('archives/{year}/{month}', ['as' => 'post-archive-list', 'uses' => 'PostController@archive']);
+Route::get('/dashboard', ['uses' => 'AdminController@index',   'as' => 'dashboard']);
+Route::resource('roles', 'RoleController');
+Route::get('profile', ['uses' => 'AdminController@profile', 'as' => 'profile']);
 
-
-Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+Route::post('logout', ['uses' => 'AdminController@logout',  'as' => 'logout']);
+Route::post('upload', ['uses' => 'AdminController@upload',  'as' => 'upload']);
+Route::get('login', ['uses' => 'AuthController@login', 'as' => 'login']);
+Route::post('login', ['uses' => 'AuthController@postLogin', 'as' => 'postlogin']);

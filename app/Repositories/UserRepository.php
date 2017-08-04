@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 
-class UserRepository extends Repository
+class UserRepository
 {
 	static $tag = 'user';
 

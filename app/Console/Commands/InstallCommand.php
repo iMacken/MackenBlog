@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands;
+namespace App\Console\Commands;
 
 use Barryvdh\Debugbar\ServiceProvider;
 use Illuminate\Console\Command;
@@ -34,7 +34,7 @@ class InstallCommand extends Command
     protected function getOptions()
     {
         return [
-            ['with-dummy', null, InputOption::VALUE_NONE, 'Install with dummy data', null],
+            ['with-data', null, InputOption::VALUE_NONE, 'Install with data', null],
         ];
     }
 

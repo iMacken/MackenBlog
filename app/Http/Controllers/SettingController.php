@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Facades\Toastr;
-use App\Repositories\MapRepository;
+use App\Repositories\SettingRepository;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    protected $mapRepository;
+    protected $settingRepository;
 
-    public function __construct(MapRepository $mapRepository)
+    public function __construct(SettingRepository $settingRepository)
     {
-        $this->mapRepository = $mapRepository;
+        $this->settingRepository = $settingRepository;
     }
 
     public function index()
@@ -23,7 +23,7 @@ class SettingController extends Controller
     public function save(Request $request)
     {
         $inputs = $request->except(['_token','_url']);
-        $this->mapRepository->save($inputs, 'setting');
+        $this->settingRepository->save($inputs, 'setting');
         Toastr::success('保存成功');
         return back();
     }

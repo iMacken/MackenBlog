@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Repositories\CategoryRepository;
 use App\Repositories\CommentRepository;
-use App\Repositories\MapRepository;
 use App\Repositories\PageRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\TagRepository;
 use App\Repositories\UserRepository;
-use App\Repositories\VisitorRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -24,7 +21,6 @@ class AdminController extends Controller
 	protected $pageRepository;
 	protected $imageRepository;
 	protected $mapRepository;
-	protected $visitorRepository;
 
 	/**
 	 * AdminController constructor.
@@ -34,9 +30,6 @@ class AdminController extends Controller
 	 * @param CategoryRepository $categoryRepository
 	 * @param TagRepository $tagRepository
 	 * @param PageRepository $pageRepository
-	 * @param ImageRepository $imageRepository
-	 * @param MapRepository $mapRepository
-	 * @param visitorRepository $visitorRepository
 	 * @internal param MapRepository $mapRepository
 	 */
 	public function __construct(PostRepository $postRepository,
@@ -44,10 +37,7 @@ class AdminController extends Controller
 	                            UserRepository $userRepository,
 	                            CategoryRepository $categoryRepository,
 	                            TagRepository $tagRepository,
-	                            PageRepository $pageRepository,
-	                            ImageRepository $imageRepository,
-	                            MapRepository $mapRepository,
-	                            VisitorRepository $visitorRepository)
+	                            PageRepository $pageRepository)
 	{
 		$this->postRepository  = $postRepository;
 		$this->commentRepository  = $commentRepository;
@@ -55,9 +45,6 @@ class AdminController extends Controller
 		$this->categoryRepository = $categoryRepository;
 		$this->tagRepository      = $tagRepository;
 		$this->pageRepository     = $pageRepository;
-		$this->imageRepository    = $imageRepository;
-		$this->mapRepository      = $mapRepository;
-		$this->visitorRepository  = $visitorRepository;
 	}
 
 	public function index()
@@ -70,11 +57,10 @@ class AdminController extends Controller
 		$info['tag_count']      = $this->tagRepository->count();
 		$info['page_count']     = $this->pageRepository->count();
 		$info['image_count']    = $this->imageRepository->count();
-		$info['visitor_count']  = $this->visitorRepository->count();
 
-		$response = view('admin.index', compact('info'));
+		$response = view('index', compact('info'));
 		if (($failed_jobs_count = DB::table('failed_jobs')->count()) > 0) {
-			$failed_jobs_link = route('admin.failed-jobs');
+			$failed_jobs_link = route('failed-jobs');
 			$response->withErrors(['failed_jobs' => "You have $failed_jobs_count failed jobs.<a href='$failed_jobs_link'>View</a>"]);
 		}
 		return $response;
@@ -82,7 +68,7 @@ class AdminController extends Controller
 
 	public function settings()
 	{
-		return view('admin.settings');
+		return view('settings');
 	}
 
 	public function saveSettings(Request $request)
@@ -94,7 +80,7 @@ class AdminController extends Controller
 	public function failedJobs()
 	{
 		$failed_jobs = DB::table('failed_jobs')->get();
-		return view('admin.failed_jobs', compact('failed_jobs'));
+		return view('failed_jobs', compact('failed_jobs'));
 	}
 
 	public function flushFailedJobs()

@@ -66,16 +66,16 @@ if (!function_exists('tree')) {
     }
 }
 
-if (!function_exists('setting_config')) {
+if (!function_exists('setting')) {
     /**
      * get settings of the website
      * @param  [type] $key     [description]
      * @param  string $default [description]
      * @return string          [description]
      */
-    function setting_config($key, $default = '')
+    function setting($key, $default = '')
     {
-        $settingRepository = new \App\Repositories\MapRepository();
+        $settingRepository = new \App\Repositories\SettingRepository();
         $val = $settingRepository->getValue($key);
         return !empty($val) ? $val : $default;
     }
@@ -202,7 +202,18 @@ if (!function_exists('get_gravatar')) {
     if (!function_exists('menu')) {
         function menu($menuName, $type = null, array $options = [])
         {
-            return App\Menu::display($menuName, $type, $options);
+            return App\Models\Menu::display($menuName, $type, $options);
+        }
+    }
+
+    if (!function_exists('image')) {
+        function image($file, $default = '')
+        {
+            if (!empty($file) && Storage::disk('public')->exists($file)) {
+                return Storage::disk('public')->url($file);
+            }
+
+            return $default;
         }
     }
 }

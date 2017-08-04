@@ -12,6 +12,22 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Category::class, 2)->create();
+        $category = Category::query()->firstOrNew([
+            'slug' => 'category-1',
+        ]);
+        if (!$category->exists) {
+            $category->fill([
+                'name'       => '分类一'
+            ])->save();
+        }
+
+        $category = Category::query()->firstOrNew([
+            'slug' => 'category-2',
+        ]);
+        if (!$category->exists) {
+            $category->fill([
+                'name'       => '分类二'
+            ])->save();
+        }
     }
 }

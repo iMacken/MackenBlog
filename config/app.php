@@ -186,7 +186,6 @@ return [
 	    Barryvdh\Debugbar\ServiceProvider::class,
 	    Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
-        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
     ],
 
     /*
