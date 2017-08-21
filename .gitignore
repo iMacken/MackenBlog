@@ -1,6 +1,7 @@
 /vendor
 /node_modules
 /public/storage
+/storage/*.key
 /public/uploads
 _ide_helper.php
 _ide_helper_models.php
@@ -10,3 +11,5 @@ Homestead.json
 /Envoy.blade.php
 .idea
 .DS_Store
+npm-debug.log
+yarn-error.log

@@ -23,7 +23,7 @@ class PostController extends Controller
                                 CategoryRepository $categoryRepository,
                                 TagRepository $tagRepository)
     {
-        $this->postRepository  = $postRepository;
+        $this->postRepository     = $postRepository;
         $this->categoryRepository = $categoryRepository;
         $this->tagRepository      = $tagRepository;
 
@@ -33,10 +33,6 @@ class PostController extends Controller
     public function index(Request $request)
     {
 	    $posts = $this->postRepository->paginate();
-
-        $jumbotron = [];
-        $jumbotron['title'] = config('blog.default_owner');
-        $jumbotron['description'] = config('blog.default_motto');
 
         if ($request->get('type') === 'browse') {
             return view('post.browse', compact('posts'));

@@ -53,9 +53,9 @@ class PageRepository
         $cacheKey = $isAdmin ? 'page.admin.all' : 'page.all';
         $pages = $this->remember($cacheKey, function () use ($isAdmin) {
             if ($isAdmin) {
-                return Page::withoutGlobalScopes([PublishedScope::class])->withCount('comments')->get();
+                return Page::withoutGlobalScopes([PublishedScope::class])->withCount('comments as comments_count')->get();
             } else {
-                return Page::withCount('comments')->get();
+                return Page::withCount('comments as comments_count')->get();
             }
         });
 
@@ -65,7 +65,7 @@ class PageRepository
 	public function get($slug)
 	{
 		$page = $this->remember('page.one.' . $slug, function () use ($slug) {
-			return Page::where('slug', $slug)->withCount('comments')->firstOrFail();
+			return Page::where('slug', $slug)->withCount('comments as comments_count')->firstOrFail();
 		});
 
 		$page = $this->incrementViewCount($page, $slug);
@@ -75,7 +75,7 @@ class PageRepository
 
 	public function getById($id)
 	{
-		return Page::withoutGlobalScopes([PublishedScope::class])->withCount('comments')->findOrFail($id);
+		return Page::withoutGlobalScopes([PublishedScope::class])->withCount('comments as comments_count')->findOrFail($id);
 	}
 
 	public function create(array $data)

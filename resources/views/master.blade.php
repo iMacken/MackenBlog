@@ -82,7 +82,7 @@ if ($user = Auth::user()) {
 
 ?>
 
-<div class="app-container">
+<div class="app-container" id="app">
     <div class="fadetoblack visible-xs"></div>
     <div class="row content-container">
     @include('dashboard.navbar')

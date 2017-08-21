@@ -59,7 +59,7 @@ class InstallCommand extends Command
      *
      * @return void
      */
-    public function fire(Filesystem $filesystem)
+    public function handle(Filesystem $filesystem)
     {
         if (!$filesystem->exists(base_path('.env'))) {
             $filesystem->copy(base_path('.env.example'), base_path('.env'));
@@ -70,7 +70,6 @@ class InstallCommand extends Command
 
         $this->info('Publishing some files...');
         $this->call('vendor:publish', ['--provider' => ServiceProvider::class]);
-        $this->call('vendor:publish', ['--provider' => LaravelLogViewerServiceProvider::class, '--tag' => 'views']);
 
         $this->info('Migrating the database tables into your application');
         $this->call('migrate');

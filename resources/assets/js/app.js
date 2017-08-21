@@ -1,16 +1,25 @@
-window._ = require('lodash');
-window.$ = window.jQuery = require('jquery');
-require('bootstrap-sass');
-window.moment = require('moment');
-window.autosize = require('autosize');
 
-window.swal = require('sweetalert');
-window.marked = require('marked');
-window.hljs = require('highlight.js');
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * include Vue and Vue Resource. This gives a great starting point for
+ * building robust, powerful web applications using Vue and Laravel.
+ */
+
+require('./bootstrap');
+
+import VueRouter from 'vue-router';
+import store from './vuex/store.js';
+import VueI18n from 'vue-i18n';
+
+import routes from './routes.js';
+import locales from './lang';
+
+import App from './App.vue';
 
 window.toastr = require('toastr/build/toastr.min.js');
+
 window.toastr.options = {
-    positionClass: "toast-top-right",
+    positionClass: "toast-bottom-right",
     showDuration: "300",
     hideDuration: "1000",
     timeOut: "5000",
@@ -21,9 +30,50 @@ window.toastr.options = {
     hideMethod: "fadeOut"
 };
 
-require('social-share.js/dist/js/social-share.min.js');
-require('geopattern');
+Vue.use(VueI18n);
+Vue.use(VueRouter);
 
-require('./init.js');
+Vue.config.lang = window.Language;
 
+Object.keys(locales).forEach(function (lang) {
+    Vue.locale(lang, locales[lang])
+});
 
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue')
+);
+
+Vue.component(
+    'passport-authorized-clients',
+    require('./components/passport/AuthorizedClients.vue')
+);
+
+Vue.component(
+    'passport-personal-access-tokens',
+    require('./components/passport/PersonalAccessTokens.vue')
+);
+
+Vue.component(
+    'vue-table-pagination',
+    require('./components/TablePagination.vue')
+);
+
+Vue.component(
+    'vue-table',
+    require('./components/Table.vue')
+);
+
+Vue.component(
+    'vue-form',
+    require('./components/Form.vue')
+);
+
+const router = new VueRouter({
+    mode: 'history',
+    base: __dirname,
+    linkActiveClass: 'active',
+    routes: routes
+});
+
+new Vue(Vue.util.extend({ router, store }, App)).$mount('#app');

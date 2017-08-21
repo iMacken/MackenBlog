@@ -14,7 +14,7 @@
             @endif
         </ul>
         @include('partials.loading')
-        <form id="comment-form" method="POST" action="{{ route('comment.store') }}">
+        <form id="comment-form" method="POST" action="{{ route('comments.store') }}">
             {{ csrf_field() }}
             <input type="hidden" name="commentable_id" value="{{ $commentable->id }}">
             <input type="hidden" name="commentable_type" value="{{ $commentable_type }}">

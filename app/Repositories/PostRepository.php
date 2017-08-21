@@ -25,7 +25,7 @@ class PostRepository
 
 	public function get($slug)
     {
-		$post = Post::where('slug', $slug)->with(['tags', 'category'])->withCount('comments')->firstOrFail();
+		$post = Post::where('slug', $slug)->with(['tags', 'category'])->withCount('comments as comments_count')->firstOrFail();
 		DB::table('posts')->where('id', $post->id)->increment('view_count');
 
 		return $post;
@@ -33,7 +33,7 @@ class PostRepository
 
 	public function getById($id)
 	{
-		return Post::withoutGlobalScopes()->with(['tags', 'category'])->withCount('comments')->findOrFail($id);
+		return Post::withoutGlobalScopes()->with(['tags', 'category'])->withCount('comments as comments_count')->findOrFail($id);
 	}
 
 	/**
@@ -47,7 +47,7 @@ class PostRepository
 				'title',
 				'slug',
 				'view_count',
-			])->withCount('comments')->orderBy('view_count', 'desc')->limit($count)->get();
+			])->withCount('comments as comments_count')->orderBy('view_count', 'desc')->limit($count)->get();
 		});
 		return $posts;
 	}
