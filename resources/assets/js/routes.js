@@ -3,7 +3,7 @@ import Parent from './views/Parent.vue'
 
 export default [
     {
-        path: '/dashboard',
+        path: '/',
         component: Dashboard,
         beforeEnter: requireAuth,
         children: [

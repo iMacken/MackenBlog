@@ -1,11 +1,12 @@
 
 /**
  * First we will load all of this project's JavaScript dependencies which
- * include Vue and Vue Resource. This gives a great starting point for
+ * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
 
 require('./bootstrap');
+
 
 import VueRouter from 'vue-router';
 import store from './vuex/store.js';
@@ -40,33 +41,18 @@ Object.keys(locales).forEach(function (lang) {
 });
 
 Vue.component(
-    'passport-clients',
-    require('./components/passport/Clients.vue')
-);
-
-Vue.component(
-    'passport-authorized-clients',
-    require('./components/passport/AuthorizedClients.vue')
-);
-
-Vue.component(
-    'passport-personal-access-tokens',
-    require('./components/passport/PersonalAccessTokens.vue')
-);
-
-Vue.component(
     'vue-table-pagination',
-    require('./components/TablePagination.vue')
+    require('./components/dashboard/TablePagination.vue')
 );
 
 Vue.component(
     'vue-table',
-    require('./components/Table.vue')
+    require('./components/dashboard/Table.vue')
 );
 
 Vue.component(
     'vue-form',
-    require('./components/Form.vue')
+    require('./components/dashboard/Form.vue')
 );
 
 const router = new VueRouter({

@@ -1,43 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>@yield('page_title', setting('site_title'))</title>
+    {{-- <title>{{Admin::setting('admin_title')}} - {{Admin::setting('admin_description')}}</title> --}}
+    <title>@yield('page_title',Admin::setting('admin_title') . " - " . Admin::setting('admin_description'))</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
+    <!-- Fonts -->
 
     <!-- CSS Libs -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('lib/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('lib/css/animate.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('lib/csstrap-switch.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('lib/css/checkbox3.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('lib/css/jquery.dataTables.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('lib/css/dataTables.bootstrap.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('lib/css/select2.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('lib/css/toastr.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('lib/css/perfect-scrollbar.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-toggle.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('js/icheck/icheck.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ admin_asset('lib/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ admin_asset('lib/css/animate.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ admin_asset('lib/css/bootstrap-switch.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ admin_asset('lib/css/checkbox3.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ admin_asset('lib/css/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ admin_asset('lib/css/dataTables.bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ admin_asset('lib/css/select2.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ admin_asset('lib/css/toastr.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ admin_asset('lib/css/perfect-scrollbar.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ admin_asset('css/bootstrap-toggle.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ admin_asset('js/icheck/icheck.css') }}">
     <link rel="stylesheet" type="text/css"
-          href="{{ asset('js/datetimepicker/bootstrap-datetimepicker.min.css') }}">
+          href="{{ admin_asset('js/datetimepicker/bootstrap-datetimepicker.min.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
     <!-- CSS App -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/themes/flat-blue.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ admin_asset('css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ admin_asset('css/themes/flat-blue.css') }}">
 
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('images/logo-icon.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ admin_asset('images/logo-icon.png') }}" type="image/x-icon">
 
     <!-- CSS Fonts -->
-    <link rel="stylesheet" href="{{ asset('fonts/admin/styles.css') }}">
-    <script type="text/javascript" src="{{ asset('lib/js/jquery.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ admin_asset('fonts/admin/styles.css') }}">
+    <script type="text/javascript" src="{{ admin_asset('lib/js/jquery.min.js') }}"></script>
     <link rel="stylesheet" href="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
     @yield('css')
 
 <!-- Admin CSS -->
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <link rel="stylesheet" href="{{ admin_asset('css/admin.css') }}">
 
     <!-- Few Dynamic Styles -->
     <style type="text/css">
@@ -62,17 +64,17 @@
 <body class="flat-blue">
 
 <div id="voyager-loader">
-    <?php $admin_loader_img = setting('admin_loader', ''); ?>
+    <?php $admin_loader_img = Admin::setting('admin_loader', ''); ?>
     @if($admin_loader_img == '')
-        <img src="{{ asset('images/logo-icon.png') }}" alt="Admin Loader">
+        <img src="{{ admin_asset('images/logo-icon.png') }}" alt="Admin Loader">
     @else
-        <img src="{{ image($admin_loader_img) }}" alt="Admin Loader">
+        <img src="{{ Admin::image($admin_loader_img) }}" alt="Admin Loader">
     @endif
 </div>
 
 <?php
 if ($user = Auth::user()) {
-    $user_avatar = image($user->avatar, '/storage/users/default.png');
+    $user_avatar = Admin::image($user->avatar, '/storage/users/default.png');
     if ((substr($user->avatar, 0, 7) == 'http://') || (substr($user->avatar, 0, 8) == 'https://')) {
         $user_avatar = $user->avatar;
     }
@@ -82,11 +84,11 @@ if ($user = Auth::user()) {
 
 ?>
 
-<div class="app-container" id="app">
+<div class="app-container">
     <div class="fadetoblack visible-xs"></div>
     <div class="row content-container">
-    @include('dashboard.navbar')
-    @include('dashboard.sidebar')
+    @include('admin.dashboard.navbar')
+    @include('admin.dashboard.sidebar')
     <!-- Main Content -->
         <div class="container-fluid">
             <div class="side-body padding-top">
@@ -128,24 +130,24 @@ if ($user = Auth::user()) {
     })();
 </script>
 <!-- Javascript Libs -->
-<script type="text/javascript" src="{{ asset('lib/js/bootstrap.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('lib/js/bootstrap-switch.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('lib/js/jquery.matchHeight-min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('lib/js/jquery.dataTables.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('lib/js/dataTables.bootstrap.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('lib/js/toastr.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('lib/js/perfect-scrollbar.jquery.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/select2/select2.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/jquery.cookie.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/moment-with-locales.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('lib/js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('lib/js/bootstrap-switch.min.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('lib/js/jquery.matchHeight-min.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('lib/js/jquery.dataTables.min.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('lib/js/dataTables.bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('lib/js/toastr.min.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('lib/js/perfect-scrollbar.jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('js/select2/select2.min.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('js/bootstrap-toggle.min.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('js/jquery.cookie.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('js/moment-with-locales.min.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('js/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
 <script type="text/javascript" src="https://cdn.bootcss.com/bootstrap-sweetalert/1.0.1/sweetalert.min.js"></script>
 <!-- Javascript -->
-<script type="text/javascript" src="{{ asset('js/readmore.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/val.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/helpers.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('js/readmore.min.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('js/val.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('js/app.js') }}"></script>
+<script type="text/javascript" src="{{ admin_asset('js/helpers.js') }}"></script>
 @if(!empty(config('admin.additional_js')))<!-- Additional Javascript -->
 @foreach(config('admin.additional_js') as $js)
     <script type="text/javascript" src="{{ asset($js) }}"></script>@endforeach

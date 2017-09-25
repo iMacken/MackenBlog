@@ -13,11 +13,6 @@
 
 Auth::routes();
 Route::post('password/change', 'UserController@changePassword')->middleware('auth');
-Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
-Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
-Route::get('auth/github/register', 'Auth\AuthController@create');
-Route::post('auth/github/register', 'Auth\AuthController@store');
-
 
 Route::get('/', 'PostController@index');
 
