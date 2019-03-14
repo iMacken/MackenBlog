@@ -2,7 +2,6 @@
 
 * 产品名称：MackenBlog
 * 项目代码：MackenBlog
-* 演示地址：https://macken.me/
  
 [MackenBlog](https://github.com/RystLee/MackenBlog) Laravel 5.3 版本。
  
